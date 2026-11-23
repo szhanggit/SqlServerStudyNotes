@@ -1,0 +1,5 @@
+https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/limitless-create-cluster.html
+https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/limitless-shard.html
+https://oneuptime.com/blog/post/2026-02-12-set-up-aurora-limitless-database-for-horizontal-scaling/view
+https://www.factualminds.com/blog/amazon-aurora-limitless-database/
+https://docs.aws.eu/AmazonRDS/latest/AuroraUserGuide/limitless-converting-standard.html
