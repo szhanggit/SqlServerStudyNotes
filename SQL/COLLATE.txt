@@ -1,0 +1,22 @@
+sql = $"if exists (select * from Voucher v with(nolock) inner join Program p with(nolock) on v.ProgramId = p.Id where v.VoucherNumber = '{VoucherNumber}' AND v.VoucherNumber = '{VoucherNumber}' COLLATE SQL_Latin1_General_CP1_CS_AS AND p.IdentityCode = '{ProgramCode}') " +
+                $"begin " +
+                $"select [Status] from Voucher v with(nolock) inner join Program p with(nolock) on v.ProgramId = p.Id where v.VoucherNumber = '{VoucherNumber}' AND v.VoucherNumber = '{VoucherNumber}' COLLATE SQL_Latin1_General_CP1_CS_AS AND p.IdentityCode = '{ProgramCode}'; " +
+                $"end " +
+                $"else " +
+                $"begin " +
+                $"select -100; " +
+                $"end";
+
+
+
+select obi.ClientOrderNumber, tmp.NewClientQuotationNumber from Voucher v WITH(nolock)
+join OrderBeneficiaryInfo obi WITH(nolock) on obi.Id = v.BeneficiaryInfoId 
+join OrderLine ol WITH(nolock) on ol.Id = obi.OrderLineId 
+join [Order] o WITH(NOLOCK) ON o.Id = ol.OrderId
+JOIN dbo.ClientQuotationProduct cqp WITH(nolock) ON ol.ClientQuotationProductId = cqp.Id
+JOIN dbo.ClientQuotation cq WITH(NOLOCK) ON cqp.ClientQuotationId = cq.Id
+JOIN dbo.Client c WITH(NOLOCK) ON cq.ClientId = c.Id
+JOIN dbo.ProductVersion pv WITH(NOLOCK) ON cqp.ProductVersionId = pv.Id
+JOIN dbo.Product p WITH(NOLOCK) ON p.Id = pv.ProductId
+inner join TempClientQuotationNumber20220120 tmp with(nolock) on tmp.ShortUrl COLLATE SQL_Latin1_General_CP1_CI_AS = v.ShortUrl
+where o.OrderNumber = '202201180464'

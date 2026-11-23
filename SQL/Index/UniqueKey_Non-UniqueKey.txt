@@ -1,0 +1,10 @@
+The difference between unique key and non-unique key
+	Thats obvious one allows for duplicate values in any give column the other does not.
+	Unique Indexes are very fast. Non unique indexes can help, but they sometimes are slower because of their non unique nature.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+

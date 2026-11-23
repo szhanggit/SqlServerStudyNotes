@@ -1,0 +1,7 @@
+https://www.youtube.com/watch?v=NtnfObkCrow
+https://stackoverflow.com/questions/24745541/ssrs-changing-tab-name-when-exporting-to-excel
+https://www.interfacett.com/blogs/name-worksheets-exporting-ssrs-reports-excel/
+
+
+select the whole table to get Tablix as its title.
+sleect the whole table, in addition, select column group, to get Tablix member as its title.

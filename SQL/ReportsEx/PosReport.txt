@@ -1,0 +1,72 @@
+DECLARE @log TABLE
+(MerchantCode varchar(100), 
+ ShopCode varchar(100), 
+ TerminalSSN varchar(100),
+ ProgramCode varchar(100),
+ ApiRequestDateTime datetime,
+ ApiRequest nvarchar(max),
+ ApiResponseDateTime datetime,
+ ApiResponse nvarchar(max),
+ ApiResponseStatus varchar(100)
+)
+
+insert into @log (MerchantCode, ShopCode, TerminalSSN, ProgramCode, 
+ApiRequestDateTime, APIRequest, ApiResponseDateTime, ApiResponse, ApiResponseStatus)
+select top 100 MerchantCode, ShopCode, TerminalSSN,
+SUBSTRING(
+	pos.RequestMessage, 
+	(PATINDEX('%<ProgramCode>%', pos.RequestMessage) + 13), 
+	(PATINDEX('%</ProgramCode>%', pos.RequestMessage) - PATINDEX('%<ProgramCode>%', pos.RequestMessage) - 13)) as ProgramCode,
+	pos.CreatedOn as ApiRequestDateTime, pos.RequestMessage as Request, 
+	pos.ResponsedOn as ApiResponseDateTime, pos.ResponseCode as ApiResponse,
+	pos.ResponseCode as ApiResponseStatus
+from APILog_POS pos with(nolock)
+where pos.RequestMessage != '' AND PATINDEX('%<ProgramCode>%', pos.RequestMessage) != 0
+order by pos.Id desc
+
+
+
+
+select 
+t.AccountNumber as [Column A -- Voucher Number],
+t.TranType as [Column B -- Transaction Type],
+t.TranAmount as [Column C -- Transaction Amount],
+m.[Name] as [Column D -- Merchant Name],
+m.IdentityCode as [Column E -- Merchant Code],
+s.[Name] as [Column F -- Shop Name],
+lo.ShopCode as [Column G -- Shop Code],
+lo.ApiRequestDateTime as [Column H -- API Request DateTime],
+lo.ApiRequest as [Column I -- API Request],
+lo.ApiResponseDateTime as [Column J -- API Response DateTime],
+lo.ApiResponse as [Column K -- API Response],
+lo.ApiResponseStatus as [Column L -- API Response Status]
+from [TransactionHistory] t with(nolock) 
+inner join @log lo 
+on t.TerminalSSN = lo.TerminalSSN
+AND t.MerchantCode = lo.MerchantCode AND t.ShopCode = lo.ShopCode
+AND t.ProgramCode = lo.ProgramCode
+inner join Account a with(nolock) on a.AccountNumber = t.AccountNumber
+inner join Merchant m with(nolock) on t.MerchantCode = m.IdentityCode
+inner join Shop s with(nolock) on t.ShopCode = s.IdentityCode
+union
+select 
+t.AccountNumber as [Column A -- Voucher Number],
+t.TranType as [Column B -- Transaction Type],
+t.TranAmount as [Column C -- Transaction Amount],
+m.[Name] as [Column D -- Merchant Name],
+m.IdentityCode as [Column E -- Merchant Code],
+s.[Name] as [Column F -- Shop Name],
+lo.ShopCode as [Column G -- Shop Code],
+lo.ApiRequestDateTime as [Column H -- API Request DateTime],
+lo.ApiRequest as [Column I -- API Request],
+lo.ApiResponseDateTime as [Column J -- API Response DateTime],
+lo.ApiResponse as [Column K -- API Response],
+lo.ApiResponseStatus as [Column L -- API Response Status]
+from [Transaction] t with(nolock) 
+inner join @log lo 
+on t.TerminalSSN = lo.TerminalSSN
+AND t.MerchantCode = lo.MerchantCode AND t.ShopCode = lo.ShopCode
+AND t.ProgramCode = lo.ProgramCode
+inner join Account a with(nolock) on a.AccountNumber = t.AccountNumber
+inner join Merchant m with(nolock) on t.MerchantCode = m.IdentityCode
+inner join Shop s with(nolock) on t.ShopCode = s.IdentityCode

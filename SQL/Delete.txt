@@ -1,0 +1,2 @@
+DELETE tt FROM dbo.TransactionTemp tt join Transaction_CTE cte on tt.AccountNumber = cte.AccountNumber and tt.TranCode = cte.TranCode;
+

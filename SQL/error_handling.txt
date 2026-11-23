@@ -1,0 +1,3 @@
+How to implement error handling in SQL Server
+https://www.sqlshack.com/how-to-implement-error-handling-in-sql-server/
+https://stackoverflow.com/questions/15836759/throw-exception-from-sql-server-function-to-stored-procedure

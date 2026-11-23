@@ -1,0 +1,2 @@
+sql server like search pattern matching
+https://www.sqlservertutorial.net/sql-server-basics/sql-server-like/

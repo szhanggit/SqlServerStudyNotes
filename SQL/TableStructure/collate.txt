@@ -1,0 +1,10 @@
+select v.*, tw.VioletShortUrl from TWVoucherTemp tw with(nolock)
+inner join Voucher v with(nolock) on tw.RedVoucherNumber = v.VoucherNumber AND tw.RedProgramId = v.ProgramId 
+AND tw.OrangeShortUrl collate SQL_Latin1_General_CP1_CI_AS = v.ShortUrl collate SQL_Latin1_General_CP1_CI_AS
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+

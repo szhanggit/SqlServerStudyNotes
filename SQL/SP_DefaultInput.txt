@@ -1,0 +1,12 @@
+Default Number------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE dbo.spUpdateLEStatus
+@AccountNumber varchar(50), 
+@ProgramId INT, 
+@TranType INT,
+@TranCode varchar(50), 
+@TranAmount INT,
+@ActiveFrom DATETIME = NULL
+AS
+BEGIN
+
+------------------------------------------------------------------------------------------------------------------

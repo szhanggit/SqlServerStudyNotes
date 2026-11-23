@@ -1,0 +1,90 @@
+SELECT DATA_TYPE 
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE 
+     TABLE_NAME = 'SLMSMessage' AND 
+     COLUMN_NAME = 'Parameters'
+
+
+SELECT 
+    c.name 'Column Name',
+    t.Name 'Data type',
+    c.max_length 'Max Length',
+    c.precision ,
+    c.scale ,
+    c.is_nullable,
+    ISNULL(i.is_primary_key, 0) 'Primary Key'
+FROM    
+    sys.columns c
+INNER JOIN 
+    sys.types t ON c.user_type_id = t.user_type_id
+LEFT OUTER JOIN 
+    sys.index_columns ic ON ic.object_id = c.object_id AND ic.column_id = c.column_id
+LEFT OUTER JOIN 
+    sys.indexes i ON ic.object_id = i.object_id AND ic.index_id = i.index_id
+WHERE
+    c.object_id = OBJECT_ID('SLMSMessage')
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+https://sqlperformance.com/2012/07/t-sql-queries/split-strings
+
+select schema_name(tab.schema_id) as [schema_name], 
+    tab.[name] as table_name, 
+    pk.[name] as pk_name,
+    substring(column_names, 1, len(column_names)-1) as [columns]
+from sys.tables tab
+    left outer join sys.indexes pk
+        on tab.object_id = pk.object_id 
+        and pk.is_primary_key = 1
+   cross apply (select col.[name] + ', '
+                    from sys.index_columns ic
+                        inner join sys.columns col
+                            on ic.object_id = col.object_id
+                            and ic.column_id = col.column_id
+                    where ic.object_id = tab.object_id
+                        and ic.index_id = pk.index_id
+                            order by col.column_id
+                            for xml path ('') ) D (column_names)
+order by schema_name(tab.schema_id),
+    tab.[name]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

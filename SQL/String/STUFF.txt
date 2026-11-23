@@ -1,0 +1,40 @@
+--It is about concatenating strings in SQL
+SELECT STUFF('SQL Tutorial', 1, 3, 'HTML'); 
+
+SELECT ',' + FirstName 
+              FROM Northwind.dbo.Employees
+              FOR XML PATH
+
+--https://www.sqlshack.com/for-xml-path-clause-in-sql-server/
+SELECT ',' + FirstName 
+              FROM Northwind.dbo.Employees
+              FOR XML PATH ('')
+
+
+------------------------------------------------------------------------------------
+
+
+SELECT Title,  abc = STUFF(
+             (SELECT ',' + FirstName 
+              FROM Employees t1
+              WHERE t1.Title = t2.Title
+              FOR XML PATH (''))
+             , 1, 1, '') from Northwind.dbo.Employees t2
+group by Title;
+
+------------------------------------------------------------------------------------
+
+-- Remove leading comma with STUFF
+SELECT STUFF((
+            SELECT ',' + FirstName
+            FROM Employees
+            FOR XML PATH('')
+            ), 1, 1, '')
+
+------------------------------------------------------------------------------------
+
+
+   ,CASE
+		WHEN v.Status IN (4, 8, 32) THEN v.VoucherNumber
+		ELSE STUFF(v.VoucherNumber, LEN(v.VoucherNumber) - 5, 3, '***')
+	END AS VoucherNumber

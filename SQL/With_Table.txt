@@ -1,0 +1,61 @@
+Replace "T" with "M":
+SELECT REPLACE('SQL Tutorial', 'T', 'M'); 
+
+;with cte as (
+select p.Id KeyId, REPLACE(p.ProductName, N'迷你杯', N'單球冰淇淋') as NewValue
+from Product p with(NOLOCK)
+where p.ProductCode in ('HDZYMMDD36LIN','HDZYMMDD37LIN','HDZYMMDD50LIN','HDZYMMDD51LIN')
+)
+
+UPDATE Product
+SET ProductName = cte.NewValue
+FROM cte
+WHERE cte.KeyId = Id
+------------------------------------------------------------------------------------------------------------------
+
+https://stackoverflow.com/questions/28725389/sql-server-with-statement
+https://stackoverflow.com/questions/20853725/what-is-the-use-of-with-ties-keyword-in-select-statement-in-sql-queries
+
+;with cte as (
+
+select t.AccountNumber, t.ProgramCode, t.TranType, t.TranLocalDateTime, t.TranAmount, t.BalanceAvailable, m.Name MerchantName
+from [Transaction] t
+join @ProductList p on p.Id = t.ProductId
+join [Order] o on o.Id = t.OrderId
+join ClientQuotation q on q.Id = o.ClientQuotationId
+join @ClientList c on c.Id = q.ClientId
+join Merchant m on m.Id = t.MerchantId
+where t.TranType in (101, 103, 201, 203, 401) and t.ResponseCode = '0000'
+
+)
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

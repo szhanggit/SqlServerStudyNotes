@@ -1,0 +1,57 @@
+Adora.spGetAccountToSync	(Generate temp table)
+	SELECT @RealEndChangedUTCTimeL = MAX(LastChangedUTCTimeL)
+	FROM(
+		SELECT TOP (@Count) AccountNumber,MAX([ChangedUTCTimeL]) LastChangedUTCTimeL
+		FROM AccountToSync WITH(NOLOCK)
+		WHERE programid = @ProgramId 
+			AND [ChangedUTCTimeL] > @StartChangedUTCTimeL 
+			AND [ChangedUTCTimeL]<= @EndChangedUTCTimeL
+			AND ((@Status IS NULL AND 1=1) OR (@Status IS NOT NULL AND ([Status] = @Status)))
+		GROUP BY AccountNumber
+		ORDER BY LastChangedUTCTimeL
+	) temp
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+Adora.spGetAccountToSync	(Generate temp table in join condition)
+	SELECT a.[AccountNumber]
+		  ,a.[ProgramId]
+		  ,a.[BalanceAvailable]
+		  ,a.[BalanceFrozen]
+		  ,a.[Status]
+		  ,a.[CreatedOn]
+		  ,a.[ActiveTo]
+		  ,a.[ActivatedOn]
+		  ,a.[ConsumeTime]
+		  ,a.[ConsumeMerchantCode]
+		  ,a.[ConsumeShopCode]
+		  ,a.[ChangedUTCTimeL]
+		  ,a.[ConsumeTerminalSSN]
+		  ,a.[LastTranOn]
+    FROM AccountToSync a WITH(NOLOCK)
+	    JOIN (SELECT AccountNumber
+				,MAX(ChangedTimestamp) AS ChangedTimestamp 
+               FROM AccountToSync  WITH(NOLOCK)
+               WHERE programid = @ProgramId 
+				   AND [ChangedUTCTimeL] > @StartChangedUTCTimeL 
+				   AND [ChangedUTCTimeL]<= @RealEndChangedUTCTimeL
+				   AND ((@Status IS NULL AND 1=1) OR (@Status IS NOT NULL AND ([Status] = @Status)))
+               GROUP BY AccountNumber) at 
+		ON a.AccountNumber = at.AccountNumber 
+			AND a.ChangedTimestamp =  at.ChangedTimestamp 
+			AND a.ProgramId = @ProgramId
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+Temp Table
+https://www.mssqltips.com/sqlservertip/1556/differences-between-sql-server-temporary-tables-and-table-variables/
+
+IF OBJECT_ID('tempdb..#temp') IS NOT NULL -- Check for table existence
+    DROP TABLE #temp;
+

@@ -1,0 +1,17 @@
+MO.spUpdateVoucherConsumerInfo	(Batch update)
+		UPDATE Voucher
+		SET ActivatedOn = VSB.ActivatedOn
+			,BalanceAvailable = VSB.BalanceAvailable
+			,BalanceFrozen = VSB.BalanceFrozen
+			,ExpiryDate = IIF(VSB.Status = 256 OR VSB.Status = 8, V.ExpiryDate,  VSB.ExpiryDate)
+			,PublishedOn = VSB.PublishedOn
+			,[Status] = VSB.[Status]
+			,ConsumeTime = VSB.ConsumeTime
+			,ConsumeMerchantCode = VSB.ConsumeMerchantCode
+			,ConsumeShopCode = VSB.ConsumeShopCode
+			,ConsumeTerminalSSN = VSB.ConsumeTerminalSSN
+			,LastTranOn = VSB.LastTranOn
+		FROM VoucherSyncBuffer AS VSB
+			INNER JOIN Voucher AS V ON VSB.VoucherNumber = V.VoucherNumber
+			INNER JOIN Program AS P ON VSB.ProgramCode = P.IdentityCode AND V.ProgramId = P.Id
+------------------------------------------------------------------------------------------------------------------

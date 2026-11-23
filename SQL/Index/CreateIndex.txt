@@ -1,0 +1,119 @@
+CREATE CLUSTERED INDEX [IX_AcceptanceLoopBuffer] ON [dbo].[AcceptanceLoopBuffer] ([AcceptanceLoopUpdateId])
+GO
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE NONCLUSTERED INDEX [IDX_ClientQuotationProductServiceFeeTriggerTime_ValidityEnd] ON [dbo].[ClientQuotationProductServiceFeeTriggerTime] ([ValidityEnd])
+GO
+CREATE NONCLUSTERED INDEX [IDX_ClientQuotationProductServiceFeeTriggerTime_ValidityFrom] ON [dbo].[ClientQuotationProductServiceFeeTriggerTime] ([ValidityFrom])
+GO
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+CREATE NONCLUSTERED INDEX [IDX_Transaction_TranUtcDateTimeL]
+    ON [dbo].[Transaction]([TranUtcDateTimeL] ASC) WITH (FILLFACTOR = 90);
+GO
+
+
+CREATE NONCLUSTERED INDEX [IX_Transaction_AccountNumber_ProgramCode_3]
+    ON [dbo].[Transaction]([AccountNumber] ASC, [ProgramCode] ASC, [MultiAccountsTransactionId] ASC)
+    INCLUDE([ResponseCode], [TranLocalDateTime], [TranType]) WITH (FILLFACTOR = 90);
+GO
+
+
+CREATE NONCLUSTERED INDEX [IX_Transaction_TranUtcDateTimeL]
+    ON [dbo].[Transaction]([TranUtcDateTimeL] ASC, [ProgramCode] ASC) WITH (FILLFACTOR = 90);
+GO
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+CREATE NONCLUSTERED INDEX [IDX_AccountExpireBuffer_AccountNumber_ProgramId] ON [dbo].[AccountExpireBuffer] ([AccountNumber], [ProgramId])
+GO
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE NONCLUSTERED INDEX [IX_ELMAH_Error_App_Time_Seq] ON [dbo].[ELMAH_Error]
+(
+	[Application] ASC,
+	[TimeUtc] DESC,
+	[Sequence] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+
+
+select top 1000 * from ELMAH_Error with(nolock) order by [Application], TimeUtc desc	--It is index scan. Otherwise it will become table scan.
+
+The order of the columns is important. The sorting direction is important too. (P231)
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+https://www.mssqltips.com/sqlservertip/5573/creating-indexes-with-sql-server-management-studio/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/273238/how-to-use-group-by-to-concatenate-strings-in-sql-server

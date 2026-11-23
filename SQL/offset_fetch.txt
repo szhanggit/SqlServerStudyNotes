@@ -1,0 +1,55 @@
+https://www.dofactory.com/sql/order-by-offset-fetch
+    SELECT Id, ProductName, UnitPrice, Package
+      FROM Product
+     ORDER BY UnitPrice DESC
+    OFFSET 10 ROWS
+     FETCH NEXT 5 ROWS ONLY
+Get the 10th to 15th most expensive products sorted by price 
+
+
+------------------------------------------------------------------------------------------------------------------
+
+DECLARE @BusinessCursor as CURSOR;
+DECLARE @Id int;
+SET @BusinessCursor = CURSOR FOR
+select Id from Program with(nolock)
+
+OPEN @BusinessCursor;
+FETCH NEXT FROM @BusinessCursor INTO @Id;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+-------------
+
+print @Id;
+			
+----------------
+FETCH NEXT FROM @BusinessCursor INTO @Id;
+END
+
+
+
+-------------------------------------------------------------------------------------
+
+https://www.sqlservertutorial.net/sql-server-basics/sql-server-offset-fetch/
+
+SELECT
+    product_name,
+    list_price
+FROM
+    production.products
+ORDER BY
+    list_price,
+    product_name 
+OFFSET 10 ROWS 
+FETCH NEXT 10 ROWS ONLY;
+
+
+
+
+
+
+
+
+
+
+

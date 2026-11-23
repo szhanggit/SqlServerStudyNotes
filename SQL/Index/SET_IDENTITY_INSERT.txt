@@ -1,0 +1,21 @@
+SET IDENTITY_INSERT [dbo].VoucherStock_E_69 ON
+GO
+insert into VoucherStock_E_69(Id, ProgramId, ProductId, VoucherNumber, ShortUrl, AuthCode, StockStatus, CreateTime, GUID,
+BalanceAvailable, ReservationBatchId, ExpiryDate)
+values (2508627, 8, 4401, 'C8E6E012E6C9414393DD9CEFBF642B4C', 'EvLj3VujS04', '5134', 0, '2020-03-31 17:24:23', 'C8E6E012-E6C9-4143-93DD-9CEFBF642B4C',
+1, 54043, '2021-07-30 23:59:59')
+SET IDENTITY_INSERT [dbo].VoucherStock_E_69 OFF
+GO
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+

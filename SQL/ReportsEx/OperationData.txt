@@ -1,0 +1,36 @@
+--It is about product
+select top 1000 * from ProductVersion pv with(nolock) 
+inner join Product p with(nolock) on pv.ProductId = p.Id
+
+--It is about Third party Code Import
+select * from VoucherReservationBatch vrb with(nolock)
+inner join Product p with(nolock) on vrb.ProductId = p.Id
+
+--It is about Merchant 
+select * from Merchant with(nolock) where IdentityCode = '000000000000061'
+select * from MerchantTracing with(nolock)
+
+--For voucher template, it is hard coded. In SG so far, only has one template.
+
+--It is about client.
+select * from Client c with(nolock)
+inner join ClientTracing ct with(nolock)
+on c.Id = ct.ClientId
+
+--It is about client quotation
+select * from ClientQuotation cq with(nolock)
+inner join ClientQuotationStatusHistory cqsh with(nolock)
+on cq.Id = cqsh.ClientQuotationId
+
+--It is about order
+select * from [Order] o with(nolock)
+inner join OrderStatusHistory osh with(nolock) on o.Id = osh.OrderId
+
+--It is batch transaction
+select * from BatchTransaction bt with(nolock)
+inner join BatchTransactionDetail btd with(nolock)
+on bt.Id = btd.BatchTransactionId
+
+--It is about voucher
+select top 100 * from Voucher v with(nolock)
+inner join VoucherActionHistory vah with(nolock) on v.Id = vah.VoucherId

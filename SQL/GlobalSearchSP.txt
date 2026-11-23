@@ -1,0 +1,3 @@
+SELECT [name]
+FROM   sys.procedures with(nolock)
+WHERE  Object_definition(object_id) LIKE '%0018%'

@@ -1,0 +1,1066 @@
+﻿Adora.spGetAccountToSync	(Dynamically generate the number of top records)
+select top (@Count) * from AccountToSync	
+------------------------------------------------------------------------------------------------------------------
+Adora.spGetAccountToSync	(Generate temp table)
+	SELECT @RealEndChangedUTCTimeL = MAX(LastChangedUTCTimeL)
+	FROM(
+		SELECT TOP (@Count) AccountNumber,MAX([ChangedUTCTimeL]) LastChangedUTCTimeL
+		FROM AccountToSync WITH(NOLOCK)
+		WHERE programid = @ProgramId 
+			AND [ChangedUTCTimeL] > @StartChangedUTCTimeL 
+			AND [ChangedUTCTimeL]<= @EndChangedUTCTimeL
+			AND ((@Status IS NULL AND 1=1) OR (@Status IS NOT NULL AND ([Status] = @Status)))
+		GROUP BY AccountNumber
+		ORDER BY LastChangedUTCTimeL
+	) temp
+------------------------------------------------------------------------------------------------------------------
+Adora.spGetAccountToSync	(Generate temp table in join condition)
+	SELECT a.[AccountNumber]
+		  ,a.[ProgramId]
+		  ,a.[BalanceAvailable]
+		  ,a.[BalanceFrozen]
+		  ,a.[Status]
+		  ,a.[CreatedOn]
+		  ,a.[ActiveTo]
+		  ,a.[ActivatedOn]
+		  ,a.[ConsumeTime]
+		  ,a.[ConsumeMerchantCode]
+		  ,a.[ConsumeShopCode]
+		  ,a.[ChangedUTCTimeL]
+		  ,a.[ConsumeTerminalSSN]
+		  ,a.[LastTranOn]
+    FROM AccountToSync a WITH(NOLOCK)
+	    JOIN (SELECT AccountNumber
+				,MAX(ChangedTimestamp) AS ChangedTimestamp 
+               FROM AccountToSync  WITH(NOLOCK)
+               WHERE programid = @ProgramId 
+				   AND [ChangedUTCTimeL] > @StartChangedUTCTimeL 
+				   AND [ChangedUTCTimeL]<= @RealEndChangedUTCTimeL
+				   AND ((@Status IS NULL AND 1=1) OR (@Status IS NOT NULL AND ([Status] = @Status)))
+               GROUP BY AccountNumber) at 
+		ON a.AccountNumber = at.AccountNumber 
+			AND a.ChangedTimestamp =  at.ChangedTimestamp 
+			AND a.ProgramId = @ProgramId
+------------------------------------------------------------------------------------------------------------------
+MO.spUpdateVoucherConsumerInfo	(Roll Back)
+ALTER PROCEDURE [dbo].[spUpdateVoucherConsumerInfo]
+	@IsSuccess                BIT		OUTPUT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON; 
+	
+    BEGIN TRANSACTION;
+	
+	SET @IsSuccess = 0;
+
+	BEGIN TRY
+
+		UPDATE Voucher
+		SET ActivatedOn = VSB.ActivatedOn
+			,BalanceAvailable = VSB.BalanceAvailable
+			,BalanceFrozen = VSB.BalanceFrozen
+			,ExpiryDate = IIF(VSB.Status = 256 OR VSB.Status = 8, V.ExpiryDate,  VSB.ExpiryDate)
+			,PublishedOn = VSB.PublishedOn
+			,[Status] = VSB.[Status]
+			,ConsumeTime = VSB.ConsumeTime
+			,ConsumeMerchantCode = VSB.ConsumeMerchantCode
+			,ConsumeShopCode = VSB.ConsumeShopCode
+			,ConsumeTerminalSSN = VSB.ConsumeTerminalSSN
+			,LastTranOn = VSB.LastTranOn
+		FROM VoucherSyncBuffer AS VSB
+			INNER JOIN Voucher AS V ON VSB.VoucherNumber = V.VoucherNumber
+			INNER JOIN Program AS P ON VSB.ProgramCode = P.IdentityCode AND V.ProgramId = P.Id
+				
+	END TRY
+
+	BEGIN CATCH
+
+		IF @@TRANCOUNT > 0
+				ROLLBACK TRANSACTION;
+		RETURN
+	END CATCH	
+
+	IF @@TRANCOUNT > 0
+		BEGIN
+			COMMIT TRANSACTION;
+			SET @IsSuccess = 1;
+		END
+END
+------------------------------------------------------------------------------------------------------------------
+MO.spUpdateVoucherConsumerInfo	(Batch update)
+		UPDATE Voucher
+		SET ActivatedOn = VSB.ActivatedOn
+			,BalanceAvailable = VSB.BalanceAvailable
+			,BalanceFrozen = VSB.BalanceFrozen
+			,ExpiryDate = IIF(VSB.Status = 256 OR VSB.Status = 8, V.ExpiryDate,  VSB.ExpiryDate)
+			,PublishedOn = VSB.PublishedOn
+			,[Status] = VSB.[Status]
+			,ConsumeTime = VSB.ConsumeTime
+			,ConsumeMerchantCode = VSB.ConsumeMerchantCode
+			,ConsumeShopCode = VSB.ConsumeShopCode
+			,ConsumeTerminalSSN = VSB.ConsumeTerminalSSN
+			,LastTranOn = VSB.LastTranOn
+		FROM VoucherSyncBuffer AS VSB
+			INNER JOIN Voucher AS V ON VSB.VoucherNumber = V.VoucherNumber
+			INNER JOIN Program AS P ON VSB.ProgramCode = P.IdentityCode AND V.ProgramId = P.Id
+------------------------------------------------------------------------------------------------------------------
+Pass error message from sp to C#
+ALTER PROCEDURE [dbo].[spInsertTransaction] (
+	@ErrorMessage NVARCHAR(4000) OUTPUT
+	,@ErrorLine INT OUTPUT
+	)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	BEGIN TRAN
+
+	BEGIN TRY
+
+
+	END TRY
+
+	BEGIN CATCH
+		SELECT @ErrorMessage = ERROR_MESSAGE()
+
+		SELECT @ErrorLine = ERROR_LINE()
+
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION;
+	END CATCH;
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRANSACTION;
+END
+
+------------------------------------------------------------------------------------------------------------------
+            return string.Format(@"IF(EXISTS(SELECT 1 FROM VoucherImpTemp WHERE SessionId = @SessionId GROUP BY VoucherNumber,ProgramId HAVING COUNT(VoucherNumber) > 1))
+                                BEGIN
+	                                SELECT VoucherNumber FROM VoucherImpTemp WHERE SessionId = @SessionId GROUP BY VoucherNumber,SessionId,ProgramId HAVING COUNT(VoucherNumber) > 1
+                                    DELETE FROM {0} WHERE SessionId =@SessionId ;
+	                                DELETE FROM VoucherImpTemp WHERE SessionId =@SessionId ;
+	                                DELETE FROM EXT_TW_SEBarcode_Temp WHERE SessionId =@SessionId ;
+	                                RETURN;
+                                END
+
+                                IF((select count(1) from {0} where SessionId = @SessionId)<>(select count(1) from VoucherImpTemp where SessionId = @SessionId))
+                                BEGIN
+	                                select vit.VoucherNumber from (select VoucherNumber from VoucherImpTemp where SessionId = @sessionId)vit left join 
+		                                (select VoucherNumber from {0} where SessionId = @sessionId)vs on vit.VoucherNumber = vs.VoucherNumber
+		                                where vs.VoucherNumber is null
+                                    DELETE FROM {0} WHERE SessionId =@SessionId ;
+	                                DELETE FROM VoucherImpTemp WHERE SessionId =@SessionId ;		
+	                                DELETE FROM EXT_TW_SEBarcode_Temp WHERE SessionId =@SessionId ;
+	                                RETURN;
+                                END
+
+                                BEGIN TRY	
+                                BEGIN TRANSACTION
+                                    
+	                                INSERT INTO EXT_TW_SEBarcode(Id, Barcode1, Barcode2, CreatedOn, TrustStartDate, TrustEndDate)
+		                                SELECT {1} + V.Id,SEBT.Barcode1,SEBT.Barcode2,GETDATE() AS CreatedOn, TrustStartDate, TrustEndDate
+		                                FROM EXT_TW_SEBarcode_Temp AS SEBT JOIN {0} AS V 
+		                                ON SEBT.VoucherNumber = V.VoucherNumber AND SEBT.ProgramId = V.ProgramId
+		                                WHERE V.SessionId =@SessionId;
+			
+	                                DELETE FROM VoucherImpTemp WHERE SessionId =@SessionId ;
+	                                DELETE FROM EXT_TW_SEBarcode_Temp WHERE SessionId =@SessionId ;
+
+	                                COMMIT TRANSACTION;
+                                END TRY
+                                BEGIN CATCH
+	                                ROLLBACK TRANSACTION;
+                                END CATCH", tableName, ConvertStringToLong(prefix));
+
+------------------------------------------------------------------------------------------------------------------
+exec SP_EXECUTESQL
+ALTER proc [dbo].[getSequenceNextValue]
+(
+  @SequenceName varchar(100),
+  @IsFixReturnLength bit,
+  @ReturnLength tinyint,
+  @PaddingCharacter char(1),
+  @ret  varchar(100) output
+)
+as
+begin
+  declare @sql as nvarchar(500)
+  declare @nextvalue as bigint
+  select @sql = N'select @nextvalue = next value for ' + @SequenceName;
+  exec SP_EXECUTESQL @sql, N'@nextvalue bigint out', @nextvalue output
+  if(@IsFixReturnLength = 1)
+  begin
+      select @ret = right(replicate(@PaddingCharacter,@ReturnLength)+CAST(@nextvalue as varchar(100)),@ReturnLength)
+  end
+  else
+  begin
+      select @ret = CAST(@nextvalue as varchar(100))
+  end
+end
+
+
+
+DECLARE @Id INT;
+SET @Id = 7482;
+DECLARE @sql nvarchar(max);
+SET @sql = 'SELECT * FROM Merchant WHERE Id = @Id';
+exec SP_EXECUTESQL @sql, N'@Id int', @Id=@Id;
+
+
+DECLARE @IdentityCode VARCHAR(1000);
+SET @IdentityCode = '000000000000005';
+DECLARE @sql nvarchar(max);
+SET @sql = 'SELECT * FROM Merchant WHERE IdentityCode = @IdentityCode';
+exec SP_EXECUTESQL @sql, N'@IdentityCode varchar(50)', @IdentityCode=@IdentityCode;
+
+
+DECLARE @Id INT;
+SET @Id = 7482;
+DECLARE @IdentityCode VARCHAR(1000);
+SET @IdentityCode = '000000000000005';
+DECLARE @sql nvarchar(max);
+SET @sql = 'SELECT * FROM Merchant WHERE IdentityCode = @IdentityCode and Id = @Id';
+exec SP_EXECUTESQL @sql, N'@IdentityCode varchar(50), @Id int', @IdentityCode=@IdentityCode, @Id=@Id;
+
+DECLARE @Name NVARCHAR(200);
+DECLARE @Id INT;
+SET @Id = 2;
+DECLARE @IdentityCode VARCHAR(1000);
+SET @IdentityCode = '000000000000002';
+DECLARE @sql nvarchar(max);
+SET @sql = 'SELECT @OutName = [Name] FROM Merchant WHERE IdentityCode = @IdentityCode and Id = @Id;';
+exec SP_EXECUTESQL @sql, N'@IdentityCode varchar(50), @Id int, @OutName nvarchar(200) output', @IdentityCode=@IdentityCode, @Id=@Id, @OutName=@Name OUTPUT;
+SELECT @Name AS [Name];
+------------------------------------------------------------------------------------------------------------------
+update top 10
+--UPDATE TOP (10) 
+--dbo.Voucher 
+--SET ProductId = 3687			-- 移入的ProductId
+--, Memo =  '201804251711A'
+--, ReservationBatchId = 111291	--Step 1:新添加的VoucherReservationBatchId
+--WHERE ProductId = 3994 
+--AND [Status] = 64 
+--AND ReservationBatchId = 107289
+
+------------------------------------------------------------------------------------------------------------------
+For loop
+
+https://stackoverflow.com/questions/20662356/sql-server-loop-how-do-i-loop-through-a-set-of-records
+------------------------------------------------------------------------------------------------------------------
+When doing join update
+Do not: Update table1 set value = '' from table1 inner join table2
+Do: Update t1 set t1.value - '' from table1 t1 inner join table2 t2
+------------------------------------------------------------------------------------------------------------------
+INSERT EXEC
+https://blog.sqlauthority.com/2013/05/27/sql-server-how-to-insert-data-from-stored-procedure-to-table-2-different-methods/
+------------------------------------------------------------------------------------------------------------------
+Use Table-Valued Parameters 
+Compared to bulk operations that have a greater startup cost than table-valued parameters, table-valued parameters perform well for inserting less than 1000 rows.
+https://docs.microsoft.com/en-us/sql/relational-databases/tables/use-table-valued-parameters-database-engine?view=sql-server-2017
+------------------------------------------------------------------------------------------------------------------
+Assemblies are DLL files used in an instance of SQL Server to deploy functions, stored procedures, triggers, user-defined aggregates, and user-defined types that are written in one of the managed code languages hosted by the Microsoft.NET Framework common language runtime (CLR), instead of in Transact-SQL.
+------------------------------------------------------------------------------------------------------------------
+Temp Table
+https://www.mssqltips.com/sqlservertip/1556/differences-between-sql-server-temporary-tables-and-table-variables/
+
+IF OBJECT_ID('tempdb..#temp') IS NOT NULL -- Check for table existence
+    DROP TABLE #temp;
+------------------------------------------------------------------------------------------------------------------
+https://stackoverflow.com/questions/21011276/difference-between-temptable-and-temptable
+'#table refers to a local (visible to only the user who created it) temporary table.'
+'##table refers to a global (visible to all users) temporary table.'
+------------------------------------------------------------------------------------------------------------------
+Sp calls Sp
+https://stackoverflow.com/questions/15802511/execute-a-stored-procedure-in-another-stored-procedure-in-sql-server
+------------------------------------------------------------------------------------------------------------------
+--sql server drop table if exists
+--IF EXISTS(SELECT *
+--          FROM   dbo.Scores)
+--  DROP TABLE dbo.Scores 
+------------------------------------------------------------------------------------------------------------------
+Nested Try Catch   throw  rollback   
+https://stackoverflow.com/questions/44380387/nested-try-catch-how-do-i-get-to-the-outer-catch-block
+https://www.sqlshack.com/how-to-implement-error-handling-in-sql-server/
+
+USE AdventureWorks2014
+GO
+-- Basic example of TRY...CATCH
+ 
+BEGIN TRY
+-- Generate a divide-by-zero error  
+	SELECT
+		1 / 0 AS Error;
+END TRY
+BEGIN CATCH
+	SELECT
+		ERROR_NUMBER() AS ErrorNumber,
+		ERROR_STATE() AS ErrorState,
+		ERROR_SEVERITY() AS ErrorSeverity,
+		ERROR_PROCEDURE() AS ErrorProcedure,
+		ERROR_LINE() AS ErrorLine,
+		ERROR_MESSAGE() AS ErrorMessage;
+END CATCH;
+GO
+------------------------------------------------------------------------------------------------------------------
+SELECT m.MerchantCode,a.Id accountId, mr.ParentId FROM dbo.Account a WITH(NOLOCK)
+JOIN dbo.AccountRelation ar WITH(NOLOCK) ON ar.AccountId = a.Id
+JOIN (SELECT ROW_NUMBER() OVER(PARTITION BY ParentId ORDER BY Id) rownum, Id, ParentId, MerchantAndShopId FROM MerchantRelation WITH(NOLOCK) WHERE ParentId IS NOT NULL)mr ON mr.ParentId =ar.MerchantRelationId AND mr.rownum = 1
+JOIN dbo.MerchantAndShop m WITH(NOLOCK) ON  m.Id = mr.MerchantAndShopId
+JOIN dbo.RunningEmailResult r WITH(NOLOCK) ON r.MerchantCode = m.MerchantCode AND LEN(r.MerchantName) > 3
+
+ 
+
+UPDATE r SET r.ExtAccountId = a.Id
+ FROM dbo.Account a WITH(NOLOCK)
+JOIN dbo.AccountRelation ar WITH(NOLOCK) ON ar.AccountId = a.Id
+JOIN (SELECT ROW_NUMBER() OVER(PARTITION BY ParentId ORDER BY Id) rownum, Id, ParentId, MerchantAndShopId FROM MerchantRelation WITH(NOLOCK) WHERE ParentId IS NOT NULL)mr ON mr.ParentId =ar.MerchantRelationId AND mr.rownum = 1
+JOIN dbo.MerchantAndShop m WITH(NOLOCK) ON  m.Id = mr.MerchantAndShopId
+JOIN dbo.RunningEmailResult r WITH(NOLOCK) ON r.MerchantCode = m.MerchantCode AND LEN(r.MerchantName) > 3
+------------------------------------------------------------------------------------------------------------------
+SET @programId = SCOPE_IDENTITY();
+------------------------------------------------------------------------------------------------------------------
+https://stackoverflow.com/questions/28725389/sql-server-with-statement
+https://stackoverflow.com/questions/20853725/what-is-the-use-of-with-ties-keyword-in-select-statement-in-sql-queries
+
+;with cte as (
+
+select t.AccountNumber, t.ProgramCode, t.TranType, t.TranLocalDateTime, t.TranAmount, t.BalanceAvailable, m.Name MerchantName
+from [Transaction] t
+join @ProductList p on p.Id = t.ProductId
+join [Order] o on o.Id = t.OrderId
+join ClientQuotation q on q.Id = o.ClientQuotationId
+join @ClientList c on c.Id = q.ClientId
+join Merchant m on m.Id = t.MerchantId
+where t.TranType in (101, 103, 201, 203, 401) and t.ResponseCode = '0000'
+
+)
+------------------------------------------------------------------------------------------------------------------
+Replace "T" with "M":
+SELECT REPLACE('SQL Tutorial', 'T', 'M'); 
+
+;with cte as (
+select p.Id KeyId, REPLACE(p.ProductName, N'迷你杯', N'單球冰淇淋') as NewValue
+from Product p with(NOLOCK)
+where p.ProductCode in ('HDZYMMDD36LIN','HDZYMMDD37LIN','HDZYMMDD50LIN','HDZYMMDD51LIN')
+)
+
+UPDATE Product
+SET ProductName = cte.NewValue
+FROM cte
+WHERE cte.KeyId = Id
+------------------------------------------------------------------------------------------------------------------
+
+BEGIN TRY
+	BEGIN TRAN
+	DELETE FROM dbo.VoucherStock_I_73 WHERE id = 1
+	ROLLBACK
+END TRY
+BEGIN CATCH
+	PRINT ERROR_MESSAGE();
+	ROLLBACK;
+END CATCH
+
+------------------------------------------------------------------------------------------------------------------
+
+declare @myDoc xml  
+set @myDoc = '<?xml version="1.0" encoding="utf-8"?>     <Root>  
+<ProductDescription ProductID="1" ProductName="Road Bike">  
+<Features>  
+  <Warranty>1 year parts and labor</Warranty>  
+  <Maintenance>3 year parts and labor extended maintenance is available</Maintenance>  
+</Features>  
+</ProductDescription>  
+</Root>'  
+SELECT @myDoc.query('/Root/ProductDescription/Features/Warranty') 
+
+
+declare @myDoc xml  
+set @myDoc = '<?xml version="1.0" encoding="utf-8"?>  <TransactionRequestIn xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">    <AccountNumber>buWTCP99wm6h6SSesTxmNw==</AccountNumber>    <ProgramCode>00001</ProgramCode>    <MerchantCode>000000000000078</MerchantCode>    <TerminalSSN>01330160000035061060920190804213447</TerminalSSN>    <TranTerminalDateTime>20190804213447</TranTerminalDateTime>    <ShopCode>0000004505</ShopCode>    <TerminalCode />    <TranType>101</TranType>    <TranAmount>1</TranAmount>    <Channel>POS</Channel>    <Checksum>78d9c4f9c741d20158ee2c9138a6a290</Checksum>    <Encoding>UTF8</Encoding>    <Version>01</Version>    <TerminalDateTime>0001-01-01T00:00:00</TerminalDateTime>  </TransactionRequestIn>'  
+SELECT @myDoc.query('/TransactionRequestIn/Channel/text()') 
+
+declare @myDoc XML;  
+SELECT  @myDoc = CAST(REPLACE(CAST([RequestMessage] AS VARCHAR(MAX)), 'encoding="utf-16"', 'encoding="utf-8"') AS XML) FROM dbo.APILog_POS WITH(nolock) WHERE Id = 16496520;
+SELECT @myDoc.query('/TransactionRequestIn/Channel/text()'); 
+
+
+
+SELECT CAST(REPLACE(CAST([RequestMessage] AS VARCHAR(MAX)), 'encoding="utf-16"', 'encoding="utf-8"') AS XML).query('/TransactionRequestIn/Channel/text()') FROM dbo.APILog_POS WITH(nolock) WHERE Id = 16496520;
+
+
+------------------------------------------------------------------------------------------------------------------
+
+INSERT OrderEmailTemplateTagValue DEFAULT VALUES;  --allows no column list. The default will be the IDENTITY
+SELECT SCOPE_IDENTITY();
+
+------------------------------------------------------------------------------------------------------------------
+
+   ,CASE
+		WHEN v.Status IN (4, 8, 32) THEN v.VoucherNumber
+		ELSE STUFF(v.VoucherNumber, LEN(v.VoucherNumber) - 5, 3, '***')
+	END AS VoucherNumber
+	
+	IFF
+	
+	isnull(obi.Email, '') as Email
+
+------------------------------------------------------------------------------------------------------------------
+
+SET @rowCount = @@ROWCOUNT;
+
+------------------------------------------------------------------------------------------------------------------
+select name, text from syscomments c join sys.procedures p on c.id = p.object_id where c.text like '%AccountLEBuffer%'
+
+
+
+------------------------------------------------------------------------------------------------------------------
+		SET LEStatus = (CASE LEStatus 
+		                WHEN 0 THEN 5 
+						WHEN 1 THEN 5 
+						WHEN 2 THEN 3 
+						ELSE LEStatus 
+						END) 
+
+Default Number------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE dbo.spUpdateLEStatus
+@AccountNumber varchar(50), 
+@ProgramId INT, 
+@TranType INT,
+@TranCode varchar(50), 
+@TranAmount INT,
+@ActiveFrom DATETIME = NULL
+AS
+BEGIN
+
+------------------------------------------------------------------------------------------------------------------
+select with ties... order by ...
+https://ask.metafilter.com/132620/How-does-WITH-work-in-MS-SQL-Server
+------------------------------------------------------------------------------------------------------------------
+Inserted.[Name]
+https://www.sqlservercentral.com/articles/the-output-clause-for-insert-and-delete-statements
+------------------------------------------------------------------------------------------------------------------
+
+sp_helptext spTrashSmartChoice
+sp_helptext spBatchTrashAccounts
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+DECLARE @Loop INT = 1;
+DECLARE @Counter INT 
+SET @Counter=3000
+WHILE ( @Counter >= 3000)
+BEGIN
+	update top(3000) [Transaction]
+	set TranLocalDate = (year(TranLocalDateTime) * 10000 + month(TranLocalDateTime) * 100 + day(TranLocalDateTime))
+	where TranType in (116,117)
+	AND TranLocalDate != (year(TranLocalDateTime) * 10000 + month(TranLocalDateTime) * 100 + day(TranLocalDateTime))
+
+	select @Counter = @@ROWCOUNT;
+	set @Loop = @Loop + 1;
+	PRINT 'The loop value is = ' + CONVERT(VARCHAR,@Loop)
+	-- wait for 1 second
+	WAITFOR DELAY '00:00:01'
+END
+
+spAssignTasks is a good example.
+
+
+------------------------------------------------------------------------------------------------------------------
+Windowed Function
+
+select tt.TempBalanceAvailable, tt.TransBalanceAvailable from (
+select
+t.BalanceAvailable as TransBalanceAvailable,
+temp.BalanceAvailable as TempBalanceAvailable,
+ROW_NUMBER() OVER(PARTITION BY t.AccountNumber Order by t.TranUtcDateTime desc) as rownum
+from dbo.#TempTableHistory temp with(nolock)
+inner join [TransactionHistory] t with(nolock) on t.AccountNumber = temp.AccountNumber
+where t.TranUtcDateTime <= temp.FinanceExpiryDate
+) tt
+where tt.rownum = 1
+
+
+		Insert Into VoucherOrder (OrderId, 
+		                         OrderLineId,
+								 OrderBeneficiaryInfoId,
+								 OrderSN,
+								 OrderLineSN,
+								 OrderBeneficiaryInfoSN,
+								 IsEmailDelivery,
+								 IsSLMSDelivery,
+								 CreationTime)
+		select o.id as OrderId, 
+		       ol.id as OrderLineId,
+			   obi.id as OrderBeneficiaryInfoId,
+               ROW_NUMBER()OVER(Order By ol.id)As OrderSN,
+	           ROW_NUMBER()OVER(Partition By ol.id Order By ol.id)As OrderLineSN,
+	           t.id as OrderBeneficiaryInfoSN,
+			   case when o.IsDirectDelivery = 1 and rtrim(ltrim(isnull(obi.Email,'')))<>'' then 1 else 0 end,
+			   case when o.IsDirectDelivery = 1 and rtrim(ltrim(isnull(obi.Mobile,'')))<>'' then 1 else 0 end,
+			   GETDATE()
+		from [order] o join orderline ol on o.id = ol.orderid
+			join orderbeneficiaryinfo obi on ol.id = obi.orderlineid
+			join Tally t on obi.voucherquantity>=t.Id
+		where o.id = @OrderId
+
+
+SELECT o.Id orderid, 
+			ol.Id orderlineId, 
+			ol.TotalQuantity, 
+			COUNT(v.DistributionEmailStatus) OVER(PARTITION BY ol.Id) sendEmailCount
+		FROM dbo.[Order] o WITH(NOLOCK)
+		JOIN dbo.OrderLine ol WITH(NOLOCK) ON ol.OrderId = o.Id
+		JOIN dbo.OrderBeneficiaryInfo obi WITH(NOLOCK) ON obi.OrderLineId = ol.Id
+		JOIN dbo.Voucher v with(NOLOCK) ON v.BeneficiaryInfoId = obi.Id
+		WHERE o.id >= @startOrderId AND o.Id <= @endOrderId
+			AND o.Id <> 4442 
+			AND o.[Status] = 64
+			AND EXISTS (SELECT 1 FROM dbo.OrderStatusHistory h WITH(NOLOCK) WHERE h.OrderId = o.Id AND h.Operation = 512)
+
+
+
+
+
+
+
+
+
+SELECT    t1.OrderId ,
+        t5.ProductCode ,
+        t6.ExtendId AS VoucherId,
+        ROW_NUMBER() OVER ( PARTITION BY t1.OrderId,
+                            t5.ProductCode,
+                            t2.Mobile,
+                            t2.Email ORDER BY t6.Id ) AS RN ,
+        ISNULL(t2.Mobile, '')
+        + ISNULL(t2.Email, '') AS OBI
+FROM      dbo.OrderLine AS t1 WITH ( NOLOCK )
+        JOIN dbo.OrderBeneficiaryInfo AS t2
+        WITH ( NOLOCK ) ON t2.OrderLineId = t1.Id
+        JOIN dbo.ClientQuotationProduct AS t3
+        WITH ( NOLOCK ) ON t3.Id = t1.ClientQuotationProductId
+        JOIN dbo.ProductVersion AS t4 WITH ( NOLOCK ) ON t4.Id = t3.ProductVersionId
+        JOIN dbo.Product AS t5 WITH ( NOLOCK ) ON t5.Id = t4.ProductId
+        JOIN dbo.Voucher AS t6 WITH ( NOLOCK ) ON t6.BeneficiaryInfoId = t2.Id
+        JOIN dbo.[Order] AS t7 WITH ( NOLOCK ) ON t7.Id = t1.OrderId
+WHERE     t7.OrderNumber = '202002043235'
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+https://docs.microsoft.com/en-us/sql/t-sql/language-elements/waitfor-transact-sql?view=sql-server-ver15
+
+WAITFOR TIME '22:20'; 
+
+------------------------------------------------------------------------------------------------------------------
+Use while to replace For Loop
+
+CREATE PROCEDURE spArchivePublishedBuffer
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @orderId INT = (SELECT TOP (1) Id FROM dbo.[Order] WITH(NOLOCK) WHERE [Status] = 64  AND Mode <> 2 AND PublishDatetime > DATEADD(DAY, -3, GETDATE()) ORDER BY Id);
+
+	WHILE @orderId IS NOT NULL
+	BEGIN
+		IF EXISTS(SELECT 1 FROM dbo.VoucherOrderBuffer WITH(NOLOCK) WHERE OrderId = @orderId)
+		BEGIN
+			DELETE dbo.VoucherBuffer WHERE OrderId = @orderId
+
+			DELETE dbo.VoucherOrderBuffer 
+				OUTPUT Deleted.OrderId,Deleted.OrderLineId,Deleted.OrderBeneficiaryInfoId,Deleted.OrderSN,Deleted.OrderLineSN,
+					Deleted.OrderBeneficiaryInfoSN,Deleted.VoucherNumber,Deleted.AdoraTaskId,Deleted.CreationTime,Deleted.SessionId
+				INTO dbo.VoucherOrderBufferHistory(OrderId,OrderLineId,OrderBeneficiaryInfoId,OrderSN,OrderLineSN,OrderBeneficiaryInfoSN,VoucherNumber,AdoraTaskId,CreationTime,SessionId)
+				WHERE OrderId = @orderId
+			
+			WAITFOR DELAY '00:00:01'
+		END
+
+		SET @orderId =  (SELECT TOP (1) Id FROM dbo.[Order] WITH(NOLOCK) WHERE [Status] = 64  AND Mode <> 2 AND Id > @orderId ORDER BY Id);
+	END 
+END
+
+------------------------------------------------------------------------------------------------------------------
+
+https://www.sqlshack.com/sql-server-merge-statement-overview-and-examples/
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+WHILE (1=1)              
+ BEGIN
+	update top(3000) le
+	set le.InitBalance = a.BalanceInitialized
+	from AccountLE le with(nolock)
+	inner join Account a with(nolock) on a.ProgramId = le.ProgramId AND a.AccountNumber = le.AccountNumber
+	where le.InitBalance is null
+  IF (@@ROWCOUNT=0) BREAK; 
+ END
+
+
+------------------------------------------------------------------------------------------------------------------
+select a.ActiveFrom, DATEADD(ss,-1,CONVERT(datetime, CONVERT(date, DATEADD(DAY, 1, a.ActiveFrom))))  from Account a with(nolock) 
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+DELETE tt FROM dbo.TransactionTemp tt join Transaction_CTE cte on tt.AccountNumber = cte.AccountNumber and tt.TranCode = cte.TranCode;
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+https://www.techonthenet.com/sql_server/loops/for_loop.php
+DECLARE @cnt INT = 0;
+
+WHILE @cnt < cnt_total
+BEGIN
+   {...statements...}
+   SET @cnt = @cnt + 1;
+END;
+
+------------------------------------------------------------------------------------------------------------------
+How to implement error handling in SQL Server
+https://www.sqlshack.com/how-to-implement-error-handling-in-sql-server/
+https://stackoverflow.com/questions/15836759/throw-exception-from-sql-server-function-to-stored-procedure
+
+
+------------------------------------------------------------------------------------------------------------------
+
+DECLARE @BusinessCursor as CURSOR;
+DECLARE @Id int;
+SET @BusinessCursor = CURSOR FOR
+select Id from Program with(nolock)
+
+OPEN @BusinessCursor;
+FETCH NEXT FROM @BusinessCursor INTO @Id;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+-------------
+
+print @Id;
+			
+----------------
+FETCH NEXT FROM @BusinessCursor INTO @Id;
+END
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+case in where clause
+
+SELECT min(t1.Id) as MinId, max(t1.Id) as MaxId 
+FROM dbo.[Transaction] t1 with(nolock) JOIN dbo.Dictionary t2 with(nolock) 
+ON t1.TranType = t2.Name AND t2.Category = 'TransactionType' 
+LEFT JOIN dbo.Merchant t3 with(nolock) ON t1.MerchantId = t3.Id 
+LEFT JOIN dbo.Shop t4 with(nolock) ON t1.ShopId = t4.Id 
+LEFT JOIN dbo.Product t5 with(nolock) ON t1.ProductId = t5.Id 
+LEFT JOIN dbo.[Order] t6 with(nolock) ON t1.OrderId = t6.Id 
+LEFT JOIN dbo.OrderLine t7 with(nolock) ON t7.OrderId = t6.Id AND t1.ClientQuotationProductId = t7.ClientQuotationProductId 
+LEFT JOIN dbo.ClientQuotationProduct t8 with(nolock) ON t1.ClientQuotationProductId = t8.Id 
+LEFT JOIN dbo.Voucher t9 with(nolock) ON t1.AccountNumber = t9.VoucherNumber 
+INNER JOIN dbo.Program t10 with(nolock) ON t1.ProgramCode = t10.IdentityCode AND t9.ProgramId = t10.Id 
+LEFT JOIN dbo.OrderBeneficiaryInfo t11 with(nolock) ON t9.BeneficiaryInfoId = t11.Id 
+LEFT JOIN [dbo].[ProductVersion] t12 with(nolock) ON t8.ProductVersionId = t12.Id 
+LEFT JOIN [dbo].[ProductPricingProductBased] T13 with(nolock) ON T12.ProductPricingProductBasedId = T13.Id 
+LEFT JOIN [dbo].[ProductPricingValueBased] T14 with(nolock) ON T12.ProductPricingValueBasedId = T14.Id 
+LEFT JOIN [dbo].ProductPricingDynamicFaceValue T17 with(nolock) ON T17.ProductVersionId = t12.Id 
+LEFT JOIN [dbo].[ClientQuotationProductSoldPrice] t15 with(nolock) 
+ON t8.Id = t15.[ClientQuotationProductId] AND t15.ValidityFrom <= t11.ActiveDate 
+AND t15.ValidityEnd >= t11.ActiveDate AND T15.Status = 2 
+LEFT JOIN [dbo].[ReimbursementScheme] T16 with(nolock) 
+ON T16.Id= T1.[ReimbursementSchemeId] AND T16.TransactionTypeId = t2.Id 
+WHERE T1.ResponseCode = '0000' AND 
+((CASE WHEN (t1.TranSyncDate is null AND t1.TranLocalDate = 20180331) THEN 1 ELSE 0 END = 1) 
+OR (CASE WHEN (t1.TranSyncDate is not null AND t1.TranSyncDate = 20180331) THEN 1 ELSE 0 END = 1))
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+declare @Time1 datetime
+declare @Time2 datetime
+
+
+set @Time1 = GETDATE()
+WAITFOR DELAY '00:00:00.200'
+set @Time2 = GETDATE();
+
+select @Time1 as Star, @Time2 as [End]
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+--Add non clusted index to TempVoucherBuffer
+--One on Voucher the other on SessionId
+
+Declare @SessionId varchar(100)
+declare @i int = 0;
+
+WHILE (@i<10)              
+ BEGIN
+
+
+	BEGIN TRAN
+	BEGIN TRY
+
+set @SessionId = NEWID()
+update top(1000) TempVoucherBuffer
+set SessionId = @SessionId
+where SessionId is null
+
+update a
+set a.[Status] = 16, 
+a.[checkSum] = SUBSTRING(sys.fn_varbintohexstr(HASHBYTES('MD5', CONVERT(VARCHAR(500), CONVERT(VARCHAR, ProgramId)
+                + '=' + a.AccountNumber
+                + '=' + CONVERT(VARCHAR(10), ValueType)
+                + '=' + CONVERT(VARCHAR(20), BalanceAvailable)
+                + '=' + CONVERT(VARCHAR(20), BalanceFrozen)
+                + '=16' +
+                + '=' + '3D3D06DA96BA4CEA99F85ABD447B7F3F'))), 3, 32) 
+from TempVoucherBuffer t with(nolock)
+inner join Account a with(nolock) on t.VoucherNumber = a.AccountNumber AND a.ProgramId = 2
+where t.SessionId = @SessionId AND a.[Status] = 2
+
+COMMIT TRANSACTION;
+WAITFOR DELAY '00:00:00.500'
+set @i = @i + 1;
+
+
+
+	END TRY
+	BEGIN CATCH
+		print ERROR_MESSAGE();
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION;
+	END CATCH;
+
+		
+
+
+
+ END
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+declare @n int = 1000;
+declare @Counter int = 0;
+WHILE ( @Counter < 1000)
+BEGIN
+
+WAITFOR DELAY '00:00:01'
+
+----------------------------------------
+    BEGIN TRAN
+    BEGIN TRY
+------------------------------------------------    
+
+
+            insert into AccountTranCodeTemp20210802 (VoucherNumber, TranCode) 
+            select top(@n) AccountNumber, TranCode from [Transaction] with(nolock) where TranLocaldate < 20210803 order by TranUtcDateTimeL;
+
+ 
+
+            INSERT INTO [dbo].[TransactionHistory]
+                ([AccountNumber],[ProgramCode],[MerchantCode],[HostSSN],[TerminalSSN],[TranUtcDateTimeL],[TranUtcDateTime],[TranLocalDate],[TranLocalDateTime],[TranTerminalDateTime]
+                ,[ShopCode],[TerminalCode],[TranType],[Status],[TranAmount],[RefundedAmount],[ResponseCode],[IsCleared],[NodeNum],[CallerIP],[Channel],[Parameters],[TranCode],[TranCodeRef]
+                ,[TranGUID],[TranGUIDRef],[ModifyVersion],[BalanceAvailable],[BalanceFrozen],[Checksum],[SecurityKeyId],[Rsv1],[Rsv2],[Rsv3],[TranRealDateTime],[TranUtcDate],SettleDate
+                ,BusinessDay,ShiftCode,MultiAccountsTransactionId)
+            SELECT 
+                t.[AccountNumber],[ProgramCode],[MerchantCode],[HostSSN],[TerminalSSN],[TranUtcDateTimeL],[TranUtcDateTime],[TranLocalDate],[TranLocalDateTime],[TranTerminalDateTime],[ShopCode]
+                ,[TerminalCode],[TranType],[Status],[TranAmount],[RefundedAmount],[ResponseCode],[IsCleared],[NodeNum],[CallerIP],[Channel],[Parameters],t.[TranCode],[TranCodeRef],[TranGUID]
+                ,[TranGUIDRef],[ModifyVersion],[BalanceAvailable],[BalanceFrozen],[Checksum],[SecurityKeyId],[Rsv1],[Rsv2],[Rsv3],[TranRealDateTime],[TranUtcDate],SettleDate
+                ,BusinessDay,ShiftCode,MultiAccountsTransactionId
+            FROM [Transaction] t with(nolock) inner join AccountTranCodeTemp20210802 atct with(nolock) on t.AccountNumber = atct.VoucherNumber AND t.TranCode = atct.TranCode
+
+ 
+
+ 
+            delete t from [Transaction] t with(nolock) inner join AccountTranCodeTemp20210802 atct with(nolock) on t.AccountNumber = atct.VoucherNumber AND t.TranCode = atct.TranCode
+            
+            COMMIT TRANSACTION;
+
+ 
+
+            TRUNCATE TABLE AccountTranCodeTemp20210802;
+------------------------------------------------
+
+ 
+
+    END TRY
+    BEGIN CATCH
+        SELECT ERROR_MESSAGE();
+        SELECT ERROR_LINE();
+        ROLLBACK TRANSACTION;
+    END CATCH;
+
+ 
+
+    set @Counter = @Counter + 1;
+END
+
+
+
+
+https://stackoverflow.com/questions/273238/how-to-use-group-by-to-concatenate-strings-in-sql-server
+------------------------------------------------------------------------------------------------------------------
+
+SELECT DISTINCT SUBSTRING(RequestMessage,CHARINDEX('MasterVoucherGuid',RequestMessage,0)+18,36) from apilog with(nolock)
+where OperationCode = 'ConfirmChildProduct' AND Id >= 672868029 AND Id <= 673049415 AND ResponseCode = 'MA0033'
+
+select Id, ResponseCode, CAST(replace([RequestMessage], '<?xml version="1.0" encoding="utf-8"?>', '') AS XML).query('/ConfirmChildProductRequest/MasterVoucherGuid/text()') as MasterGUID from ApiLog with(nolock)
+where OperationCode = 'ConfirmChildProduct' AND Id >= 672868029 AND Id <= 673049415 AND ResponseCode != '0000'
+order by Id desc
+
+select cast(MasterGUID as varchar(100)) as MasterGUID into MasterGUID20210915 from temp20210915 group by cast(MasterGUID as varchar(100))
+
+------------------------------------------------------------------------------------------------------------------
+
+
+SELECT Name 
+    FROM <table>
+    WHERE Name LIKE '%' + LTRIM(RTRIM(@PartialName)) + '%'
+
+SELECT name, create_date, modify_date
+FROM sys.objects
+WHERE type = 'P' and [name] = 'spCalculateReimbursement'
+ORDER BY modify_date DESC
+
+
+------------------------------------------------------------------------------------------------------------------
+1. case when
+2. IFF
+3. ISNULL
+select sum(
+CASE
+	WHEN p.ProductType = 1 THEN cqps.SoldPriceWithTax * ppb.Balance
+	WHEN p.ProductType = 2 THEN IIF(p.ProductSubType = 4, cqps.SoldPricePercentage, ISNULL(cqps.ValueBasedSoldPriceWithTax, cqps.SoldPriceWithTax))
+	ELSE 0
+END) 
+from Voucher v with(nolock)
+join OrderBeneficiaryInfo obi with(nolock) on obi.Id = v.BeneficiaryInfoId
+join OrderLine ol with(nolock) on ol.Id = obi.OrderLineId
+join [Order] o with(nolock) on o.Id = ol.OrderId
+join ClientQuotationProduct cqp with(nolock) on cqp.Id = ol.ClientQuotationProductId
+join ClientQuotationProductSoldPrice cqps with(nolock) 
+on cqps.ClientQuotationProductId = cqp.Id 
+and cqps.ValidityFrom <= (case when o.Mode = 2 then getdate() else ISNULL(obi.ActiveDate, getdate()) end) 
+and cqps.ValidityEnd > (case when o.Mode = 2 then getdate() else ISNULL(obi.ActiveDate, getdate()) end)
+and cqps.Status = 2
+join ClientQuotation q with(nolock) on q.Id = cqp.ClientQuotationId
+join Client c with(nolock) on c.Id = q.ClientId
+join Product p with(nolock) on p.Id = v.ProductId
+join ProductVersion pv with(nolock) on pv.Id = cqp.ProductVersionId
+left join ProductPricingProductBased ppb with(nolock) on ppb.Id = pv.ProductPricingProductBasedId and p.ProductType = 1
+left join ProductPricingValueBased pvb with(nolock) on pvb.Id = pv.ProductPricingValueBasedId and p.ProductType = 2
+left join ProductPricingDynamicFaceValue pdf with(nolock) on pdf.ProductVersionId = pv.Id
+where c.IdentityCode = '000000000000245' AND q.BusinessModelId not in (6,9) AND o.OrderNumber = '202112177406'
+group by c.[Name]
+
+
+
+------------------------------------
+Search for SP contents
+https://stackoverflow.com/questions/5079457/how-do-i-find-a-stored-procedure-containing-text
+
+DECLARE @SearchText varchar(1000) = 'mytext';
+
+SELECT DISTINCT SPName 
+FROM (
+    (SELECT ROUTINE_NAME SPName
+        FROM INFORMATION_SCHEMA.ROUTINES 
+        WHERE ROUTINE_DEFINITION LIKE '%' + @SearchText + '%' 
+        AND ROUTINE_TYPE='PROCEDURE')
+    UNION ALL
+    (SELECT OBJECT_NAME(id) SPName
+        FROM SYSCOMMENTS 
+        WHERE [text] LIKE '%' + @SearchText + '%' 
+        AND OBJECTPROPERTY(id, 'IsProcedure') = 1 
+        GROUP BY OBJECT_NAME(id))
+    UNION ALL
+    (SELECT OBJECT_NAME(object_id) SPName
+        FROM sys.sql_modules
+        WHERE OBJECTPROPERTY(object_id, 'IsProcedure') = 1
+        AND definition LIKE '%' + @SearchText + '%')
+) AS T
+ORDER BY T.SPName
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

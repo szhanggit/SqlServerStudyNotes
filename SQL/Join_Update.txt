@@ -1,0 +1,4 @@
+When doing join update
+Do not: Update table1 set value = '' from table1 inner join table2
+Do: Update t1 set t1.value - '' from table1 t1 inner join table2 t2
+------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,600 @@
+﻿https://www.sqlshack.com/using-sql-server-cursors-advantages-and-disadvantages/
+https://stackoverflow.com/questions/7359702/how-do-i-obtain-a-query-execution-plan
+https://www.sqlshack.com/sql-server-query-execution-plan-beginners-types-options/
+https://www.mssqltips.com/sqlservertip/5573/creating-indexes-with-sql-server-management-studio/
+
+Left Join and Left Outer Join are one and the same. The former is the shorthand for the latter. The same can be said about the Right Join and Right Outer Join relationship. The demonstration will illustrate the equality.
+
+IF (EXISTS(SELECT * FROM [dbo].[MyReferenceTable]))  
+BEGIN  
+    DELETE FROM [dbo].[MyReferenceTable]  
+END  
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE CLUSTERED INDEX [IX_AcceptanceLoopBuffer] ON [dbo].[AcceptanceLoopBuffer] ([AcceptanceLoopUpdateId])
+GO
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE NONCLUSTERED INDEX [IDX_AccountExpireBuffer_AccountNumber_ProgramId] ON [dbo].[AccountExpireBuffer] ([AccountNumber], [ProgramId])
+GO
+ALTER TABLE [dbo].[ClearingDetail] ADD CONSTRAINT [FK_ClearingDetail_Clearing_ClearingId] FOREIGN KEY ([ClearingId]) REFERENCES [dbo].[Clearing] ([Id])
+GO
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE [dbo].[Member] ADD CONSTRAINT [UK_Member_PartnerCode_PartnerUserId] UNIQUE NONCLUSTERED  ([PartnerCode], [PartnerUserId])
+GO
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE [dbo].[AcceptanceLoopMerchant]
+(
+[Id] [int] NOT NULL IDENTITY(1, 1) NOT FOR REPLICATION,
+[AcceptanceLoopId] [int] NOT NULL,
+[MerchantId] [int] NOT NULL,
+PRIMARY KEY CLUSTERED ([Id] ASC),
+)
+GO
+
+if not exists (SELECT 1 FROM sys.tables WHERE name = 'VoucherShortUrlBuffer')
+begin
+CREATE TABLE [dbo].[VoucherShortUrlBuffer]
+(
+[Id] [int] NOT NULL IDENTITY(1, 1),
+[ShortUrl] varchar(100) COLLATE SQL_Latin1_General_CP1_CS_AS NOT NULL,
+[SessionId] varchar(100) NOT NULL,
+PRIMARY KEY CLUSTERED ([Id] ASC),
+)
+end
+GO
+
+IF NOT EXISTS(SELECT 1 FROM sys.indexes WITH(NOLOCK) WHERE object_id = OBJECT_ID('VoucherShortUrlBuffer', N'U') AND name = 'idx_vsub_shorturl')
+BEGIN
+CREATE NONCLUSTERED INDEX [idx_vsub_shorturl] ON [dbo].[VoucherShortUrlBuffer]
+(
+	[ShortUrl] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+END
+GO
+
+drop index idx_vnb_vouchernumber on VoucherNumberBuffer
+------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE NONCLUSTERED INDEX [IDX_ClientQuotationProductServiceFeeTriggerTime_ValidityEnd] ON [dbo].[ClientQuotationProductServiceFeeTriggerTime] ([ValidityEnd])
+GO
+CREATE NONCLUSTERED INDEX [IDX_ClientQuotationProductServiceFeeTriggerTime_ValidityFrom] ON [dbo].[ClientQuotationProductServiceFeeTriggerTime] ([ValidityFrom])
+GO
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+DECLARE @myVar INT
+SET @myVar = 0
+SELECT SQL_VARIANT_PROPERTY(@myVar,'BaseType') BaseType,
+SQL_VARIANT_PROPERTY(@myVar,'Precision') Precisions,
+SQL_VARIANT_PROPERTY(@myVar,'Scale') Scale,
+SQL_VARIANT_PROPERTY(@myVar,'TotalBytes') TotalBytes,
+SQL_VARIANT_PROPERTY(@myVar,'Collation') Collation,
+SQL_VARIANT_PROPERTY(@myVar,'MaxLength') MaxLengths
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT * FROM dbo.OrderBeneficiaryInfo AS OBI WITH(NOLOCK)
+INNER JOIN dbo.ClientQuotationProductSoldPrice CQPSP WITH (NOLOCK, INDEX = [IDX_ClientQuotationProductSoldPrice_Validity]) ON  CQPSP.[ValidityFrom] <= OBI.[ActiveDate]
+                                                                                                                                                        AND CQPSP.[ValidityEnd] >= OBI.[ActiveDate]
+                                                                                                                                                        AND CQPSP.STATUS = 2
+WHERE CQPSP.ClientQuotationProductId = 98277  
+
+------------------------------------------------------------------------------------------------------------------------------------------
+In case locked by transaction:
+rollback tran
+
+------------------------------------------------------------------------------------------------------------------------------------------
+https://www.cnblogs.com/CreateMyself/p/6129924.html
+sqlserver 过滤索引
+
+------------------------------------------------------------------------------------------------------------------------------------------
+CREATE NONCLUSTERED INDEX [IX_ELMAH_Error_App_Time_Seq] ON [dbo].[ELMAH_Error]
+(
+	[Application] ASC,
+	[TimeUtc] DESC,
+	[Sequence] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+
+
+select top 1000 * from ELMAH_Error with(nolock) order by [Application], TimeUtc desc	--It is index scan. Otherwise it will become table scan.
+
+The order of the columns is important. The sorting direction is important too. (P231)
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Checking missing index
+select 
+ddmid.statement,
+ddmid.inequality_columns,
+ddmid.included_columns,
+ddmigs.user_seeks,
+ddmigs.user_scans,
+ddmigs.avg_total_user_cost,
+ddmigs.avg_user_impact
+from sys.dm_db_missing_index_details as ddmid
+join sys.dm_db_missing_index_groups as ddmig on ddmid.index_handle = ddmig.index_handle
+join sys.dm_db_missing_index_group_stats as ddmigs on ddmig.index_group_handle = ddmigs.group_handle
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Checking useless index
+select i.name, ddius.user_seeks, ddius.user_scans,
+ddius.user_lookups, ddius.user_updates
+from sys.dm_db_index_usage_stats as ddius
+join sys.indexes as i on ddius.index_id = i.index_id AND ddius.object_id = i.object_id
+order by ddius.user_seeks
+
+------------------------------------------------------------------------------------------------------------------------------------------
+https://sqlhints.com/performance-tuning/
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Sequence
+https://sqlhints.com/tag/getting-next-sequence-value-in-a-select-statement/
+
+------------------------------------------------------------------------------------------------------------------------------------------
+except
+1. The number and order of columns must be the same in both queries.
+2. The data types of the corresponding columns must be the same or compatible.
+
+https://www.sqlservertutorial.net/sql-server-basics/sql-server-except/
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Calculate MD5 checksum:
+select CONVERT(VARCHAR(32), HashBytes('MD5', 'Hello World!'), 2) as Calc;
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+SELECT DATA_TYPE 
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE 
+     TABLE_NAME = 'SLMSMessage' AND 
+     COLUMN_NAME = 'Parameters'
+
+
+SELECT 
+    c.name 'Column Name',
+    t.Name 'Data type',
+    c.max_length 'Max Length',
+    c.precision ,
+    c.scale ,
+    c.is_nullable,
+    ISNULL(i.is_primary_key, 0) 'Primary Key'
+FROM    
+    sys.columns c
+INNER JOIN 
+    sys.types t ON c.user_type_id = t.user_type_id
+LEFT OUTER JOIN 
+    sys.index_columns ic ON ic.object_id = c.object_id AND ic.column_id = c.column_id
+LEFT OUTER JOIN 
+    sys.indexes i ON ic.object_id = i.object_id AND ic.index_id = i.index_id
+WHERE
+    c.object_id = OBJECT_ID('SLMSMessage')
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+select v.*, tw.VioletShortUrl from TWVoucherTemp tw with(nolock)
+inner join Voucher v with(nolock) on tw.RedVoucherNumber = v.VoucherNumber AND tw.RedProgramId = v.ProgramId 
+AND tw.OrangeShortUrl collate SQL_Latin1_General_CP1_CI_AS = v.ShortUrl collate SQL_Latin1_General_CP1_CI_AS
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+ALTER TABLE [Program]
+DROP CONSTRAINT DF__Program__IsEdenr__4F74451A; 
+
+------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE [dbo].[VoucherStock_D_68] (
+    [Id]                 BIGINT        IDENTITY (1, 1) NOT NULL,
+    [ProgramId]          INT           NOT NULL,
+    [ProductId]          INT           NOT NULL,
+    [VoucherNumber]      VARCHAR (50)  NOT NULL,
+    [ShortUrl]           VARCHAR (15)  COLLATE SQL_Latin1_General_CP1_CS_AS NOT NULL,
+    [AuthCode]           VARCHAR (10)  NULL,
+    [SessionId]          VARCHAR (50)  NULL,
+    [StockStatus]        INT           NOT NULL,
+    [CreateTime]         DATETIME      NOT NULL,
+    [AssignTime]         DATETIME      NULL,
+    [GUID]               VARCHAR (50)  NULL,
+    [BalanceAvailable]   INT           NULL,
+    [ReservationBatchId] BIGINT        NULL,
+    [ExpiryDate]         DATETIME      NULL,
+    [PinCode]            VARCHAR (100) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    UNIQUE NONCLUSTERED ([ShortUrl] ASC) WITH (IGNORE_DUP_KEY = ON),
+    UNIQUE NONCLUSTERED ([VoucherNumber] ASC, [ProgramId] ASC) WITH (IGNORE_DUP_KEY = ON)
+);
+GO
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+sp_configure 'max text rel repl size (B)', -1
+go
+reconfigure
+go
+--Change database basic setting
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+https://www.mssqltips.com/sqlservertip/1145/date-and-time-conversions-using-sql-server/
+It is about 'sql server convert datetime to varchar'.
+
+DECLARE @dateStart datetime
+SET @dateStart = CONVERT(nvarchar(10), GETDATE(), 111)
+select @dateStart		--2020-04-18 00:00:00.000
+
+This is also a very good tutorial site!!!
+
+DECLARE @dateStart datetime
+SET @dateStart = CONVERT(nvarchar(10), DATEADD(Hour, -12, GETDATE()), 111)
+SET @dateStart = CONVERT(NVARCHAR(10), @dateStart, 111)
+
+DECLARE @dateEnd datetime
+SET @dateEnd = DATEADD(DAY, 1, @dateStart)
+
+--ADORA--
+
+select TranLocalDateTime, sum(qty) as qty from 
+(
+select convert(nvarchar(13), t.TranLocalDateTime, 120) + ':00' as TranLocalDateTime, COUNT(1) qty
+from TW_EV_DBS_ADORA.DBO.[Transaction] t WITH(NOLOCK)
+where t.TranLocalDateTime >= @dateStart AND t.TranLocalDateTime < @dateEnd
+and t.TranType <> 504
+and t.ResponseCode = '0000'
+group BY convert(nvarchar(13), t.TranLocalDateTime, 120)
+
+UNION
+
+select convert(nvarchar(13), t.TranLocalDateTime, 120) + ':00' as TranLocalDateTime, COUNT(1) qty
+from TW_EV_DBS_ADORA.DBO.TransactionHistory t WITH(NOLOCK)
+where t.TranLocalDateTime>= @dateStart AND t.TranLocalDateTime < @dateEnd
+and t.TranType <> 504
+and t.ResponseCode = '0000'
+group BY convert(nvarchar(13), t.TranLocalDateTime, 120)
+
+) a
+group by TranLocalDateTime
+order by TranLocalDateTime Desc
+
+--MOVE--
+
+select convert(nvarchar(13), t.TranLocalDateTime, 120) + ':00' as TranLocalDateTime, COUNT(1) qty
+from [Transaction] t WITH(NOLOCK)
+where t.TranLocalDateTime >= @dateStart AND t.TranLocalDateTime < @dateEnd
+and t.ResponseCode = '0000'
+group BY convert(nvarchar(13), t.TranLocalDateTime, 120)
+order by convert(nvarchar(13), t.TranLocalDateTime, 120) desc
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+To check all of the index on a table:
+EXECUTE sp_helpindex [Transaction]
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+The difference between Clustered and Non-Clustered Indexes:
+https://www.sqlshack.com/what-is-the-difference-between-clustered-and-non-clustered-indexes-in-sql-server/
+1. There can be only one clustered index per table. However, you can create multiple non-clustered indexes on a single table.
+	A Clustered index usually is created with primary.
+	A clustered index defines the order in which data is physically stored in a table. Table data can be sorted in only way.
+	CREATE CLUSTERED INDEX IX_tblStudent_Gender_Score ON student(gender ASC, total_score DESC)
+
+2. Clustered indexes only sort tables. Therefore, they do not consume extra storage. Non-clustered indexes are stored in a separate place from the actual table claiming more storage space.
+3. Clustered indexes are faster than non-clustered indexes since they don’t involve any extra lookup step. 
+	When a query is issued against a column on which the index is created, 
+	the database will first go to the index and look for the address of the corresponding row in the table. 
+	It will then go to that row address and fetch other column values. 
+	It is due to this additional step that non-clustered indexes are slower than clustered indexes. 
+
+CREATE NONCLUSTERED INDEX IX_tblStudent_Name ON student(name ASC)
+IX_tblStudent_Name Index Data
+	name 	Row Address
+	Alan 	Row Address
+	Elis 	Row Address
+	Jolly 	Row Address
+	Jon 	Row Address
+	Joseph 	Row Address
+	Kate 	Row Address
+	Laura 	Row Address
+	Mice 	Row Address
+	Sara 	Row Address
+	Wise 	Row Address 
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+The difference between Primary key and unique key
+	1. Primary key will not accept NULL values whereas Unique key can accept one NULL value.
+	2. A table can have only primary key whereas there can be multiple unique key on a table.
+	3. A Clustered index automatically created when a primary key is defined whereas Unique key generates the non-clustered index.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+The difference between unique key and non-unique key
+	Thats obvious one allows for duplicate values in any give column the other does not.
+	Unique Indexes are very fast. Non unique indexes can help, but they sometimes are slower because of their non unique nature.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Types of SQL Server Indexes
+https://www.mssqltips.com/sqlservertip/6274/types-of-sql-server-indexes/
+
+1. SQL Server Clustered Index
+	A clustered index stores the index key in a B-tree structure along with the actual table data in each leaf node of the index.
+	CREATE CLUSTERED INDEX IX_TestData_TestId ON dbo.TestData (TestId);  
+2. SQL Server Non-Clustered Index
+	The index key columns are stored in a B-tree structure except in this case the actual data is not stored in the leaf nodes.  
+	In this type of index, a pointer to the actual table data is stored in the leaf node.
+	CREATE INDEX IX_TestData_TestDate ON dbo.TestData (TestDate);
+3. SQL Server Index Included Columns
+	This allows the non-clustered index to behave kind of like a clustered index in that it can retrieve the column data for 
+	these columns with having to do a lookup in the table data.
+	CREATE NONCLUSTERED INDEX IX_TestData_TestDate_incTestData3 ON TestData (TestDate) INCLUDE (TestData3);	
+4. SQL Server Function Based (Computed Columns) Index
+	CREATE NONCLUSTERED INDEX IX_TestData_TestDate_Plus7Days ON TestData (TestDatePlus7Days);
+5. SQL Server Filtered Index
+	CREATE INDEX IX_TestData_TestDate_TestTypeEq1 on TestData (TestDate) WHERE TestType=1;
+6. SQL Server Covering Index
+	CREATE INDEX IX_TestData_TestDate_TestType_AllData on TestData (TestDate,TestType) INCLUDE (TestData1,TestData2,TestData3,TestData4);
+7. SQL Server Column Store Index
+	Column store indexes can be created as a clustered or as non-clustered index.
+	Column store indexes were not updatable so having one on your table essentially made it read only.
+	CREATE CLUSTERED COLUMNSTORE INDEX CIX_TestData_TestType ON TestData.TestType WITH (DATA_COMPRESSION = COLUMNSTORE);
+8. SQL Server XML Index
+	-- primary index
+	CREATE PRIMARY XML INDEX PXML_TestData_TestData3 ON TestData (TestData3);
+
+	-- secondary indexes
+	CREATE XML INDEX XMLPATH_TestData_TestData3 ON TestData (TestData3)
+  	USING XML INDEX PXML_TestData_TestData3 FOR PATH;
+
+	CREATE XML INDEX XMLPROPERTY_TestData_TestData3 ON TestData (TestData3)
+  	USING XML INDEX PXML_TestData_TestData3 FOR PROPERTY;
+
+	CREATE XML INDEX XMLVALUE_TestData_TestData3 ON TestData (TestData3)
+  	USING XML INDEX PXML_TestData_TestData3 FOR VALUE;
+9. SQL Server Full-Text Indexes
+	-- catalog is needed before indexes can be created
+	CREATE FULLTEXT CATALOG fulltextCatalog AS DEFAULT;   
+
+	CREATE FULLTEXT INDEX ON dbo.TestData (TestData4 TYPE COLUMN TestData4_FileType) 
+  	KEY INDEX PK_TestData WITH STOPLIST = SYSTEM;
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Pivot Table
+https://www.sqlservertutorial.net/sql-server-basics/sql-server-pivot/	(It is a very good tutorial site!!!)
+https://docs.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql?view=sql-server-ver15
+Find out Pivot, Cube, Apply
+https://www.sqlshack.com/tracing-and-tuning-queries-using-sql-server-indexes/
+------------------------------------------------------------------------------------------------------------------------------------------
+Choose Index
+https://www.red-gate.com/simple-talk/sql/performance/index-selection-and-the-query-optimizer/
+https://blog.sqlauthority.com/2009/02/07/sql-server-introduction-to-force-index-query-hints-index-hint/
+https://blog.sqlauthority.com/2009/02/08/sql-server-introduction-to-force-index-query-hints-index-hint-part2/
+
+USE AdventureWorks
+GO
+SELECT c.ContactID
+FROM Person.Contact&nbsp;c
+INNER&nbsp;JOIN Person.Contact&nbsp;pc
+ON c.ContactID = pc.ContactID
+OPTION (TABLE HINT(c, INDEX (AK_Contact_rowguid)),
+TABLE HINT(pc, INDEX (PK_Contact_ContactID)))
+GO
+
+
+
+
+
+
+SELECT  t.ProgramCode,COUNT(1) as c	
+FROM    dbo.[Transaction] t WITH (INDEX=[IX_Transaction_TranUtcDateTimeL],NOLOCK)
+
+
+CREATE NONCLUSTERED INDEX [IDX_Transaction_TranUtcDateTimeL]
+    ON [dbo].[Transaction]([TranUtcDateTimeL] ASC) WITH (FILLFACTOR = 90);
+GO
+
+
+CREATE NONCLUSTERED INDEX [IX_Transaction_AccountNumber_ProgramCode_3]
+    ON [dbo].[Transaction]([AccountNumber] ASC, [ProgramCode] ASC, [MultiAccountsTransactionId] ASC)
+    INCLUDE([ResponseCode], [TranLocalDateTime], [TranType]) WITH (FILLFACTOR = 90);
+GO
+
+
+CREATE NONCLUSTERED INDEX [IX_Transaction_TranUtcDateTimeL]
+    ON [dbo].[Transaction]([TranUtcDateTimeL] ASC, [ProgramCode] ASC) WITH (FILLFACTOR = 90);
+GO
+
+
+
+
+
+Let system finding the right index consumers resource. Therefore, better to define one by developers directly.
+
+if the index contains all the columns required by the query (referred to as a “covering index”).
+
+SQL Server can also consider using more than one index, and joining them to cover all the columns required by the query (index intersection). 
+
+If it’s not possible to cover all of the columns required by the query, then the query optimizer may need to access the base table, which could be a clustered index or a heap, 
+to obtain the remaining columns. This is called a bookmark lookup operation (which could be a Key Lookup or an RID Lookup.
+
+ 
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+About Database Engine Tuning Advisor
+https://docs.microsoft.com/en-us/sql/tools/dta/lesson-2-using-database-engine-tuning-advisor?view=sql-server-ver15 
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+SET IDENTITY_INSERT [dbo].VoucherStock_E_69 ON
+GO
+insert into VoucherStock_E_69(Id, ProgramId, ProductId, VoucherNumber, ShortUrl, AuthCode, StockStatus, CreateTime, GUID,
+BalanceAvailable, ReservationBatchId, ExpiryDate)
+values (2508627, 8, 4401, 'C8E6E012E6C9414393DD9CEFBF642B4C', 'EvLj3VujS04', '5134', 0, '2020-03-31 17:24:23', 'C8E6E012-E6C9-4143-93DD-9CEFBF642B4C',
+1, 54043, '2021-07-30 23:59:59')
+SET IDENTITY_INSERT [dbo].VoucherStock_E_69 OFF
+GO
+
+
+------------------------------------------------------------------------------------------------------------------
+https://www.techonthenet.com/sql_server/loops/for_loop.php
+DECLARE @cnt INT = 0;
+
+WHILE @cnt < cnt_total
+BEGIN
+   {...statements...}
+   SET @cnt = @cnt + 1;
+END;
+
+
+------------------------------------------------------------------
+
+--It is about concatenating strings in SQL
+select * from Employees
+SELECT STUFF('SQL Tutorial', 1, 3, 'HTML'); 
+
+SELECT ',' + FirstName 
+              FROM Employees
+              FOR XML PATH
+
+--https://www.sqlshack.com/for-xml-path-clause-in-sql-server/
+SELECT ',' + FirstName 
+              FROM Employees
+              FOR XML PATH ('')
+
+
+-- Remove leading comma with STUFF
+SELECT STUFF((
+            SELECT ',' + FirstName
+            FROM Employees
+            FOR XML PATH('')
+            ), 1, 1, '')
+
+
+
+
+
+
+Declare @Temp As Table (Id Int,Name Varchar(100))
+Insert Into @Temp values(1,'A'),(1,'B'),(1,'C'),(2,'D'),(2,'E'),(3,'F'),(3,'G'),(3,'H'),(4,'I'),(5,'J'),(5,'K')
+Select X.ID,
+stuff((Select ','+ Z.Name from @Temp Z Where X.Id =Z.Id For XML Path('')),1,1,'')
+from @Temp X
+Group by X.ID
+
+
+
+
+
+SELECT Title,  abc = STUFF(
+             (SELECT ',' + FirstName 
+              FROM Employees t1
+              WHERE t1.Title = t2.Title
+              FOR XML PATH (''))
+             , 1, 1, '') from Employees t2
+group by Title;
+
+
+
+--------------------------------------------------------------------------------------------
+
+
+SELECT [AccountNumber]
+      ,[MerchantCode]
+      ,[TranType]
+      ,[TranLocalDateTime]
+      ,[TranAmount]
+      ,[RefundedAmount]
+      ,[ClientQuotationProductId]
+      ,[ProductId]
+      ,[OrderId]
+	  INTO #TEMP_TRAN
+  FROM [dbo].[Transaction] T WITH(NOLOCK)
+  WHERE EXISTS(SELECT 1 FROM [Transaction] TA WITH(NOLOCK) WHERE TA.TranLocalDate BETWEEN {0} AND {1} AND T.AccountNumber = TA.AccountNumber)
+  AND ResponseCode = '0000' 
+  AND TranType IN (101, 201, 103, 203, 403, 404, 405)
+
+-------------------------------------------------------------------------------------
+
+https://www.techonthenet.com/sql_server/pivot.php
+
+-------------------------------------------------------------------------------------
+SELECT REPLACE('SQL Tutorial', 'T', 'M'); 
+SELECT STUFF('SQL Tutorial', 1, 3, 'HTML'); 
+
+-------------------------------------------------------------------------------------
+https://www.sqlservercentral.com/articles/understanding-the-over-clause
+
+SELECT  COUNT(*)
+FROM    [msdb].sys.indexes;
+
+SELECT  object_id, index_id, COUNT(*) OVER ()
+FROM    [msdb].sys.indexes;
+
+SELECT  object_id, index_id, COUNT(*) OVER (PARTITION BY object_id)
+FROM    [msdb].sys.indexes;
+
+
+-----------------------------------------------------------------------------------------
+https://www.sqlservertutorial.net/sql-server-basics/sql-server-offset-fetch/
+
+SELECT
+    product_name,
+    list_price
+FROM
+    production.products
+ORDER BY
+    list_price,
+    product_name 
+OFFSET 10 ROWS 
+FETCH NEXT 10 ROWS ONLY;
+
+-----------------------------------------------------------------------------------------
+https://sqlperformance.com/2012/07/t-sql-queries/split-strings
+
+select schema_name(tab.schema_id) as [schema_name], 
+    tab.[name] as table_name, 
+    pk.[name] as pk_name,
+    substring(column_names, 1, len(column_names)-1) as [columns]
+from sys.tables tab
+    left outer join sys.indexes pk
+        on tab.object_id = pk.object_id 
+        and pk.is_primary_key = 1
+   cross apply (select col.[name] + ', '
+                    from sys.index_columns ic
+                        inner join sys.columns col
+                            on ic.object_id = col.object_id
+                            and ic.column_id = col.column_id
+                    where ic.object_id = tab.object_id
+                        and ic.index_id = pk.index_id
+                            order by col.column_id
+                            for xml path ('') ) D (column_names)
+order by schema_name(tab.schema_id),
+    tab.[name]
+
+-----------------------------------------------------------------------------------------
+
+It is about datetime formating
+
+Convert(CHAR(8),mc.ValidFrom,112) as StartDate, Convert(CHAR(8),mc.ValidTo,112) as EndDate
+FORMAT(mc.ValidFrom,'yyyyMMdd')
+
+-----------------------------------------------------------------------------------------
+
+insert into TransactionHistory (AccountNumber, ProgramCode, MerchantCode, TranUtcDate, TranUtcDateTime, TranUtcDateTimeL,
+TranLocalDate, TranLocalDateTime, SettleDate, TranRealDateTime, TranTerminalDateTime, 
+ShopCode, TranType, [Status], TranAmount, RefundedAmount, ResponseCode, TranCode, Channel, HostSSN, TerminalSSN, TranGUID)  
+select AccountNumber, ProgramCode, MerchantCode, Convert(CHAR(8),DATEADD(hour, -8, TranLocalDateTime),112) as TranUtcDate, DATEADD(hour, -8, TranLocalDateTime) as TranUtcDateTime, replace(convert(varchar(8), DATEADD(hour, -8, TranLocalDateTime), 112)+convert(varchar(8), DATEADD(hour, -8, TranLocalDateTime), 114), ':','') as TranUtcDateTimeL,
+TranLocalDate, TranLocalDateTime, SettleDate, TranRealDateTime, TranRealDateTime as TranTerminalDateTime, 
+ShopCode, TranType, [Status], TranAmount, RefundedAmount, ResponseCode, TranCode, Channel, '281833174' as HostSSN, TerminalSSN, NEWID() as TranGUID from MoveTransaction20210803 with(nolock)
+
+------------------------------------------------------------------------------------------
+select name, text from syscomments c join sys.procedures p on c.id = p.object_id where c.text like '%VoucherShortUrl%'
+select * from Sys.objects with(nolock) where [name] = 'spArchiveMultiAccountsTransaction'

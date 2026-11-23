@@ -1,0 +1,13 @@
+https://docs.microsoft.com/en-us/sql/relational-databases/security/encryption/encrypt-a-column-of-data?view=sql-server-2017
+
+
+
+
+
+
+
+
+
+
+
+

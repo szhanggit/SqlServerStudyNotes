@@ -1,0 +1,25 @@
+https://www.sqlservercentral.com/articles/understanding-the-over-clause
+
+SELECT  COUNT(*)
+FROM    [msdb].sys.indexes;
+
+SELECT  object_id, index_id, COUNT(*) OVER ()
+FROM    [msdb].sys.indexes;
+
+SELECT  object_id, index_id, COUNT(*) OVER (PARTITION BY object_id)
+FROM    [msdb].sys.indexes;
+
+-----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+

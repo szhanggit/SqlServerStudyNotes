@@ -1,0 +1,52 @@
+https://www.mytecbits.com/microsoft/sql-server/convert-utc-datetime-to-different-time-zones
+
+CREATE TABLE [dbo].[MTB_TABLE_UTC](
+    [ID] [int] IDENTITY(1,1) NOT NULL,
+    [Order] [nvarchar](20) NULL,
+    [OrderedOn_LocalTime] [datetime] NULL,
+    [OrderedOn_DTO] [datetimeoffset](7) NULL
+) ON [PRIMARY]
+GO
+select getdate() as local, GETUTCDATE() as universal, SYSDATETIMEOFFSET() as offset
+
+
+
+------------------------------------------------------------
+SYSDATETIMEOFFSET
+SELECT 
+    SYSDATETIMEOFFSET() AS 'Current Date',
+    SWITCHOFFSET( SYSDATETIMEOFFSET(), '+09:00' ) AS '+09:00';
+	
+	
+SELECT SYSDATETIMEOFFSET() AT TIME ZONE 'Eastern Standard Time' AS 'EST'	
+	
+	
+select * from sys.time_zone_info	
+	
+	
+	
+	
+	
+------------------------------------------------------------	
+Convert local datetime to be utc under the current database setting.
+
+Declare
+    @OrderDate AS DATETIME,
+    @OrderDateUTC As DATETIME;
+ 
+SET @OrderDate = '2021-08-15 18:32:15';
+SET @OrderDateUTC = DATEADD(second, 
+    DATEDIFF(second, GETDATE(), GETUTCDATE()), @OrderDate);
+
+select @OrderDateUTC as OrderDateUTC	
+	
+	
+------------------------------------------------------------	
+CREATE TABLE messages(
+    id         INT PRIMARY KEY IDENTITY, 
+    message    VARCHAR(255) NOT NULL, 
+    created_at DATETIMEOFFSET NOT NULL
+);
+	
+INSERT INTO messages(message,created_at) VALUES('DATETIMEOFFSET demo', CAST('2019-02-28 01:45:00.0000000 -08:00' AS DATETIMEOFFSET));
+	

@@ -1,0 +1,23 @@
+SELECT [AccountNumber]
+      ,[MerchantCode]
+      ,[TranType]
+      ,[TranLocalDateTime]
+      ,[TranAmount]
+      ,[RefundedAmount]
+      ,[ClientQuotationProductId]
+      ,[ProductId]
+      ,[OrderId]
+	  INTO #TEMP_TRAN
+  FROM [dbo].[Transaction] T WITH(NOLOCK)
+  WHERE EXISTS(SELECT 1 FROM [Transaction] TA WITH(NOLOCK) WHERE TA.TranLocalDate BETWEEN {0} AND {1} AND T.AccountNumber = TA.AccountNumber)
+  AND ResponseCode = '0000' 
+  AND TranType IN (101, 201, 103, 203, 403, 404, 405)
+
+
+
+------------------------------------------------------------------
+
+
+
+
+

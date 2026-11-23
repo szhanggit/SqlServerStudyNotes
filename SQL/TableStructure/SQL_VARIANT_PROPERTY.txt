@@ -1,0 +1,30 @@
+DECLARE @myVar INT
+SET @myVar = 0
+SELECT SQL_VARIANT_PROPERTY(@myVar,'BaseType') BaseType,
+SQL_VARIANT_PROPERTY(@myVar,'Precision') Precisions,
+SQL_VARIANT_PROPERTY(@myVar,'Scale') Scale,
+SQL_VARIANT_PROPERTY(@myVar,'TotalBytes') TotalBytes,
+SQL_VARIANT_PROPERTY(@myVar,'Collation') Collation,
+SQL_VARIANT_PROPERTY(@myVar,'MaxLength') MaxLengths
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

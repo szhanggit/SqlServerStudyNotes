@@ -1,0 +1,114 @@
+SET @CurrentDate = CONVERT(INT,CONVERT(VARCHAR(100),DATEADD(DAY,-1,GETDATE()), 112))
+
+------------------------------------------------------------------------------------------------------------------
+select a.ActiveFrom, DATEADD(ss,-1,CONVERT(datetime, CONVERT(date, DATEADD(DAY, 1, a.ActiveFrom))))  from Account a with(nolock) 
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+https://www.mssqltips.com/sqlservertip/1145/date-and-time-conversions-using-sql-server/
+It is about 'sql server convert datetime to varchar'.
+
+DECLARE @dateStart datetime
+SET @dateStart = CONVERT(nvarchar(10), GETDATE(), 111)
+select @dateStart		--2020-04-18 00:00:00.000
+
+This is also a very good tutorial site!!!
+
+DECLARE @dateStart datetime
+SET @dateStart = CONVERT(nvarchar(10), DATEADD(Hour, -12, GETDATE()), 111)
+SET @dateStart = CONVERT(NVARCHAR(10), @dateStart, 111)
+
+DECLARE @dateEnd datetime
+SET @dateEnd = DATEADD(DAY, 1, @dateStart)
+
+--ADORA--
+
+select TranLocalDateTime, sum(qty) as qty from 
+(
+select convert(nvarchar(13), t.TranLocalDateTime, 120) + ':00' as TranLocalDateTime, COUNT(1) qty
+from TW_EV_DBS_ADORA.DBO.[Transaction] t WITH(NOLOCK)
+where t.TranLocalDateTime >= @dateStart AND t.TranLocalDateTime < @dateEnd
+and t.TranType <> 504
+and t.ResponseCode = '0000'
+group BY convert(nvarchar(13), t.TranLocalDateTime, 120)
+
+UNION
+
+select convert(nvarchar(13), t.TranLocalDateTime, 120) + ':00' as TranLocalDateTime, COUNT(1) qty
+from TW_EV_DBS_ADORA.DBO.TransactionHistory t WITH(NOLOCK)
+where t.TranLocalDateTime>= @dateStart AND t.TranLocalDateTime < @dateEnd
+and t.TranType <> 504
+and t.ResponseCode = '0000'
+group BY convert(nvarchar(13), t.TranLocalDateTime, 120)
+
+) a
+group by TranLocalDateTime
+order by TranLocalDateTime Desc
+
+--MOVE--
+
+select convert(nvarchar(13), t.TranLocalDateTime, 120) + ':00' as TranLocalDateTime, COUNT(1) qty
+from [Transaction] t WITH(NOLOCK)
+where t.TranLocalDateTime >= @dateStart AND t.TranLocalDateTime < @dateEnd
+and t.ResponseCode = '0000'
+group BY convert(nvarchar(13), t.TranLocalDateTime, 120)
+order by convert(nvarchar(13), t.TranLocalDateTime, 120) desc
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------
+
+insert into TransactionHistory (AccountNumber, ProgramCode, MerchantCode, TranUtcDate, TranUtcDateTime, TranUtcDateTimeL,
+TranLocalDate, TranLocalDateTime, SettleDate, TranRealDateTime, TranTerminalDateTime, 
+ShopCode, TranType, [Status], TranAmount, RefundedAmount, ResponseCode, TranCode, Channel, HostSSN, TerminalSSN, TranGUID)  
+select AccountNumber, ProgramCode, MerchantCode, Convert(CHAR(8),DATEADD(hour, -8, TranLocalDateTime),112) as TranUtcDate, DATEADD(hour, -8, TranLocalDateTime) as TranUtcDateTime, replace(convert(varchar(8), DATEADD(hour, -8, TranLocalDateTime), 112)+convert(varchar(8), DATEADD(hour, -8, TranLocalDateTime), 114), ':','') as TranUtcDateTimeL,
+TranLocalDate, TranLocalDateTime, SettleDate, TranRealDateTime, TranRealDateTime as TranTerminalDateTime, 
+ShopCode, TranType, [Status], TranAmount, RefundedAmount, ResponseCode, TranCode, Channel, '281833174' as HostSSN, TerminalSSN, NEWID() as TranGUID from MoveTransaction20210803 with(nolock)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

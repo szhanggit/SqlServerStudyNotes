@@ -1,0 +1,7 @@
+SELECT 
+b.BatchNo, b.AvailableStartDate, b.AvailableEndDate,
+b.VoucherCount, b.CreatedOn, b.LastDownloadedOn, b.LastDownloadedBy,
+stock.VoucherNumber, stock.ShortUrl, stock.AuthCode, stock.StockStatus, stock.ExpiryDate
+FROM VoucherReservationBatch b WITH ( NOLOCK ) 
+inner JOIN VoucherStock_A_65 stock WITH (NOLOCK) ON stock.ReservationBatchId = b.Id
+WHERE stock.ProductId = 122 AND stock.StockStatus = 0

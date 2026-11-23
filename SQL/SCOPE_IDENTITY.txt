@@ -1,0 +1,8 @@
+INSERT OrderEmailTemplateTagValue DEFAULT VALUES;  --allows no column list. The default will be the IDENTITY
+SELECT SCOPE_IDENTITY();
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+

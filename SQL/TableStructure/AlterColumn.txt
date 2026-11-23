@@ -1,0 +1,4 @@
+IF COL_LENGTH('Client', 'MandatoryAutoBilling') IS NULL
+BEGIN
+	ALTER TABLE dbo.Client ADD MandatoryAutoBilling BIT NULL;
+END

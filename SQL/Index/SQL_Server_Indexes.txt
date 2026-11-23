@@ -1,0 +1,87 @@
+Types of SQL Server Indexes
+https://www.mssqltips.com/sqlservertip/6274/types-of-sql-server-indexes/
+
+1. SQL Server Clustered Index
+	A clustered index stores the index key in a B-tree structure along with the actual table data in each leaf node of the index.
+	CREATE CLUSTERED INDEX IX_TestData_TestId ON dbo.TestData (TestId);  
+2. SQL Server Non-Clustered Index
+	The index key columns are stored in a B-tree structure except in this case the actual data is not stored in the leaf nodes.  
+	In this type of index, a pointer to the actual table data is stored in the leaf node.
+	CREATE INDEX IX_TestData_TestDate ON dbo.TestData (TestDate);
+3. SQL Server Index Included Columns
+	This allows the non-clustered index to behave kind of like a clustered index in that it can retrieve the column data for 
+	these columns with having to do a lookup in the table data.
+	CREATE NONCLUSTERED INDEX IX_TestData_TestDate_incTestData3 ON TestData (TestDate) INCLUDE (TestData3);	
+4. SQL Server Function Based (Computed Columns) Index
+	CREATE NONCLUSTERED INDEX IX_TestData_TestDate_Plus7Days ON TestData (TestDatePlus7Days);
+5. SQL Server Filtered Index
+	CREATE INDEX IX_TestData_TestDate_TestTypeEq1 on TestData (TestDate) WHERE TestType=1;
+6. SQL Server Covering Index
+	CREATE INDEX IX_TestData_TestDate_TestType_AllData on TestData (TestDate,TestType) INCLUDE (TestData1,TestData2,TestData3,TestData4);
+7. SQL Server Column Store Index
+	Column store indexes can be created as a clustered or as non-clustered index.
+	Column store indexes were not updatable so having one on your table essentially made it read only.
+	CREATE CLUSTERED COLUMNSTORE INDEX CIX_TestData_TestType ON TestData.TestType WITH (DATA_COMPRESSION = COLUMNSTORE);
+8. SQL Server XML Index
+	-- primary index
+	CREATE PRIMARY XML INDEX PXML_TestData_TestData3 ON TestData (TestData3);
+
+	-- secondary indexes
+	CREATE XML INDEX XMLPATH_TestData_TestData3 ON TestData (TestData3)
+  	USING XML INDEX PXML_TestData_TestData3 FOR PATH;
+
+	CREATE XML INDEX XMLPROPERTY_TestData_TestData3 ON TestData (TestData3)
+  	USING XML INDEX PXML_TestData_TestData3 FOR PROPERTY;
+
+	CREATE XML INDEX XMLVALUE_TestData_TestData3 ON TestData (TestData3)
+  	USING XML INDEX PXML_TestData_TestData3 FOR VALUE;
+9. SQL Server Full-Text Indexes
+	-- catalog is needed before indexes can be created
+	CREATE FULLTEXT CATALOG fulltextCatalog AS DEFAULT;   
+
+	CREATE FULLTEXT INDEX ON dbo.TestData (TestData4 TYPE COLUMN TestData4_FileType) 
+  	KEY INDEX PK_TestData WITH STOPLIST = SYSTEM;
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Let system finding the right index consumers resource. Therefore, better to define one by developers directly.
+
+if the index contains all the columns required by the query (referred to as a “covering index”).
+
+SQL Server can also consider using more than one index, and joining them to cover all the columns required by the query (index intersection). 
+
+If it’s not possible to cover all of the columns required by the query, then the query optimizer may need to access the base table, which could be a clustered index or a heap, 
+to obtain the remaining columns. This is called a bookmark lookup operation (which could be a Key Lookup or an RID Lookup.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

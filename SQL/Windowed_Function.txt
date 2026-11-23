@@ -1,0 +1,111 @@
+------------------------------------------------------------------------------------------------------------------
+Windowed Function
+
+select tt.TempBalanceAvailable, tt.TransBalanceAvailable from (
+select
+t.BalanceAvailable as TransBalanceAvailable,
+temp.BalanceAvailable as TempBalanceAvailable,
+ROW_NUMBER() OVER(PARTITION BY t.AccountNumber Order by t.TranUtcDateTime desc) as rownum
+from dbo.#TempTableHistory temp with(nolock)
+inner join [TransactionHistory] t with(nolock) on t.AccountNumber = temp.AccountNumber
+where t.TranUtcDateTime <= temp.FinanceExpiryDate
+) tt
+where tt.rownum = 1
+
+
+		Insert Into VoucherOrder (OrderId, 
+		                         OrderLineId,
+								 OrderBeneficiaryInfoId,
+								 OrderSN,
+								 OrderLineSN,
+								 OrderBeneficiaryInfoSN,
+								 IsEmailDelivery,
+								 IsSLMSDelivery,
+								 CreationTime)
+		select o.id as OrderId, 
+		       ol.id as OrderLineId,
+			   obi.id as OrderBeneficiaryInfoId,
+               ROW_NUMBER()OVER(Order By ol.id)As OrderSN,
+	           ROW_NUMBER()OVER(Partition By ol.id Order By ol.id)As OrderLineSN,
+	           t.id as OrderBeneficiaryInfoSN,
+			   case when o.IsDirectDelivery = 1 and rtrim(ltrim(isnull(obi.Email,'')))<>'' then 1 else 0 end,
+			   case when o.IsDirectDelivery = 1 and rtrim(ltrim(isnull(obi.Mobile,'')))<>'' then 1 else 0 end,
+			   GETDATE()
+		from [order] o join orderline ol on o.id = ol.orderid
+			join orderbeneficiaryinfo obi on ol.id = obi.orderlineid
+			join Tally t on obi.voucherquantity>=t.Id
+		where o.id = @OrderId
+
+
+SELECT o.Id orderid, 
+			ol.Id orderlineId, 
+			ol.TotalQuantity, 
+			COUNT(v.DistributionEmailStatus) OVER(PARTITION BY ol.Id) sendEmailCount
+		FROM dbo.[Order] o WITH(NOLOCK)
+		JOIN dbo.OrderLine ol WITH(NOLOCK) ON ol.OrderId = o.Id
+		JOIN dbo.OrderBeneficiaryInfo obi WITH(NOLOCK) ON obi.OrderLineId = ol.Id
+		JOIN dbo.Voucher v with(NOLOCK) ON v.BeneficiaryInfoId = obi.Id
+		WHERE o.id >= @startOrderId AND o.Id <= @endOrderId
+			AND o.Id <> 4442 
+			AND o.[Status] = 64
+			AND EXISTS (SELECT 1 FROM dbo.OrderStatusHistory h WITH(NOLOCK) WHERE h.OrderId = o.Id AND h.Operation = 512)
+
+
+
+
+
+
+
+
+
+SELECT    t1.OrderId ,
+        t5.ProductCode ,
+        t6.ExtendId AS VoucherId,
+        ROW_NUMBER() OVER ( PARTITION BY t1.OrderId,
+                            t5.ProductCode,
+                            t2.Mobile,
+                            t2.Email ORDER BY t6.Id ) AS RN ,
+        ISNULL(t2.Mobile, '')
+        + ISNULL(t2.Email, '') AS OBI
+FROM      dbo.OrderLine AS t1 WITH ( NOLOCK )
+        JOIN dbo.OrderBeneficiaryInfo AS t2
+        WITH ( NOLOCK ) ON t2.OrderLineId = t1.Id
+        JOIN dbo.ClientQuotationProduct AS t3
+        WITH ( NOLOCK ) ON t3.Id = t1.ClientQuotationProductId
+        JOIN dbo.ProductVersion AS t4 WITH ( NOLOCK ) ON t4.Id = t3.ProductVersionId
+        JOIN dbo.Product AS t5 WITH ( NOLOCK ) ON t5.Id = t4.ProductId
+        JOIN dbo.Voucher AS t6 WITH ( NOLOCK ) ON t6.BeneficiaryInfoId = t2.Id
+        JOIN dbo.[Order] AS t7 WITH ( NOLOCK ) ON t7.Id = t1.OrderId
+WHERE     t7.OrderNumber = '202002043235'
+
+
+------------------------------------------------------------------------------------------------------------------
+
+SELECT m.MerchantCode,a.Id accountId, mr.ParentId FROM dbo.Account a WITH(NOLOCK)
+JOIN dbo.AccountRelation ar WITH(NOLOCK) ON ar.AccountId = a.Id
+JOIN (SELECT ROW_NUMBER() OVER(PARTITION BY ParentId ORDER BY Id) rownum, Id, ParentId, MerchantAndShopId FROM MerchantRelation WITH(NOLOCK) WHERE ParentId IS NOT NULL)mr ON mr.ParentId =ar.MerchantRelationId AND mr.rownum = 1
+JOIN dbo.MerchantAndShop m WITH(NOLOCK) ON  m.Id = mr.MerchantAndShopId
+JOIN dbo.RunningEmailResult r WITH(NOLOCK) ON r.MerchantCode = m.MerchantCode AND LEN(r.MerchantName) > 3
+
+
+UPDATE r SET r.ExtAccountId = a.Id
+ FROM dbo.Account a WITH(NOLOCK)
+JOIN dbo.AccountRelation ar WITH(NOLOCK) ON ar.AccountId = a.Id
+JOIN (SELECT ROW_NUMBER() OVER(PARTITION BY ParentId ORDER BY Id) rownum, Id, ParentId, MerchantAndShopId FROM MerchantRelation WITH(NOLOCK) WHERE ParentId IS NOT NULL)mr ON mr.ParentId =ar.MerchantRelationId AND mr.rownum = 1
+JOIN dbo.MerchantAndShop m WITH(NOLOCK) ON  m.Id = mr.MerchantAndShopId
+JOIN dbo.RunningEmailResult r WITH(NOLOCK) ON r.MerchantCode = m.MerchantCode AND LEN(r.MerchantName) > 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

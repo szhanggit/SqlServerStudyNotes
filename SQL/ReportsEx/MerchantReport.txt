@@ -1,0 +1,28 @@
+select 
+m.[Name] as [Group Name], 
+m.IdentityCode as [Internal Code],
+m.InvoiceRegisterNumber as UEN,
+a.DetailAddressLine as [Group Address],
+d.DisplayName as [Group Country],
+p.[Name] as [Shop Name],
+p.IdentityCode as [Internal Shop Code],
+sa.DetailAddressLine as [Shop Address],
+sd.DisplayName as [Shop Country],
+p.[Status] as [Status]
+from Merchant m with(nolock) 
+inner join [Address] a with(nolock) on m.AddressId = a.Id
+inner join [Dictionary] d with(nolock) on a.CountryId = d.Id
+inner join Shop p with(nolock) on p.MerchantId = m.Id
+inner join [Address] sa with(nolock) on p.AddressId = sa.Id
+inner join [Dictionary] sd with(nolock) on sa.CountryId = sd.Id
+order by m.IdentityCode
+--1 Merchant.Name
+--2 Merchant.IdentityCode
+--3 Merchant.InvoiceRegisterNumber
+--4 Address.DetailAddressLine
+--5 Dictionary.DisplayName
+--6 Shop.Name
+--7 Shop.IdentityCode
+--8 Address.DetailAddressLine
+--9	Shop.Status
+--10Dictionary.DisplayName

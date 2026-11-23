@@ -1,0 +1,139 @@
+https://sqlperformance.com/2015/01/t-sql-queries/pagination-with-offset-fetch
+
+CREATE PROCEDURE dbo.Alternate_Test_1 -- ORDER BY CustomerID
+  @PageNumber INT = 1,
+  @PageSize   INT = 100
+AS
+BEGIN
+  SET NOCOUNT ON;
+ 
+  ;WITH pg AS
+  (
+    SELECT CustomerID
+      FROM dbo.Customers_I
+      ORDER BY CustomerID
+      OFFSET @PageSize * (@PageNumber - 1) ROWS
+      FETCH NEXT @PageSize ROWS ONLY
+  )
+  SELECT c.CustomerID, c.FirstName, c.LastName,
+      c.EMail, c.Active, c.Created, c.Updated
+  FROM dbo.Customers_I AS c
+  WHERE EXISTS (SELECT 1 FROM pg WHERE pg.CustomerID = c.CustomerID)
+  ORDER BY c.CustomerID OPTION (RECOMPILE);
+END
+GO
+ 
+CREATE PROCEDURE dbo.Alternate_Test_2 -- ORDER BY LastName, FirstName
+CREATE PROCEDURE dbo.Alternate_Test_3 -- ORDER BY FirstName DESC, EMail
+
+
+------------------------------------------------------------------------------------------------
+https://www.sqlshack.com/pagination-in-sql-server/
+
+DECLARE @PageNumber AS INT
+DECLARE @RowsOfPage AS INT
+DECLARE @SortingCol AS VARCHAR(100) ='FruitName'
+DECLARE @SortType AS VARCHAR(100) = 'DESC'
+SET @PageNumber=1
+SET @RowsOfPage=4
+SELECT FruitName,Price FROM SampleFruits
+ORDER BY 
+CASE WHEN @SortingCol = 'Price' AND @SortType ='ASC' THEN Price END ,
+CASE WHEN @SortingCol = 'Price' AND @SortType ='DESC' THEN Price END DESC,
+CASE WHEN @SortingCol = 'FruitName' AND @SortType ='ASC' THEN FruitName END ,
+CASE WHEN @SortingCol = 'FruitName' AND @SortType ='DESC' THEN FruitName END DESC
+OFFSET (@PageNumber-1)*@RowsOfPage ROWS
+FETCH NEXT @RowsOfPage ROWS ONLY
+
+
+------------------------------------------------------------------------------------------------
+https://stackoverflow.com/questions/17803062/pagination-with-the-stored-procedure
+
+
+ALTER PROCEDURE [dbo].[sp_Mk]
+  @page INT,
+  @size INT,
+  @sort nvarchar(50) ,
+  @totalrow INT  OUTPUT
+AS
+BEGIN
+    DECLARE @SQL nvarchar(4000)
+    DECLARE @Params varchar(200)
+
+SET @Params = N'@page int, @size int, @sort nvarchar(50), @totalrow int OUTPUT'
+
+SET @SQL = '
+DECLARE @offset INT
+DECLARE @newsize INT
+
+IF(@page=0)
+begin
+   SET @offset = @page;
+   SET @newsize = @size
+end
+ELSE 
+begin
+    SET @offset = @page+1;
+    SET @newsize = @size-1
+end
+-- SET NOCOUNT ON added to prevent extra result sets from
+SET NOCOUNT ON;
+WITH OrderedSet AS
+(
+  SELECT *,
+      ROW_NUMBER() OVER (ORDER BY @sort  DESC) AS ''Index''
+  FROM [dbo].[Mk]  
+)
+   SELECT * 
+   FROM OrderedSet 
+   WHERE [Index] BETWEEN @offset AND (@offset + @newsize) 
+
+   SET @totalrow = (SELECT COUNT(*) FROM [dbo].[Mk])'
+
+
+   EXEC sp_executesql @SQL, @Params, @page = @page, @size = @size, @sort = @sort, @totalrow = @totalrow 
+
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

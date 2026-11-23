@@ -1,0 +1,22 @@
+https://www.sqlshack.com/using-sql-server-cursors-advantages-and-disadvantages/
+
+
+-------------------------------------------------------------------------------------------------------
+
+
+DECLARE @BusinessCursor as CURSOR;
+DECLARE @Id int;
+SET @BusinessCursor = CURSOR FOR
+select Id from Program with(nolock)
+
+OPEN @BusinessCursor;
+FETCH NEXT FROM @BusinessCursor INTO @Id;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+-------------
+
+print @Id;
+			
+----------------
+FETCH NEXT FROM @BusinessCursor INTO @Id;
+END

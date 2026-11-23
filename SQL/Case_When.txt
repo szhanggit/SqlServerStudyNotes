@@ -1,0 +1,6 @@
+		SET LEStatus = (CASE LEStatus 
+		                WHEN 0 THEN 5 
+						WHEN 1 THEN 5 
+						WHEN 2 THEN 3 
+						ELSE LEStatus 
+						END) 

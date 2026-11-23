@@ -1,0 +1,23 @@
+select name, text from syscomments c join sys.procedures p on c.id = p.object_id where c.text like '%AccountLEBuffer%'
+
+
+select name, text from syscomments c join sys.procedures p on c.id = p.object_id where c.text like '%VoucherShortUrl%'
+select * from Sys.objects with(nolock) where [name] = 'spArchiveMultiAccountsTransaction'
+
+
+sp_helptext spTrashSmartChoice
+sp_helptext spBatchTrashAccounts
+
+
+
+
+
+
+
+
+
+
+
+
+
+

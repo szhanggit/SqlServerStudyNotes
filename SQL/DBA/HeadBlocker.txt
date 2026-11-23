@@ -1,0 +1,1 @@
+https://dba.stackexchange.com/questions/62579/why-a-session-becomes-a-head-blocker

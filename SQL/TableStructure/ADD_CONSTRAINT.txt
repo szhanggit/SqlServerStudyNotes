@@ -1,0 +1,21 @@
+ALTER TABLE [dbo].[Member] ADD CONSTRAINT [UK_Member_PartnerCode_PartnerUserId] UNIQUE NONCLUSTERED  ([PartnerCode], [PartnerUserId])
+GO
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+ALTER TABLE [dbo].[ClearingDetail] ADD CONSTRAINT [FK_ClearingDetail_Clearing_ClearingId] FOREIGN KEY ([ClearingId]) REFERENCES [dbo].[Clearing] ([Id])
+GO
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+

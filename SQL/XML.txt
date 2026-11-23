@@ -1,0 +1,106 @@
+DECLARE @x XML
+SET @x= '<Rates>
+  <Rate date_changed="Nov 10 2011  7:28AM" not_active_since="07/27/2011" rate="1720.78" emp_pay_type="1" emp_work_hours="0" rate2="0.00" rate3="0.00" benefit_hours="8" exempt_ind="Y" />
+  <Rate date_changed="Nov 10 2011  7:19AM" not_active_since="07/27/2011" rate="1720.78" emp_pay_type="1" emp_work_hours="40" rate2="0.00" rate3="0.00" benefit_hours="8" exempt_ind="Y" />
+  <Rate date_changed="Nov 10 2011  6:38AM" not_active_since="07/27/2011" rate="1720.78" emp_pay_type="1" emp_work_hours="0" rate2="0.00" rate3="0.00" benefit_hours="8" exempt_ind="Y" />
+  <Rate date_changed="Nov 10 2011  6:33AM" not_active_since="07/27/2011" rate="1720.78" emp_pay_type="1" emp_work_hours="40" rate2="0.00" rate3="0.00" benefit_hours="8" exempt_ind="Y" />
+  <Rate date_changed="Mar  6 2011 12:00AM" not_active_since="03/06/2011" rate="1730.77" emp_pay_type="1" emp_work_hours="40.00" rate2="0.00" rate3="0.00" benefit_hours="0.00" exempt_ind="Y" />
+  <Rate date_changed="Jan 25 2009 12:00AM" not_active_since="01/25/2009" rate="1730.77" emp_pay_type="1" emp_work_hours="40.00" rate2="0.00" rate3="0.00" benefit_hours="0.00" exempt_ind="Y" />
+  <Rate date_changed="Nov  2 2008 12:00AM" not_active_since="11/02/2008" rate="3461.54" emp_pay_type="1" emp_work_hours="40.00" rate2="0.00" rate3="0.00" benefit_hours="0.00" exempt_ind="Y" />
+  <Rate date_changed="Sep 21 2008 12:00AM" not_active_since="09/21/2008" rate="1730.77" emp_pay_type="1" emp_work_hours="40.00" rate2="0.00" rate3="0.00" benefit_hours="0.00" exempt_ind="N" />
+</Rates>'
+
+
+SELECT x.r.value('@date_changed','DATETIME') AS date_changed,
+       x.r.value('@not_active_since','DATETIME') AS not_active_since,
+       x.r.value('@rate','DECIMAL(10,5)') AS rate,
+       x.r.value('@emp_pay_type','INT') AS emp_pay_type,
+       x.r.value('@emp_work_hours','DECIMAL(10,5)') AS emp_work_hours,
+       x.r.value('@rate2','DECIMAL(10,5)') AS rate2,
+       x.r.value('@rate3','DECIMAL(10,5)') AS rate3,
+       x.r.value('@benefit_hours','DECIMAL(10,5)') AS benefit_hours,
+       x.r.value('@exempt_ind','CHAR(1)') AS exempt_ind
+FROM @x.nodes('/Rates/Rate') AS x(r)
+
+
+
+
+--------------------------------------------------------------------------------------------
+
+
+
+
+declare @myDoc xml
+set @myDoc = 
+'<Root xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://stackoverflow.com">
+    <Child5>my value</Child5>
+ </Root>'
+
+--select @myDoc.query('/*:Root/*:Child') -- whole tag
+select @myDoc.value('(/*:Root/*:Child5)[1]', 'varchar(255)') -- only value
+
+
+
+
+--------------------------------------------------------------------------------------------
+
+
+
+
+
+IN_EV_PROD_MOVE
+
+select top 8 alog.RequestMessage
+, cast(alog.RequestMessage as XML).value('(/*:RequestDto/*:OperationCode)[1]', 'varchar(255)') as OperationCode 
+, case 
+	when cast(alog.RequestMessage as XML).value('(/*:RequestDto/*:OperationCode)[1]', 'varchar(255)') = 'SendMultiVouchersV4' then cast(cast(alog.RequestMessage as XML).value('(/*:RequestDto/*:Parameters)[1]', 'nvarchar(max)') as XML).value('(/*:SendMultiVouchersRequestDto/*:OrderNumber)[1]', 'varchar(255)')
+	when cast(alog.RequestMessage as XML).value('(/*:RequestDto/*:OperationCode)[1]', 'varchar(255)') = 'SendMultiVoucherv7' then cast(cast(alog.RequestMessage as XML).value('(/*:RequestDto/*:Parameters)[1]', 'nvarchar(max)') as XML).value('(/*:SendMultiVoucherV7RequestDto/*:OrderNumber)[1]', 'varchar(255)')
+end as OrderNumber 
+from APILog alog with(nolock)
+where alog.RequestMessage != '' AND alog.RequestMessage like '%RequestDto%'
+
+
+------------------------------------------------------------------------------------------------------------------
+
+declare @myDoc xml  
+set @myDoc = '<?xml version="1.0" encoding="utf-8"?>     <Root>  
+<ProductDescription ProductID="1" ProductName="Road Bike">  
+<Features>  
+  <Warranty>1 year parts and labor</Warranty>  
+  <Maintenance>3 year parts and labor extended maintenance is available</Maintenance>  
+</Features>  
+</ProductDescription>  
+</Root>'  
+SELECT @myDoc.query('/Root/ProductDescription/Features/Warranty') 
+
+
+declare @myDoc xml  
+set @myDoc = '<?xml version="1.0" encoding="utf-8"?>  <TransactionRequestIn xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">    <AccountNumber>buWTCP99wm6h6SSesTxmNw==</AccountNumber>    <ProgramCode>00001</ProgramCode>    <MerchantCode>000000000000078</MerchantCode>    <TerminalSSN>01330160000035061060920190804213447</TerminalSSN>    <TranTerminalDateTime>20190804213447</TranTerminalDateTime>    <ShopCode>0000004505</ShopCode>    <TerminalCode />    <TranType>101</TranType>    <TranAmount>1</TranAmount>    <Channel>POS</Channel>    <Checksum>78d9c4f9c741d20158ee2c9138a6a290</Checksum>    <Encoding>UTF8</Encoding>    <Version>01</Version>    <TerminalDateTime>0001-01-01T00:00:00</TerminalDateTime>  </TransactionRequestIn>'  
+SELECT @myDoc.query('/TransactionRequestIn/Channel/text()') 
+
+declare @myDoc XML;  
+SELECT  @myDoc = CAST(REPLACE(CAST([RequestMessage] AS VARCHAR(MAX)), 'encoding="utf-16"', 'encoding="utf-8"') AS XML) FROM dbo.APILog_POS WITH(nolock) WHERE Id = 16496520;
+SELECT @myDoc.query('/TransactionRequestIn/Channel/text()'); 
+
+
+
+SELECT CAST(REPLACE(CAST([RequestMessage] AS VARCHAR(MAX)), 'encoding="utf-16"', 'encoding="utf-8"') AS XML).query('/TransactionRequestIn/Channel/text()') FROM dbo.APILog_POS WITH(nolock) WHERE Id = 16496520;
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+SELECT DISTINCT SUBSTRING(RequestMessage,CHARINDEX('MasterVoucherGuid',RequestMessage,0)+18,36) from apilog with(nolock)
+where OperationCode = 'ConfirmChildProduct' AND Id >= 672868029 AND Id <= 673049415 AND ResponseCode = 'MA0033'
+
+select Id, ResponseCode, CAST(replace([RequestMessage], '<?xml version="1.0" encoding="utf-8"?>', '') AS XML).query('/ConfirmChildProductRequest/MasterVoucherGuid/text()') as MasterGUID from ApiLog with(nolock)
+where OperationCode = 'ConfirmChildProduct' AND Id >= 672868029 AND Id <= 673049415 AND ResponseCode != '0000'
+order by Id desc
+
+select cast(MasterGUID as varchar(100)) as MasterGUID into MasterGUID20210915 from temp20210915 group by cast(MasterGUID as varchar(100))
+
+
+
+
+

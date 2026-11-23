@@ -1,0 +1,6 @@
+INSERT EXEC
+https://blog.sqlauthority.com/2013/05/27/sql-server-how-to-insert-data-from-stored-procedure-to-table-2-different-methods/
+------------------------------------------------------------------------------------------------------------------
+
+
+

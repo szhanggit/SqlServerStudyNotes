@@ -1,0 +1,83 @@
+DECLARE @BusinessModel TABLE(Id int, FinanceType nvarchar(20))
+
+INSERT INTO @BusinessModel (Id, FinanceType)
+SELECT b.Id, 'Prepaid'
+FROM BusinessModel b
+WHERE b.Id in (1,2,3,8)
+	
+INSERT INTO @BusinessModel (Id, FinanceType)
+SELECT b.Id, 'Postpaid'
+FROM BusinessModel b
+WHERE b.Id in (4)
+	
+INSERT INTO @BusinessModel (Id, FinanceType)
+SELECT b.Id, 'WhiteLabel'
+FROM BusinessModel b
+WHERE b.Id in (5)
+
+SELECT
+	c.Name AS ClientName
+   ,bd.DisplayName AS BusinessModel
+   ,q.ProjectName
+   ,q.QuotationNumber
+   ,o.OrderNumber
+   ,o.OrderName
+   ,p.ProductName
+   ,p.ProductCode
+   ,obi.ClientOrderNumber
+   ,CASE
+		WHEN v.Status IN (4, 8, 32) THEN v.VoucherNumber
+		ELSE STUFF(v.VoucherNumber, LEN(v.VoucherNumber) - 5, 3, '***')
+	END AS VoucherNumber
+   ,td.DisplayName AS TranType
+   ,t.TranLocalDateTime
+   ,v.ActivatedOn
+   ,isnull(obi.Email, '') as Email
+   ,isnull(obi.Mobile, '') as Mobile
+   ,CONVERT(FLOAT, case p.ProductType WHEN 1 THEN ppb.FaceValue WHEN 2 THEN pvb.FaceValue ELSE 0 END) / 100  AS FaceValue
+   ,case bm.FinanceType WHEN 'Prepaid' THEN t.IV + t.Discount WHEN 'Postpaid' THEN t.RV + t.FNDiscount WHEN 'WhiteLabel' THEN 0 END as SoldPrice
+   ,ISNULL(sd.DisplayName, 'System Process Fee') AS FeeType
+   ,ISNULL(f.TranFee, 0) TranFee
+FROM [Transaction] t WITH (NOLOCK)
+JOIN [Order] o WITH (NOLOCK)
+	ON o.Id = t.OrderId
+JOIN ClientQuotation q WITH (NOLOCK)
+	ON q.Id = o.ClientQuotationId
+JOIN Client c WITH (NOLOCK)
+	ON c.Id = q.ClientId
+JOIN Product p WITH (NOLOCK)
+	ON p.Id = t.ProductId
+JOIN Program g WITH (NOLOCK)
+	ON t.ProgramCode = g.IdentityCode
+JOIN Voucher v WITH (NOLOCK)
+	ON v.VoucherNumber = t.AccountNumber
+		AND v.ProgramId = g.Id
+JOIN OrderBeneficiaryInfo obi WITH (NOLOCK)
+	ON obi.Id = v.BeneficiaryInfoId
+JOIN BusinessModel b WITH (NOLOCK)
+	ON b.Id = q.BusinessModelId
+JOIN Dictionary bd WITH (NOLOCK)
+	ON bd.Id = b.DisplayNameId
+JOIN @BusinessModel bm
+	ON b.Id = bm.Id and bm.FinanceType in (@FinanceType)
+JOIN Dictionary td WITH (NOLOCK)
+	ON td.Name = t.TranType
+		AND td.Category = 'TransactionType'
+JOIN ProductVersion pv with(NOLOCK)
+	ON pv.Id = obi.ProductVersionId
+LEFT JOIN ProductPricingProductBased ppb WITH (NOLOCK)
+	ON pv.ProductPricingProductBasedId = ppb.Id
+LEFT JOIN ProductPricingValueBased pvb WITH (NOLOCK)
+	ON pv.ProductPricingValueBasedId = pvb.Id
+LEFT JOIN TransactionFee f WITH (NOLOCK)
+	ON f.TransactionId = t.Id
+LEFT JOIN ServiceFee sf WITH (NOLOCK)
+	ON sf.Id = f.ServiceFeeId
+LEFT JOIN Dictionary sd WITH (NOLOCK)
+	ON sf.ServiceFeeNameId = sd.Id
+WHERE t.TranLocalDateTime BETWEEN @dateStart AND DATEADD(DAY, 1, @dateEnd)
+AND c.Name like '%' + @ClientName + '%'
+AND ((bm.FinanceType = 'Prepaid' AND t.TranType IN (401, 501, 404, 405))
+or (bm.FinanceType = 'Postpaid' AND (t.TranType IN (101, 103, 201, 203) OR (t.TranType IN (401, 501) AND f.Id is not NULL)))
+or (bm.FinanceType = 'WhiteLabel' AND t.TranType IN (401, 501, 101, 103, 201, 203)))
+AND t.ResponseCode = '0000'

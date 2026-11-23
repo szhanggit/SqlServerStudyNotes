@@ -1,0 +1,2 @@
+declare @currentDate INT = CAST(convert(varchar,getdate(),112) as int)
+declare @sessionId varchar(50) = CONVERT(varchar(50),NEWID())

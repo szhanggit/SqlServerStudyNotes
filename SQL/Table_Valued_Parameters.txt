@@ -1,0 +1,7 @@
+Use Table-Valued Parameters 
+Compared to bulk operations that have a greater startup cost than table-valued parameters, table-valued parameters perform well for inserting less than 1000 rows.
+https://docs.microsoft.com/en-us/sql/relational-databases/tables/use-table-valued-parameters-database-engine?view=sql-server-2017
+------------------------------------------------------------------------------------------------------------------
+
+
+

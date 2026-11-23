@@ -1,0 +1,12 @@
+https://www.sqlshack.com/sql-server-query-execution-plan-beginners-types-options/
+
+---------------------------------------------------------------
+
+https://stackoverflow.com/questions/7359702/how-do-i-obtain-a-query-execution-plan-in-sql-server
+
+
+
+
+
+
+

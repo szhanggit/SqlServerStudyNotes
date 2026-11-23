@@ -1,0 +1,55 @@
+declare @n int = 1000;
+declare @Counter int = 0;
+WHILE ( @Counter < 1000)
+BEGIN
+
+WAITFOR DELAY '00:00:01'
+
+----------------------------------------
+    BEGIN TRAN
+    BEGIN TRY
+------------------------------------------------    
+
+
+            insert into AccountTranCodeTemp20210802 (VoucherNumber, TranCode) 
+            select top(@n) AccountNumber, TranCode from [Transaction] with(nolock) where TranLocaldate < 20210803 order by TranUtcDateTimeL;
+
+ 
+
+            INSERT INTO [dbo].[TransactionHistory]
+                ([AccountNumber],[ProgramCode],[MerchantCode],[HostSSN],[TerminalSSN],[TranUtcDateTimeL],[TranUtcDateTime],[TranLocalDate],[TranLocalDateTime],[TranTerminalDateTime]
+                ,[ShopCode],[TerminalCode],[TranType],[Status],[TranAmount],[RefundedAmount],[ResponseCode],[IsCleared],[NodeNum],[CallerIP],[Channel],[Parameters],[TranCode],[TranCodeRef]
+                ,[TranGUID],[TranGUIDRef],[ModifyVersion],[BalanceAvailable],[BalanceFrozen],[Checksum],[SecurityKeyId],[Rsv1],[Rsv2],[Rsv3],[TranRealDateTime],[TranUtcDate],SettleDate
+                ,BusinessDay,ShiftCode,MultiAccountsTransactionId)
+            SELECT 
+                t.[AccountNumber],[ProgramCode],[MerchantCode],[HostSSN],[TerminalSSN],[TranUtcDateTimeL],[TranUtcDateTime],[TranLocalDate],[TranLocalDateTime],[TranTerminalDateTime],[ShopCode]
+                ,[TerminalCode],[TranType],[Status],[TranAmount],[RefundedAmount],[ResponseCode],[IsCleared],[NodeNum],[CallerIP],[Channel],[Parameters],t.[TranCode],[TranCodeRef],[TranGUID]
+                ,[TranGUIDRef],[ModifyVersion],[BalanceAvailable],[BalanceFrozen],[Checksum],[SecurityKeyId],[Rsv1],[Rsv2],[Rsv3],[TranRealDateTime],[TranUtcDate],SettleDate
+                ,BusinessDay,ShiftCode,MultiAccountsTransactionId
+            FROM [Transaction] t with(nolock) inner join AccountTranCodeTemp20210802 atct with(nolock) on t.AccountNumber = atct.VoucherNumber AND t.TranCode = atct.TranCode
+
+ 
+
+ 
+            delete t from [Transaction] t with(nolock) inner join AccountTranCodeTemp20210802 atct with(nolock) on t.AccountNumber = atct.VoucherNumber AND t.TranCode = atct.TranCode
+            
+            COMMIT TRANSACTION;
+
+ 
+
+            TRUNCATE TABLE AccountTranCodeTemp20210802;
+------------------------------------------------
+
+ 
+
+    END TRY
+    BEGIN CATCH
+        SELECT ERROR_MESSAGE();
+        SELECT ERROR_LINE();
+        ROLLBACK TRANSACTION;
+    END CATCH;
+
+ 
+
+    set @Counter = @Counter + 1;
+END

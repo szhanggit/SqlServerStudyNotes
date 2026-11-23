@@ -1,0 +1,111 @@
+
+https://stackoverflow.com/questions/24828346/sql-server-unpivot-multiple-columns
+SELECT 
+MerchantCode, 
+ProductCode, 
+'2021-01-01 00:00:00' as [ValidFrom],
+'2025-12-31 23:59:59' as [ValidTo],
+[column], 
+value into MCP20201202
+FROM (SELECT MerchantCode, ProductCode, Redemption, ReverseRedemption,
+PreAuthorization,
+ReversePreAuthorization,
+PreAuthorizationComplete,
+ReversePreAuthorizationComplete,
+AccountVerification,
+BalanceEnquiry,
+PosTest,
+Issue,
+ReverseIssue,
+Activate,
+ReverseActivate,
+Expire,
+ReverseExpire,
+PreAuthorizationExpire,
+Reload,
+ReverseReload,
+TrashMoney,
+TrashNoMoney,
+FinanceExpire,
+ReverseFinanceExpire 
+FROM MerchantContractPrice20201202 with(nolock)) src
+UNPIVOT (value FOR [column] IN (Redemption, ReverseRedemption, 
+PreAuthorization,
+ReversePreAuthorization,
+PreAuthorizationComplete,
+ReversePreAuthorizationComplete,
+AccountVerification,
+BalanceEnquiry,
+PosTest,
+Issue,
+ReverseIssue,
+Activate,
+ReverseActivate,
+Expire,
+ReverseExpire,
+PreAuthorizationExpire,
+Reload,
+ReverseReload,
+TrashMoney,
+TrashNoMoney,
+FinanceExpire,
+ReverseFinanceExpire)) pvt
+
+
+
+-----------------------------------------------------------
+
+https://www.techonthenet.com/sql_server/pivot.php	
+
+-----------------------------------------------------------
+
+Pivot Table
+https://www.sqlservertutorial.net/sql-server-basics/sql-server-pivot/	(It is a very good tutorial site!!!)
+https://docs.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql?view=sql-server-ver15
+Find out Pivot, Cube, Apply
+https://www.sqlshack.com/tracing-and-tuning-queries-using-sql-server-indexes/
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+https://www.techonthenet.com/sql_server/pivot.php
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

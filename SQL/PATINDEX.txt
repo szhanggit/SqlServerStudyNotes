@@ -1,0 +1,48 @@
+
+
+declare @WalletImage1 nvarchar(500);
+declare @WalletImage2 nvarchar(500);
+
+select @WalletImage1= ml.ExternalURL
+from Voucher v with(nolock)
+Join Product p with(nolock) on p.Id = v.ProductId
+left join ProductExternalPropertySet peps1 with(nolock) on peps1.ProductExternalPropertyId = p.ExternalPropertyId
+left join MediaLibrary ml with(nolock) on PATINDEX('%[^0-9]%', peps1.PropertyValue)=0 and ml.Id = peps1.PropertyValue
+where peps1.PropertyName='WalletImage1' and v.id= @VoucherId 
+
+select @WalletImage2= ml.ExternalURL
+from Voucher v with(nolock)
+Join Product p with(nolock) on p.Id = v.ProductId
+left join ProductExternalPropertySet peps1 with(nolock) on peps1.ProductExternalPropertyId = p.ExternalPropertyId
+left join MediaLibrary ml with(nolock) on PATINDEX('%[^0-9]%', peps1.PropertyValue)=0 and ml.Id = peps1.PropertyValue
+where peps1.PropertyName='WalletImage2' and v.id= @VoucherId 
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+https://www.w3schools.com/sql/func_sqlserver_patindex.asp
+PATINDEX(%pattern%, string)
+
+select top 1 ml.ExternalURL 
+from Voucher v with(nolock)
+Join Product p with(nolock) on p.Id = v.ProductId
+Join ProductEmailTemplateVersionSet petvs with(nolock) on petvs.ProductEmailTemplateVersionId = p.ProductEmailTemplateVersionId
+Join ProductEmailContentTagValueSet pets with(nolock) on pets.ProductEmailTemplateTagValueId = petvs.EmailTemplateTagValueId
+join ContentTag ct with(nolock) on ct.Id = pets.ContentTagId and ct.TagName = '{BANNER_IMAGE}'
+join MediaLibrary ml with(nolock) on PATINDEX('%[^0-9]%', pets.Value)=0 and ml.Id = pets.Value
+where v.Id = @VoucherId
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+select top 8 alog.RequestMessage,
+PATINDEX('%&lt;RecipientEmail&gt;%', alog.RequestMessage),
+PATINDEX('%&lt;/RecipientEmail&gt;%', alog.RequestMessage), 
+(PATINDEX('%&lt;/RecipientEmail&gt;%', alog.RequestMessage) - PATINDEX('%&lt;RecipientEmail&gt;%', alog.RequestMessage))
+, SUBSTRING(
+	alog.RequestMessage, 
+	(PATINDEX('%&lt;RecipientEmail&gt;%', alog.RequestMessage) + 22), 
+	(PATINDEX('%&lt;/RecipientEmail&gt;%', alog.RequestMessage) - PATINDEX('%&lt;RecipientEmail&gt;%', alog.RequestMessage) - 22))
+from APILog alog with(nolock)
+where alog.RequestMessage != ''
+AND PATINDEX('%&lt;RecipientEmail&gt;%', alog.RequestMessage) != 0

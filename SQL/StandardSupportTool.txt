@@ -1,0 +1,51 @@
+
+--Add non clusted index to TempVoucherBuffer
+--One on Voucher the other on SessionId
+
+Declare @SessionId varchar(100)
+declare @i int = 0;
+
+WHILE (@i<10)              
+ BEGIN
+
+
+	BEGIN TRAN
+	BEGIN TRY
+
+set @SessionId = NEWID()
+update top(1000) TempVoucherBuffer
+set SessionId = @SessionId
+where SessionId is null
+
+update a
+set a.[Status] = 16, 
+a.[checkSum] = SUBSTRING(sys.fn_varbintohexstr(HASHBYTES('MD5', CONVERT(VARCHAR(500), CONVERT(VARCHAR, ProgramId)
+                + '=' + a.AccountNumber
+                + '=' + CONVERT(VARCHAR(10), ValueType)
+                + '=' + CONVERT(VARCHAR(20), BalanceAvailable)
+                + '=' + CONVERT(VARCHAR(20), BalanceFrozen)
+                + '=16' +
+                + '=' + '3D3D06DA96BA4CEA99F85ABD447B7F3F'))), 3, 32) 
+from TempVoucherBuffer t with(nolock)
+inner join Account a with(nolock) on t.VoucherNumber = a.AccountNumber AND a.ProgramId = 2
+where t.SessionId = @SessionId AND a.[Status] = 2
+
+COMMIT TRANSACTION;
+WAITFOR DELAY '00:00:00.500'
+set @i = @i + 1;
+
+
+
+	END TRY
+	BEGIN CATCH
+		print ERROR_MESSAGE();
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION;
+	END CATCH;
+
+		
+
+
+
+ END
+

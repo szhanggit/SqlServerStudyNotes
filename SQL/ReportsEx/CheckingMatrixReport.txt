@@ -1,0 +1,19 @@
+SELECT
+	t.*
+FROM	[dbo].[Transaction] AS t
+join [Order] AS o on o.id = t.OrderId
+join ClientQuotation AS q on q.id = o.ClientQuotationId
+join Client AS c on c.id = q.ClientId
+join Product AS p on t.ProductId = p.Id
+join BusinessModel AS b on b.Id = q.BusinessModelId
+join Dictionary AS bd on bd.Id = b.DisplayNameId
+join Dictionary td on td.Id = q.BusinessTypeId
+join Client ec on ec.Id = q.EndClientId
+left join Merchant m on p.IssueMerchant = m.Id
+WHERE t.TranLocalDateTime BETWEEN '2019-09-01 00:00:00' AND DATEADD(SECOND, -1, DATEADD(DAY, 1, '2019-09-06'))
+AND t.ResponseCode = '0000' AND p.ProductCode = 'KRIVDDMMYY02'
+
+SELECT FaceValue, * FROM dbo.Product WITH(NOLOCK) WHERE ProductCode = 'KRIVDDMMYY02'
+SELECT ProductPricingValueBasedId, ProductPricingProductBasedId, * FROM dbo.ProductVersion WITH(NOLOCK) WHERE ProductId = 198 AND IsCurrentVersion = 1
+SELECT * FROM dbo.ProductPricingValueBased WITH (NOLOCK) WHERE Id = 58
+SELECT * FROM dbo.ProductPricingProductBased WITH(NOLOCK) WHERE Id = 476

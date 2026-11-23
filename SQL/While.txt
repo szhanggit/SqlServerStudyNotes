@@ -1,0 +1,149 @@
+WHILE @cnt < cnt_total
+BEGIN
+   {...statements...}
+   SET @cnt = @cnt + 1;
+END;
+
+
+
+https://www.techonthenet.com/sql_server/loops/for_loop.php
+
+
+
+
+
+
+WHILE (1=1)              
+ BEGIN
+
+
+update top(2) Voucher
+set [VSessionId] = '1'
+where ProductId = 2102 AND [Status] = -1 AND [VSessionId] is null
+
+delete from Voucher where ProductId = 2102 AND [Status] = -1 AND [VSessionId] = '1'
+
+
+  IF (@@ROWCOUNT=0) BREAK; 
+ END
+
+------------------------------------------------------------------------------------------------------------------
+
+WHILE (1=1)              
+ BEGIN
+	update top(3000) le
+	set le.InitBalance = a.BalanceInitialized
+	from AccountLE le with(nolock)
+	inner join Account a with(nolock) on a.ProgramId = le.ProgramId AND a.AccountNumber = le.AccountNumber
+	where le.InitBalance is null
+  IF (@@ROWCOUNT=0) BREAK; 
+ END
+
+
+------------------------------------------------------------------------------------------------------------------
+Use while to replace For Loop
+
+CREATE PROCEDURE spArchivePublishedBuffer
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @orderId INT = (SELECT TOP (1) Id FROM dbo.[Order] WITH(NOLOCK) WHERE [Status] = 64  AND Mode <> 2 AND PublishDatetime > DATEADD(DAY, -3, GETDATE()) ORDER BY Id);
+
+	WHILE @orderId IS NOT NULL
+	BEGIN
+		IF EXISTS(SELECT 1 FROM dbo.VoucherOrderBuffer WITH(NOLOCK) WHERE OrderId = @orderId)
+		BEGIN
+			DELETE dbo.VoucherBuffer WHERE OrderId = @orderId
+
+			DELETE dbo.VoucherOrderBuffer 
+				OUTPUT Deleted.OrderId,Deleted.OrderLineId,Deleted.OrderBeneficiaryInfoId,Deleted.OrderSN,Deleted.OrderLineSN,
+					Deleted.OrderBeneficiaryInfoSN,Deleted.VoucherNumber,Deleted.AdoraTaskId,Deleted.CreationTime,Deleted.SessionId
+				INTO dbo.VoucherOrderBufferHistory(OrderId,OrderLineId,OrderBeneficiaryInfoId,OrderSN,OrderLineSN,OrderBeneficiaryInfoSN,VoucherNumber,AdoraTaskId,CreationTime,SessionId)
+				WHERE OrderId = @orderId
+			
+			WAITFOR DELAY '00:00:01'
+		END
+
+		SET @orderId =  (SELECT TOP (1) Id FROM dbo.[Order] WITH(NOLOCK) WHERE [Status] = 64  AND Mode <> 2 AND Id > @orderId ORDER BY Id);
+	END 
+END
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+DECLARE @Loop INT = 1;
+DECLARE @Counter INT 
+SET @Counter=3000
+WHILE ( @Counter >= 3000)
+BEGIN
+	update top(3000) [Transaction]
+	set TranLocalDate = (year(TranLocalDateTime) * 10000 + month(TranLocalDateTime) * 100 + day(TranLocalDateTime))
+	where TranType in (116,117)
+	AND TranLocalDate != (year(TranLocalDateTime) * 10000 + month(TranLocalDateTime) * 100 + day(TranLocalDateTime))
+
+	select @Counter = @@ROWCOUNT;
+	set @Loop = @Loop + 1;
+	PRINT 'The loop value is = ' + CONVERT(VARCHAR,@Loop)
+	-- wait for 1 second
+	WAITFOR DELAY '00:00:01'
+END
+
+spAssignTasks is a good example.
+
+
+
+------------------------------------------------------------------------------------------------------------------
+For loop
+
+https://stackoverflow.com/questions/20662356/sql-server-loop-how-do-i-loop-through-a-set-of-records
+------------------------------------------------------------------------------------------------------------------
+
+
+https://www.techonthenet.com/sql_server/loops/for_loop.php
+DECLARE @cnt INT = 0;
+
+WHILE @cnt < cnt_total
+BEGIN
+   {...statements...}
+   SET @cnt = @cnt + 1;
+END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

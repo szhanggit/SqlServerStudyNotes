@@ -1,0 +1,13 @@
+except
+1. The number and order of columns must be the same in both queries.
+2. The data types of the corresponding columns must be the same or compatible.
+
+https://www.sqlservertutorial.net/sql-server-basics/sql-server-except/
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+

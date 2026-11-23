@@ -1,0 +1,17 @@
+About Database Engine Tuning Advisor
+https://docs.microsoft.com/en-us/sql/tools/dta/lesson-2-using-database-engine-tuning-advisor?view=sql-server-ver15 
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+

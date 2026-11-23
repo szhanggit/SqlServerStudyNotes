@@ -1,0 +1,186 @@
+BEGIN TRY
+	BEGIN TRAN
+	DELETE FROM dbo.VoucherStock_I_73 WHERE id = 1
+	ROLLBACK
+END TRY
+BEGIN CATCH
+	PRINT ERROR_MESSAGE();
+	ROLLBACK;
+END CATCH
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+Nested Try Catch   throw  rollback   
+https://stackoverflow.com/questions/44380387/nested-try-catch-how-do-i-get-to-the-outer-catch-block
+https://www.sqlshack.com/how-to-implement-error-handling-in-sql-server/
+
+USE AdventureWorks2014
+GO
+-- Basic example of TRY...CATCH
+ 
+BEGIN TRY
+-- Generate a divide-by-zero error  
+	SELECT
+		1 / 0 AS Error;
+END TRY
+BEGIN CATCH
+	SELECT
+		ERROR_NUMBER() AS ErrorNumber,
+		ERROR_STATE() AS ErrorState,
+		ERROR_SEVERITY() AS ErrorSeverity,
+		ERROR_PROCEDURE() AS ErrorProcedure,
+		ERROR_LINE() AS ErrorLine,
+		ERROR_MESSAGE() AS ErrorMessage;
+END CATCH;
+GO
+------------------------------------------------------------------------------------------------------------------
+
+
+
+Pass error message from sp to C#
+ALTER PROCEDURE [dbo].[spInsertTransaction] (
+	@ErrorMessage NVARCHAR(4000) OUTPUT
+	,@ErrorLine INT OUTPUT
+	)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	BEGIN TRAN
+
+	BEGIN TRY
+
+
+	END TRY
+
+	BEGIN CATCH
+		SELECT @ErrorMessage = ERROR_MESSAGE()
+
+		SELECT @ErrorLine = ERROR_LINE()
+
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION;
+	END CATCH;
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRANSACTION;
+END
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+MO.spUpdateVoucherConsumerInfo	(Roll Back)
+ALTER PROCEDURE [dbo].[spUpdateVoucherConsumerInfo]
+	@IsSuccess                BIT		OUTPUT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON; 
+	
+    BEGIN TRANSACTION;
+	
+	SET @IsSuccess = 0;
+
+	BEGIN TRY
+
+		UPDATE Voucher
+		SET ActivatedOn = VSB.ActivatedOn
+			,BalanceAvailable = VSB.BalanceAvailable
+			,BalanceFrozen = VSB.BalanceFrozen
+			,ExpiryDate = IIF(VSB.Status = 256 OR VSB.Status = 8, V.ExpiryDate,  VSB.ExpiryDate)
+			,PublishedOn = VSB.PublishedOn
+			,[Status] = VSB.[Status]
+			,ConsumeTime = VSB.ConsumeTime
+			,ConsumeMerchantCode = VSB.ConsumeMerchantCode
+			,ConsumeShopCode = VSB.ConsumeShopCode
+			,ConsumeTerminalSSN = VSB.ConsumeTerminalSSN
+			,LastTranOn = VSB.LastTranOn
+		FROM VoucherSyncBuffer AS VSB
+			INNER JOIN Voucher AS V ON VSB.VoucherNumber = V.VoucherNumber
+			INNER JOIN Program AS P ON VSB.ProgramCode = P.IdentityCode AND V.ProgramId = P.Id
+				
+	END TRY
+
+	BEGIN CATCH
+
+		IF @@TRANCOUNT > 0
+				ROLLBACK TRANSACTION;
+		RETURN
+	END CATCH	
+
+	IF @@TRANCOUNT > 0
+		BEGIN
+			COMMIT TRANSACTION;
+			SET @IsSuccess = 1;
+		END
+END
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+            return string.Format(@"IF(EXISTS(SELECT 1 FROM VoucherImpTemp WHERE SessionId = @SessionId GROUP BY VoucherNumber,ProgramId HAVING COUNT(VoucherNumber) > 1))
+                                BEGIN
+	                                SELECT VoucherNumber FROM VoucherImpTemp WHERE SessionId = @SessionId GROUP BY VoucherNumber,SessionId,ProgramId HAVING COUNT(VoucherNumber) > 1
+                                    DELETE FROM {0} WHERE SessionId =@SessionId ;
+	                                DELETE FROM VoucherImpTemp WHERE SessionId =@SessionId ;
+	                                DELETE FROM EXT_TW_SEBarcode_Temp WHERE SessionId =@SessionId ;
+	                                RETURN;
+                                END
+
+                                IF((select count(1) from {0} where SessionId = @SessionId)<>(select count(1) from VoucherImpTemp where SessionId = @SessionId))
+                                BEGIN
+	                                select vit.VoucherNumber from (select VoucherNumber from VoucherImpTemp where SessionId = @sessionId)vit left join 
+		                                (select VoucherNumber from {0} where SessionId = @sessionId)vs on vit.VoucherNumber = vs.VoucherNumber
+		                                where vs.VoucherNumber is null
+                                    DELETE FROM {0} WHERE SessionId =@SessionId ;
+	                                DELETE FROM VoucherImpTemp WHERE SessionId =@SessionId ;		
+	                                DELETE FROM EXT_TW_SEBarcode_Temp WHERE SessionId =@SessionId ;
+	                                RETURN;
+                                END
+
+                                BEGIN TRY	
+                                BEGIN TRANSACTION
+                                    
+	                                INSERT INTO EXT_TW_SEBarcode(Id, Barcode1, Barcode2, CreatedOn, TrustStartDate, TrustEndDate)
+		                                SELECT {1} + V.Id,SEBT.Barcode1,SEBT.Barcode2,GETDATE() AS CreatedOn, TrustStartDate, TrustEndDate
+		                                FROM EXT_TW_SEBarcode_Temp AS SEBT JOIN {0} AS V 
+		                                ON SEBT.VoucherNumber = V.VoucherNumber AND SEBT.ProgramId = V.ProgramId
+		                                WHERE V.SessionId =@SessionId;
+			
+	                                DELETE FROM VoucherImpTemp WHERE SessionId =@SessionId ;
+	                                DELETE FROM EXT_TW_SEBarcode_Temp WHERE SessionId =@SessionId ;
+
+	                                COMMIT TRANSACTION;
+                                END TRY
+                                BEGIN CATCH
+	                                ROLLBACK TRANSACTION;
+                                END CATCH", tableName, ConvertStringToLong(prefix));
+
+
+
+
+
+
+
+
+
+

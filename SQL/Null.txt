@@ -1,0 +1,1 @@
+https://dba.stackexchange.com/questions/168276/what-are-different-ways-to-replace-isnull-in-a-where-clause-that-uses-only-lit

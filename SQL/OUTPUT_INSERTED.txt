@@ -1,0 +1,68 @@
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department_SRC]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Department_SRC](
+	[DepartmentID] INT IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Name] varchar(50)  NOT NULL,
+	[GroupName] varchar(50) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL
+ CONSTRAINT [PK_Department_SRC] PRIMARY KEY CLUSTERED 
+(
+	[DepartmentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D1','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D2','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D3','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D4','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D5','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D6','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D7','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D8','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D9','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D10','Research and Development',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D11','Arts',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D12','Arts',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D13','Arts',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D14','Arts',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D15','Arts',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D16','Arts',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D17','Arts',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D18','Arts',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D19','Arts',getdate());
+Insert into [dbo].[Department_SRC]([Name],[GroupName],[ModifiedDate]) Values('D20','Arts',getdate());
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department_DEC]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Department_DEC](
+	[DepartmentID] INT IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Name] varchar(50)  NOT NULL,
+	[GroupName] varchar(50) NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL
+ CONSTRAINT [PK_Department_DEC] PRIMARY KEY CLUSTERED 
+(
+	[DepartmentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+Declare @inserted table (DepartmentID int, [Name] varchar(50), [GroupName] varchar(50), [ModifiedDate] [datetime]);
+insert into Department_DEC ([Name], GroupName, ModifiedDate) 
+OUTPUT INSERTED.[DepartmentID], INSERTED.[Name], INSERTED.[GroupName], INSERTED.ModifiedDate
+INTO @inserted
+select [Name], GroupName, ModifiedDate from Department_SRC;
+
+select * from @inserted;
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+Inserted.[Name]
+https://www.sqlservercentral.com/articles/the-output-clause-for-insert-and-delete-statements

@@ -1,0 +1,1 @@
+isnull(obi.Email, '') as Email

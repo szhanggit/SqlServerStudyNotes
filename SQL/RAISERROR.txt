@@ -1,0 +1,11 @@
+https://www.mssqltips.com/sqlservertip/1660/using-the-nowait-option-with-the-sql-server-raiserror-statement/
+DECLARE @time char(8)
+PRINT '1 PRINT before anything else      ' + convert (varchar(30), getdate(), 8)
+SET @time= convert (varchar(30), getdate(), 8)
+RAISERROR ('2 RAISERROR before WITHOUT NOWAIT %s', 0, 1, @time) 
+WAITFOR DELAY '00:00:05'
+PRINT '3 PRINT after the first delay     ' + convert (varchar(30), getdate(), 8)
+SET @time= convert (varchar(30), getdate(), 8)
+RAISERROR ('4 RAISERROR with NOWAIT           %s', 0, 1, @time) WITH NOWAIT
+WAITFOR DELAY '00:00:10'
+PRINT '5 PRINT after the second delay    ' + convert (varchar(30), getdate(), 8)

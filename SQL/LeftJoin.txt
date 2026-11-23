@@ -1,0 +1,10 @@
+Left Join and Left Outer Join are one and the same. The former is the shorthand for the latter. 
+The same can be said about the Right Join and Right Outer Join relationship. The demonstration will illustrate the equality.
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+

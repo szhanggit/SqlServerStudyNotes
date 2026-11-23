@@ -1,0 +1,2 @@
+sql server move database files to another drive
+https://www.mssqltips.com/sqlservertip/6689/sql-server-move-database-files/

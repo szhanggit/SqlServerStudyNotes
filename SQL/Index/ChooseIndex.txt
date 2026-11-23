@@ -1,0 +1,38 @@
+SELECT  t.ProgramCode,COUNT(1) as c	
+FROM    dbo.[Transaction] t WITH (INDEX=[IX_Transaction_TranUtcDateTimeL],NOLOCK)
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+SELECT * FROM dbo.OrderBeneficiaryInfo AS OBI WITH(NOLOCK)
+INNER JOIN dbo.ClientQuotationProductSoldPrice CQPSP WITH (NOLOCK, INDEX = [IDX_ClientQuotationProductSoldPrice_Validity]) ON  CQPSP.[ValidityFrom] <= OBI.[ActiveDate]
+                                                                                                                                                        AND CQPSP.[ValidityEnd] >= OBI.[ActiveDate]
+                                                                                                                                                        AND CQPSP.STATUS = 2
+WHERE CQPSP.ClientQuotationProductId = 98277  
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Choose Index
+https://www.red-gate.com/simple-talk/sql/performance/index-selection-and-the-query-optimizer/
+https://blog.sqlauthority.com/2009/02/07/sql-server-introduction-to-force-index-query-hints-index-hint/
+https://blog.sqlauthority.com/2009/02/08/sql-server-introduction-to-force-index-query-hints-index-hint-part2/
+
+USE AdventureWorks
+GO
+SELECT c.ContactID
+FROM Person.Contact c
+INNER JOIN Person.Contact pc
+ON c.ContactID = pc.ContactID
+OPTION (TABLE HINT(c, INDEX (AK_Contact_rowguid)),
+TABLE HINT(pc, INDEX (PK_Contact_ContactID)))
+GO
+
+
+
+
+

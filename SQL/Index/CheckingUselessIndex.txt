@@ -1,0 +1,8 @@
+Checking useless index
+select i.name, ddius.user_seeks, ddius.user_scans,
+ddius.user_lookups, ddius.user_updates
+from sys.dm_db_index_usage_stats as ddius
+join sys.indexes as i on ddius.index_id = i.index_id AND ddius.object_id = i.object_id
+order by ddius.user_seeks
+
+------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,71 @@
+
+select top 1
+case 
+	WHEN PATINDEX('%&lt;OrderNumber&gt;%', alog.RequestMessage) != 0 THEN SUBSTRING(
+	alog.RequestMessage, 
+	PATINDEX('%&lt;OrderNumber&gt;%', alog.RequestMessage) + 19, 
+	(PATINDEX('%&lt;/OrderNumber&gt;%', alog.RequestMessage) - PATINDEX('%&lt;OrderNumber&gt;%', alog.RequestMessage) - 19)
+)
+	else ''
+END as [Column A -- Order Number],
+case 
+	WHEN PATINDEX('%&lt;ProductCode&gt;%', alog.RequestMessage) != 0 THEN SUBSTRING(
+	alog.RequestMessage, 
+	PATINDEX('%&lt;ProductCode&gt;%', alog.RequestMessage) + 19, 
+	(PATINDEX('%&lt;/ProductCode&gt;%', alog.RequestMessage) - PATINDEX('%&lt;ProductCode&gt;%', alog.RequestMessage) -19)
+)
+	else ''
+END as [Column B -- Product Code],
+case
+	WHEN PATINDEX('%&lt;SoldPrice&gt;%', alog.RequestMessage) != 0 THEN SUBSTRING(
+	alog.RequestMessage, 
+	PATINDEX('%&lt;SoldPrice&gt;%', alog.RequestMessage) + 17, 
+	(PATINDEX('%&lt;/SoldPrice&gt;%', alog.RequestMessage) - PATINDEX('%&lt;SoldPrice&gt;%', alog.RequestMessage) -17)
+)
+	else ''
+END as [Column C -- SoldPrice],
+c.[Name] as [Column D -- Client Name],
+c.Id as [Column E -- Client Id],
+alog.RequestId as [Column F -- Request GUID],
+'' as [Column G -- Shop Code],
+alog.CreatedOn as [Column H -- API Request DateTime],
+alog.RequestMessage as [Column I -- API Request],
+alog.ResponsedOn as [Column J -- API Response DateTime],
+alog.ResponseMessage as [Column K -- API Response],
+Case 
+	WHEN PATINDEX('%&lt;RecipientEmail&gt;%', alog.RequestMessage) != 0 THEN SUBSTRING(
+	alog.RequestMessage, 
+	(PATINDEX('%&lt;RecipientEmail&gt;%', alog.RequestMessage) + 22), 
+	(PATINDEX('%&lt;/RecipientEmail&gt;%', alog.RequestMessage) - PATINDEX('%&lt;RecipientEmail&gt;%', alog.RequestMessage) - 22))
+	ELSE ''
+END as [Column L -- Email],
+case 
+	WHEN PATINDEX('%&lt;RecipientSms&gt;%', alog.RequestMessage) != 0 THEN SUBSTRING(
+	alog.RequestMessage, 
+	(PATINDEX('%&lt;RecipientSms&gt;%', alog.RequestMessage) + 20), 
+	(PATINDEX('%&lt;/RecipientSms&gt;%', alog.RequestMessage) - PATINDEX('%&lt;RecipientSms&gt;%', alog.RequestMessage) - 20))
+	ELSE ''
+END as [Column M -- Mobile Number],
+t.TranType as [Column N -- Transaction Type],
+alog.ResponseCode as [Column O -- API Response Status]
+from APILog alog with(nolock)
+inner join Client c with(nolock) on alog.ConsumerCode = c.IdentityCode
+inner join Product pd with(nolock) on pd.ProductCode = (case 
+	WHEN PATINDEX('%&lt;ProductCode&gt;%', alog.RequestMessage) != 0 THEN SUBSTRING(
+	alog.RequestMessage, 
+	PATINDEX('%&lt;ProductCode&gt;%', alog.RequestMessage) + 19, 
+	(PATINDEX('%&lt;/ProductCode&gt;%', alog.RequestMessage) - PATINDEX('%&lt;ProductCode&gt;%', alog.RequestMessage) -19)
+)
+	else ''
+END)
+inner join Program pg with(nolock) on pd.ProgramId = pg.Id
+inner join [Transaction] t with(nolock) on t.AccountNumber = case 
+	WHEN PATINDEX('%&lt;VoucherNo&gt;%', alog.ResponseMessage) != 0 THEN SUBSTRING(
+	alog.ResponseMessage, 
+	PATINDEX('%&lt;VoucherNo&gt;%', alog.ResponseMessage) + 17, 
+	(PATINDEX('%&lt;/VoucherNo&gt;%', alog.ResponseMessage) - PATINDEX('%&lt;VoucherNo&gt;%', alog.ResponseMessage) - 17)
+)
+	else ''
+END AND t.ProgramCode = pg.IdentityCode
+where alog.RequestMessage != ''
+

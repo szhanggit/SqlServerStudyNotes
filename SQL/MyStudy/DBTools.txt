@@ -1,0 +1,93 @@
+SQL Server Index Maintenance
+https://www.mssqltips.com/sqlservertip/6274/types-of-sql-server-indexes/
+
+SELECT t.name AS TableName,i.name AS IndexName,
+       ROUND(avg_fragmentation_in_percent,2) AS avg_fragmentation_in_percent
+FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, 'SAMPLED') ips
+INNER JOIN sys.tables t on t.[object_id] = ips.[object_id]
+INNER JOIN sys.indexes i ON (ips.object_id = i.object_id) AND (ips.index_id = i.index_id)
+ORDER BY avg_fragmentation_in_percent DESC;
+
+
+Guidelines from Microsoft suggest that if the level of fragmentation is < 10% then you should do nothing, 10% to 30% you should REORG and > 30% you should REBUILD.  
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Check unused indexes
+https://www.red-gate.com/simple-talk/sql/performance/index-selection-and-the-query-optimizer/
+
+SELECT DB_NAME(database_id) as database_name, 
+OBJECT_NAME(s.object_id) as object_name, i.name, s.* 
+FROM sys.dm_db_index_usage_stats s join sys.indexes i
+ON s.object_id = i.object_id AND s.index_id = i.index_id  
+and s.object_id = object_id('dbo.SalesOrderDetail')
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+The Database Engine Tuning Advisor
+https://www.red-gate.com/simple-talk/sql/performance/index-selection-and-the-query-optimizer/
+
+
+Use [Adventureworks2016]; -- may need to modify database name to match database
+GO
+SELECT DISTINCT pp.LastName, pp.FirstName 
+FROM Person.Person pp JOIN HumanResources.Employee e
+ON e.BusinessEntityID = pp.BusinessEntityID WHERE pp.BusinessEntityID IN 
+(SELECT SalesPersonID 
+FROM Sales.SalesOrderHeader
+WHERE SalesOrderID IN 
+(SELECT SalesOrderID 
+FROM Sales.SalesOrderDetail
+WHERE ProductID IN 
+(SELECT ProductID 
+FROM Production.Product p 
+WHERE ProductNumber = 'BK-M68B-42')));
+GO
+
+
+SELECT * FROM msdb..DTA_reports_query
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
