@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[failed_assign_voucher_batch] (
+    [id]                  INT              IDENTITY (1, 1) NOT NULL,
+    [order_id]            INT              NOT NULL,
+    [order_line_id]       INT              NOT NULL,
+    [session_id]          UNIQUEIDENTIFIER NOT NULL,
+    [expiry_date]         DATETIME         NULL,
+    [voucher_id]          BIGINT           NOT NULL,
+    [mobile]              NVARCHAR (50)    NULL,
+    [email]               NVARCHAR (100)   NULL,
+    [active_date]         DATETIME         NULL,
+    [expiry_scheme_id]    INT              NOT NULL,
+    [ed_order_number]     NVARCHAR (100)   NULL,
+    [memo]                NVARCHAR (2000)  NULL,
+    [name]                NVARCHAR (100)   NULL,
+    [address]             NVARCHAR (200)   NULL,
+    [post_code]           NVARCHAR (20)    NULL,
+    [language_id]         INT              NULL,
+    [face_value]          INT              NULL,
+    [face_value_with_tax] INT              NULL,
+    [sold_price]          NUMERIC (15, 4)  NULL,
+    [sold_price_with_tax] NUMERIC (15, 4)  NULL,
+    [is_email_delivered]  BIT              NULL,
+    [is_sms_delivered]    BIT              NULL,
+    [created_datetime]    DATETIME         NULL,
+    [row_version]         ROWVERSION       NOT NULL,
+    CONSTRAINT [PK_failed_assign_voucher_batch] PRIMARY KEY CLUSTERED ([id] ASC)
+);
+

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>txc_staging_order_tw</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{1af78fa9-ae79-4203-947c-688a7de1eb91}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>txc_staging_order_tw</RootNamespace>
+    <AssemblyName>txc_staging_order_tw</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Sequences\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\tb_oqsq_order_quotation_served_quantity.sql" />
+    <Build Include="dbo\Tables\tb_olta_order_line_trust_account.sql" />
+    <Build Include="dbo\Tables\tb_oltah_order_line_trust_account_history.sql" />
+    <Build Include="dbo\Tables\failed_assign_voucher_batch.sql" />
+    <Build Include="dbo\Tables\tb_odsh_order_distribution_status_history.sql" />
+    <Build Include="dbo\Tables\tb_om_order_master.sql" />
+    <Build Include="dbo\Tables\tb_ol_order_line_template.sql" />
+    <Build Include="dbo\Tables\tb_ol_order_line_template_tag_value.sql" />
+    <Build Include="dbo\Tables\tb_ol_order_line.sql" />
+    <Build Include="dbo\Tables\tb_old_order_line_detail.sql" />
+    <Build Include="dbo\Tables\tb_oats_order_apply_template_status.sql" />
+    <Build Include="dbo\Tables\tb_oom_order_operation_master.sql" />
+    <Build Include="dbo\Tables\tb_oah_order_action_history.sql" />
+    <Build Include="dbo\Tables\tb_pod_published_order_denormalized.sql" />
+    <Build Include="dbo\Tables\tb_ol_order_line_template_version.sql" />
+    <Build Include="dbo\Tables\tb_ol_order_line_template_set.sql" />
+    <Build Include="dbo\Tables\tb_ol_order_line_template_tag_value_set.sql" />
+    <Build Include="dbo\Tables\tb_osb_order_sku_batch.sql" />
+    <Build Include="dbo\Tables\flyway_schema_history.sql" />
+    <Build Include="dbo\Tables\tb_oei_order_extend_info.sql" />
+    <Build Include="Security\esg-datastudio-adf-d.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Sequences\Seq_OrderNumber.sql" />
+  </ItemGroup>
+</Project>
