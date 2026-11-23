@@ -1,0 +1,26 @@
+﻿CREATE TABLE [order].[tb_ol_order_line] (
+    [id]                              INT           IDENTITY (1, 1) NOT NULL,
+    [order_id]                        INT           NOT NULL,
+    [quotation_product_id]            INT           NOT NULL,
+    [product_id]                      INT           NOT NULL,
+    [total_quantity]                  INT           NOT NULL,
+    [email_quantity]                  INT           NOT NULL,
+    [slms_quantity]                   INT           NOT NULL,
+    [email_template_version_id]       INT           NULL,
+    [slms_template_version_id]        INT           NULL,
+    [default_expiration_date]         DATETIME      NULL,
+    [voucher_reservation_code_id]     INT           NOT NULL,
+    [need_short_url]                  BIT           NOT NULL,
+    [status]                          INT           NOT NULL,
+    [expiration_policy_id]            INT           NULL,
+    [message_encoding]                NVARCHAR (25) NULL,
+    [published_quantity]              INT           NOT NULL,
+    [ad_hoc_rule_product_id]          INT           NULL,
+    [order_email_template_version_id] INT           NULL,
+    [order_slms_template_version_id]  INT           NULL,
+    [need_trust_account]              BIT           NULL,
+    [cancelled_quantity]              INT           NULL,
+    [child_order_line_id]             INT           NULL,
+    CONSTRAINT [PK_tb_ol_order_line] PRIMARY KEY CLUSTERED ([id] ASC)
+);
+

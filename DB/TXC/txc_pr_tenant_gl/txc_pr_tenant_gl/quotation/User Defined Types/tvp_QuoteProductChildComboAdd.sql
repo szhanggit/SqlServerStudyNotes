@@ -1,0 +1,23 @@
+﻿CREATE TYPE [quotation].[tvp_QuoteProductChildComboAdd] AS TABLE (
+    [ProductVersionId]       INT             NOT NULL,
+    [ExpirySchemeId]         INT             NOT NULL,
+    [MaxIssueVoucher]        INT             NULL,
+    [SystemProcessFee]       NUMERIC (15, 4) NOT NULL,
+    [ExpirationDate]         DATETIME        NULL,
+    [EnableCustomization]    BIT             NULL,
+    [Status]                 INT             NOT NULL,
+    [ProductComboSetId]      INT             NOT NULL,
+    [BusinessModelId]        INT             NOT NULL,
+    [ComboExpirySchemeId]    INT             NOT NULL,
+    [ComboExpirationDate]    DATETIME        NULL,
+    [Sequence]               INT             NULL,
+    [CustomizationProductId] INT             NULL,
+    [SoldPrice]              NUMERIC (15, 4) NOT NULL,
+    [SoldPriceWithTax]       NUMERIC (15, 4) NOT NULL,
+    [SoldPricePercentage]    NUMERIC (15, 4) NULL,
+    [FaceValueRangeFrom]     INT             NULL,
+    [FaceValueRangeTo]       INT             NULL,
+    [ValidityFrom]           DATETIME        NOT NULL,
+    [ValidityEnd]            DATETIME        NOT NULL,
+    [SoldPriceStatus]        INT             NOT NULL);
+

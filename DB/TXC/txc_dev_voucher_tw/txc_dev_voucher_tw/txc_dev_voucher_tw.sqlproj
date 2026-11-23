@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>txc_dev_voucher_tw</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{7ae9116e-bd28-4e07-a7a9-9c6ae4d6204d}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>txc_dev_voucher_tw</RootNamespace>
+    <AssemblyName>txc_dev_voucher_tw</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="voucher\" />
+    <Folder Include="voucher\Tables\" />
+    <Folder Include="voucher\Functions\" />
+    <Folder Include="Storage\" />
+    <Folder Include="Security\" />
+    <Folder Include="voucher\Sequences\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\poc_barcode_config.sql" />
+    <Build Include="voucher\Tables\tb_vs_voucher_state.sql" />
+    <Build Include="voucher\Tables\tb_vst_voucher_state_transition.sql" />
+    <Build Include="voucher\Tables\tb_ve_voucher_eCode.sql" />
+    <Build Include="voucher\Tables\tb_vl_voucher_log.sql" />
+    <Build Include="dbo\Tables\poc_voucher_extension.sql" />
+    <Build Include="voucher\Tables\tb_is_inventory_sku.sql" />
+    <Build Include="voucher\Tables\tb_td_transition_denormalized.sql" />
+    <Build Include="voucher\Tables\tb_as_association_status.sql" />
+    <Build Include="dbo\Tables\voucher_migration_1M.sql" />
+    <Build Include="voucher\Tables\tb_ib_inventory_batch.sql" />
+    <Build Include="voucher\Tables\tb_v_voucher.sql" />
+    <Build Include="voucher\Tables\tb_vg_voucher_guid.sql" />
+    <Build Include="voucher\Tables\tb_va_voucher_alias.sql" />
+    <Build Include="dbo\Tables\flyway_schema_history.sql" />
+    <Build Include="voucher\Functions\fn_getPartition.sql" />
+    <Build Include="Storage\RangePartitionFunction10K.sql" />
+    <Build Include="Storage\RangePartitionFunction100.sql" />
+    <Build Include="Storage\DatePartitionFunction.sql" />
+    <Build Include="Storage\RangeParitionScheme10K.sql" />
+    <Build Include="Storage\RangeParitionScheme100.sql" />
+    <Build Include="Storage\DatePartitionScheme.sql" />
+    <Build Include="Security\voucher.sql" />
+    <Build Include="voucher\Sequences\seq_voucher_id.sql" />
+  </ItemGroup>
+</Project>

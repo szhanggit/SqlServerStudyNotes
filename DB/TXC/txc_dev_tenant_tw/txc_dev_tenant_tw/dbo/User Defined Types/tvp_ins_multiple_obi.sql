@@ -1,0 +1,22 @@
+﻿CREATE TYPE [dbo].[tvp_ins_multiple_obi] AS TABLE (
+    [OrderLineId]       INT          NOT NULL,
+    [Mobile]            NVARCHAR (1) NULL,
+    [Email]             NVARCHAR (1) NULL,
+    [VoucherQuantity]   INT          NOT NULL,
+    [ActiveDate]        DATETIME     NULL,
+    [ExpirySchemeId]    INT          NOT NULL,
+    [ExpiryDate]        DATETIME     NULL,
+    [ClientOrderNumber] NVARCHAR (1) NULL,
+    [Memo]              NVARCHAR (1) NULL,
+    [Name]              NVARCHAR (1) NULL,
+    [Address]           NVARCHAR (1) NULL,
+    [PostCode]          NVARCHAR (1) NULL,
+    [EDOrderNumber]     NVARCHAR (1) NULL,
+    [MemberId]          INT          NULL,
+    [LanguageId]        INT          NULL,
+    [Status]            INT          NOT NULL,
+    [FaceValue]         INT          NULL,
+    [FaceValueWithTax]  INT          NULL,
+    [SoldPrice]         DECIMAL (18) NULL,
+    [SoldPriceWithTax]  DECIMAL (18) NULL);
+

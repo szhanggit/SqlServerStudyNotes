@@ -1,0 +1,47 @@
+﻿CREATE TABLE [order].[tb_ecol_emv_client_order_line] (
+    [id]                   BIGINT         IDENTITY (1, 1) NOT NULL,
+    [emv_client_order_id]  INT            NOT NULL,
+    [quotation_product_id] INT            NULL,
+    [program_name]         NVARCHAR (250) NOT NULL,
+    [program_id]           NVARCHAR (50)  NOT NULL,
+    [local_redemption_id]  NVARCHAR (100) NOT NULL,
+    [user_id]              NVARCHAR (50)  NOT NULL,
+    [user_name]            NVARCHAR (200) NOT NULL,
+    [first_name]           NVARCHAR (100) NOT NULL,
+    [middle_name]          NVARCHAR (100) NOT NULL,
+    [last_name]            NVARCHAR (100) NOT NULL,
+    [email]                NVARCHAR (200) NOT NULL,
+    [contact_phone]        NVARCHAR (25)  NOT NULL,
+    [country]              NVARCHAR (20)  NOT NULL,
+    [redemption_date]      NVARCHAR (30)  NOT NULL,
+    [rcn]                  NVARCHAR (100) NOT NULL,
+    [redemption_item_name] NVARCHAR (250) NOT NULL,
+    [sku]                  NVARCHAR (25)  NOT NULL,
+    [quantity]             INT            NOT NULL,
+    [unitItem_points]      INT            NULL,
+    [totalItem_points]     INT            NULL,
+    [delivery_type]        INT            NOT NULL,
+    [delivery_priority]    NVARCHAR (20)  NULL,
+    [client_order_number]  NVARCHAR (100) NULL,
+    [priority]             INT            NOT NULL,
+    [remarks]              NVARCHAR (250) NULL,
+    [client_sku_code]      NVARCHAR (25)  NULL,
+    [flex1]                NVARCHAR (250) NULL,
+    [flex2]                NVARCHAR (250) NULL,
+    [flex3]                NVARCHAR (250) NULL,
+    [flex4]                NVARCHAR (250) NULL,
+    [flex5]                NVARCHAR (250) NULL,
+    [status]               INT            NOT NULL,
+    [created_time]         DATETIME       NOT NULL,
+    [updated_time]         DATETIME       NOT NULL,
+    [order_number]         NVARCHAR (50)  NULL,
+    [result]               NVARCHAR (500) NULL,
+    [optimistic_lock]      NVARCHAR (64)  NULL,
+    CONSTRAINT [PK_tb_eco_emv_client_order_line] PRIMARY KEY CLUSTERED ([id] ASC)
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IDX_order_tb_eco_emv_client_order_emv_client_order_id]
+    ON [order].[tb_ecol_emv_client_order_line]([emv_client_order_id] ASC);
+

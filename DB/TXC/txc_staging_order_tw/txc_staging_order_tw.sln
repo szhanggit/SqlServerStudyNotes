@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.33801.198
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "txc_staging_order_tw", "txc_staging_order_tw\txc_staging_order_tw.sqlproj", "{851498E7-DEE4-415C-AE6A-71E5D703AC2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{851498E7-DEE4-415C-AE6A-71E5D703AC2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{851498E7-DEE4-415C-AE6A-71E5D703AC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{851498E7-DEE4-415C-AE6A-71E5D703AC2A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{851498E7-DEE4-415C-AE6A-71E5D703AC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{851498E7-DEE4-415C-AE6A-71E5D703AC2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{851498E7-DEE4-415C-AE6A-71E5D703AC2A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8955B49-7F69-40FE-B7B3-0CBF31E13D97}
+	EndGlobalSection
+EndGlobal

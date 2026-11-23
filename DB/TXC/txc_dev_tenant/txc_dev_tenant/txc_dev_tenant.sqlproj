@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>txc_dev_tenant</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{9d7a327f-dba2-4804-af94-7e02b3c7727c}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>txc_dev_tenant</RootNamespace>
+    <AssemblyName>txc_dev_tenant</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="__ShardManagement\" />
+    <Folder Include="__ShardManagement\Tables\" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="Security\" />
+    <Folder Include="__ShardManagement\Functions\" />
+    <Folder Include="__ShardManagement\Stored Procedures\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="__ShardManagement\Tables\ShardMapManagerGlobal.sql" />
+    <Build Include="dbo\Tables\tb_tc_tenant_config.sql" />
+    <Build Include="dbo\Tables\tb_gd_general_dictionary.sql" />
+    <Build Include="dbo\Tables\tb_pr_program_route.sql" />
+    <Build Include="dbo\Tables\tb_p_program.sql" />
+    <Build Include="dbo\Tables\tb_pbs_program_barcode_setting.sql" />
+    <Build Include="dbo\Tables\flyway_schema_history.sql" />
+    <Build Include="__ShardManagement\Tables\ShardMapsGlobal.sql" />
+    <Build Include="dbo\Tables\tb_tbi_tenant_basic_information.sql" />
+    <Build Include="__ShardManagement\Tables\ShardsGlobal.sql" />
+    <Build Include="__ShardManagement\Tables\ShardMappingsGlobal.sql" />
+    <Build Include="dbo\Tables\tb_tti_tenant_taxrate_information.sql" />
+    <Build Include="__ShardManagement\Tables\OperationsLogGlobal.sql" />
+    <Build Include="__ShardManagement\Tables\ShardedDatabaseSchemaInfosGlobal.sql" />
+    <Build Include="dbo\Tables\tb_c_countries.sql" />
+    <Build Include="dbo\Tables\tb_l_languages.sql" />
+    <Build Include="Security\esg-datastudio-adf-d.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="__ShardManagement\Functions\fnGetStoreVersionMajorGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetStoreVersionGlobalHelper.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spFindAndUpdateOperationLogEntryByIdGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetAllShardMapsGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spFindShardMapByNameGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetAllDistinctShardLocationsGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spAddShardMapGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spRemoveShardMapGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetAllShardsGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spFindShardByLocationGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spBulkOperationShardsGlobalBegin.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spBulkOperationShardsGlobalEnd.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_time_format.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetAllShardMappingsGlobal.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_languages.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spFindShardMappingByKeyGlobal.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_countries.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spFindShardMappingByIdGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spBulkOperationShardMappingsGlobalBegin.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spBulkOperationShardMappingsGlobalEnd.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetAllShardingSchemaInfosGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spFindShardingSchemaInfoByNameGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spAddShardingSchemaInfoGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spRemoveShardingSchemaInfoGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spUpdateShardingSchemaInfoGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spAttachShardGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spDetachShardGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spReplaceShardMappingsGlobal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spLockOrUnlockShardMappingsGlobal.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ins_super_admin_user.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_all_configs_by_tenant_name.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_programcollectioncode_by_programcode.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetOperationLogEntryGlobalHelper.sql" />
+    <Build Include="dbo\User Defined Types\tvp_ins_user_roles_by_username.sql" />
+    <Build Include="dbo\User Defined Types\tvp_ins_users.sql" />
+    <Build Include="dbo\User Defined Types\tvp_edit_user_roles.sql" />
+    <Build Include="dbo\User Defined Types\tvp_create_programbarcodesettings.sql" />
+    <Build Include="Security\__ShardManagement.sql" />
+  </ItemGroup>
+</Project>

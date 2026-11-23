@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>txc_pr_amm</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{a57d9b88-4b72-4738-b621-868f889b4443}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>txc_pr_amm</RootNamespace>
+    <AssemblyName>txc_pr_amm</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\tb_p_permission.sql" />
+    <Build Include="dbo\Tables\tb_def_auth_key.sql" />
+    <Build Include="dbo\Tables\tb_uh_user_history.sql" />
+    <Build Include="dbo\Tables\flyway_schema_history.sql" />
+    <Build Include="dbo\Tables\tb_u_user.sql" />
+    <Build Include="dbo\Tables\tb_ut_user_token.sql" />
+    <Build Include="dbo\Tables\tb_a_app.sql" />
+    <Build Include="dbo\Tables\tb_t_tenant.sql" />
+    <Build Include="dbo\Tables\tb_r_role.sql" />
+    <Build Include="dbo\Tables\tb_aai_api_action_info.sql" />
+    <Build Include="dbo\Tables\tb_ur_user_role.sql" />
+    <Build Include="dbo\Tables\tb_aom_api_operation_mapping.sql" />
+    <Build Include="dbo\Tables\tb_uat_user_app_tenant.sql" />
+    <Build Include="dbo\Tables\tb_m_module.sql" />
+    <Build Include="dbo\Tables\tb_r_resource.sql" />
+    <Build Include="dbo\Tables\tb_o_operation.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ins_application.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_roles_by_operation.sql" />
+    <Build Include="dbo\Stored Procedures\sp_upd_application.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ins_resource.sql" />
+    <Build Include="dbo\Stored Procedures\sp_upd_resource.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_roles_by_endpoint.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_super_admin_users.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_user_claim_test.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_application.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_applications.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_tenant.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_tenants.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_refresh_token_expiration.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ins_user_token.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_any_user_by_user_name.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_assigning_operaton.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_user_claim.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_app_permission.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_roles_with_details.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_operations_by_roleid.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ins_def_auth_key.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_all_keys.sql" />
+    <Build Include="dbo\Stored Procedures\sp_upd_key_validatetime.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ins_user_with_roles.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_token_payload_by_user.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ins_super_admin_user.sql" />
+    <Build Include="dbo\Stored Procedures\sp_upd_user_status.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_applications.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_tenants.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_allowed_roles_by_resource_operation.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_app_tnt_roles_resource.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_admin_users.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_admin_roles.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_app_tenant_assigning_roles.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_ref_app_tenant_roles.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_user_by_id_with_roles.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_user_history_by_id_app_tenant.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_users_with_roles.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_admin_user_by_id.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ins_role.sql" />
+    <Build Include="dbo\Stored Procedures\sp_upd_role.sql" />
+    <Build Include="dbo\Stored Procedures\sp_sel_role_by_id_with_details.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ins_amm_tenant.sql" />
+    <Build Include="dbo\User Defined Types\tvp_ins_role_operation_id.sql" />
+    <Build Include="dbo\User Defined Types\tvp_upd_user_app_tenant.sql" />
+    <Build Include="dbo\User Defined Types\tvp_ins_users.sql" />
+    <Build Include="dbo\User Defined Types\tvp_ins_user_roles_by_username.sql" />
+    <Build Include="dbo\User Defined Types\tvp_upd_user_roles.sql" />
+    <Build Include="dbo\User Defined Types\tvp_filter_roleId.sql" />
+    <Build Include="dbo\User Defined Types\tvp_ins_admin_user_roles_by_username.sql" />
+    <Build Include="dbo\User Defined Types\tvp_upd_admin_app_tenant.sql" />
+  </ItemGroup>
+</Project>

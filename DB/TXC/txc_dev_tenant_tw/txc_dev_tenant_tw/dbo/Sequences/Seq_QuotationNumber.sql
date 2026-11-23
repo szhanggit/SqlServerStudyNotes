@@ -1,0 +1,7 @@
+﻿CREATE SEQUENCE [dbo].[Seq_QuotationNumber]
+    AS INT
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9999
+    CYCLE;
+

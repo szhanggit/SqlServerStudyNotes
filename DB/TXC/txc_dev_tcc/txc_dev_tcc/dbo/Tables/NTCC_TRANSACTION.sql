@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[NTCC_TRANSACTION] (
+    [TRANSACTION_ID]        VARCHAR (128)  NOT NULL,
+    [GLOBAL_TRANSACTION_ID] VARCHAR (128)  NULL,
+    [BRANCH_QUALIFIER]      VARCHAR (128)  NULL,
+    [STATUS]                INT            NOT NULL,
+    [TRANSACTION_TYPE]      INT            NOT NULL,
+    [RETRIED_COUNT]         INT            NOT NULL,
+    [CREATE_UTC_TIME]       DATETIME       NOT NULL,
+    [LAST_UPDATE_UTC_TIME]  DATETIME       NOT NULL,
+    [VERSION]               INT            NOT NULL,
+    [CONTENT]               NVARCHAR (MAX) NULL,
+    PRIMARY KEY CLUSTERED ([TRANSACTION_ID] ASC)
+);
+

@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.33801.198
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "txc_dev_tcc", "txc_dev_tcc\txc_dev_tcc.sqlproj", "{A255EA03-E83A-47B6-8CDC-236644861DC6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A255EA03-E83A-47B6-8CDC-236644861DC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A255EA03-E83A-47B6-8CDC-236644861DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A255EA03-E83A-47B6-8CDC-236644861DC6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A255EA03-E83A-47B6-8CDC-236644861DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A255EA03-E83A-47B6-8CDC-236644861DC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A255EA03-E83A-47B6-8CDC-236644861DC6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {407810EC-7439-45EF-8662-DA9711BE1B11}
+	EndGlobalSection
+EndGlobal

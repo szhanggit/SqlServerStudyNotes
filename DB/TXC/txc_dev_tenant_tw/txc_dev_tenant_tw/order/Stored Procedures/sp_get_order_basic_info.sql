@@ -1,0 +1,41 @@
+﻿CREATE PROCEDURE [order].[sp_get_order_basic_info]
+	@id int
+AS
+BEGIN
+SELECT id,
+        quotation_id  ,
+        order_number  ,
+		mode  ,
+		is_direct_delivery  ,
+		publish_datetime  ,
+		[status]  ,
+		executing_status  ,
+		executing_response  ,
+		created_by ,
+		created_on  ,
+		package_receiver  ,
+		package_password  ,
+		package_pin_receiver  ,
+		order_name  ,
+		short_url_auth_code_generation_way  ,
+		order_group_id  ,
+		indirect_file_format  ,
+		export_barcode_info  ,
+		voucher_supplier_id  ,
+		voucher_supplier_order_number  ,
+		voucher_supplier_quotation_number  ,
+		email_attach_short_url_image_id  ,
+		url_type  ,
+		generate_sequence_number  ,
+		memo  ,
+		needed_preIssue  ,
+		wallet_slms_template_id  ,
+		email_template_id  ,
+		slms_template_id  ,
+		MWV_email_template_id  ,
+		updated_by  ,
+		updated_on,
+email_tag_value_set_id,
+slms_tag_value_set_id
+FROM [order].[tb_ob_order_basic] with(nolock) WHERE id = @id
+END

@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[tb_ol_order_line] (
+    [id]                       INT           IDENTITY (1, 1) NOT NULL,
+    [order_id]                 INT           NOT NULL,
+    [total_quantity]           INT           NOT NULL,
+    [email_quantity]           INT           NOT NULL,
+    [slms_quantity]            INT           NOT NULL,
+    [default_expiration_date]  DATETIME      NULL,
+    [need_short_url]           BIT           NOT NULL,
+    [expiration_policy_id]     INT           NULL,
+    [message_encoding]         NVARCHAR (25) NULL,
+    [published_quantity]       INT           NOT NULL,
+    [need_trust_account]       BIT           NULL,
+    [product_version_id]       INT           NOT NULL,
+    [order_line_template_id]   INT           NULL,
+    [client_order_number]      NVARCHAR (50) NULL,
+    [is_softly_deleted]        INT           NOT NULL,
+    [created_by]               NVARCHAR (50) NULL,
+    [created_datetime]         DATETIME      NULL,
+    [updated_by]               DATETIME      NULL,
+    [updated_datetime]         DATETIME      NULL,
+    [timestamp]                ROWVERSION    NOT NULL,
+    [status]                   INT           NULL,
+    [voucher_reservation_code] NVARCHAR (20) NULL,
+    CONSTRAINT [PK_tb_ol_order_line] PRIMARY KEY CLUSTERED ([id] ASC),
+    CONSTRAINT [FK_tb_ol_order_line_tb_ol_order_line_template] FOREIGN KEY ([order_line_template_id]) REFERENCES [dbo].[tb_ol_order_line_template] ([order_line_template_id]),
+    CONSTRAINT [FK_tb_ol_order_line_tb_om_order_master] FOREIGN KEY ([order_id]) REFERENCES [dbo].[tb_om_order_master] ([id])
+);
+

@@ -1,0 +1,8 @@
+﻿CREATE SEQUENCE [merchant_info].[Seq_shop_Identity_Code]
+    AS BIGINT
+    START WITH 50000
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9999999999
+    CYCLE;
+
