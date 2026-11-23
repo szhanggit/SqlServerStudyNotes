@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>DiveTWUat</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{b9b205f6-33b1-4a69-b9d7-8f0225106d64}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>DiveTWUat</RootNamespace>
+    <AssemblyName>DiveTWUat</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\DelayedJob.sql" />
+    <Build Include="dbo\Tables\ELMAH_Error.sql" />
+    <Build Include="dbo\Tables\OhGiftCardVoucher.sql" />
+    <Build Include="dbo\Tables\Notification.sql" />
+    <Build Include="dbo\Tables\NotificationActionLog.sql" />
+    <Build Include="dbo\Tables\NotificationTarget.sql" />
+    <Build Include="dbo\Tables\BonagoVoucher.sql" />
+    <Build Include="dbo\Tables\NotificationItem.sql" />
+    <Build Include="dbo\Tables\NotificationTargetSender.sql" />
+    <Build Include="dbo\Tables\TaskTrack.sql" />
+    <Build Include="dbo\Tables\Monitor_BatchInfo.sql" />
+    <Build Include="dbo\Tables\PrezzeeVoucher.sql" />
+    <Build Include="dbo\Tables\Monitor_AlertChannel.sql" />
+    <Build Include="dbo\Tables\Monitor_AlertReceiver.sql" />
+    <Build Include="dbo\Tables\WOGIVoucher.sql" />
+    <Build Include="dbo\Tables\GiftawayVoucher.sql" />
+    <Build Include="dbo\Tables\GoGiftVoucher.sql" />
+    <Build Include="dbo\Tables\TangoVoucher.sql" />
+    <Build Include="dbo\Tables\ArchiveLog.sql" />
+    <Build Include="dbo\Tables\GlobalGivingVoucher.sql" />
+    <Build Include="dbo\Tables\JBHIFIVoucher.sql" />
+    <Build Include="dbo\Tables\TopUpPhoneVoucher.sql" />
+    <Build Include="dbo\Tables\EmailMessageArchiveTemp.sql" />
+    <Build Include="dbo\Tables\CadoozVoucher.sql" />
+    <Build Include="dbo\Tables\SLMSMessageArchiveTemp.sql" />
+    <Build Include="dbo\Tables\Consumer.sql" />
+    <Build Include="dbo\Tables\Dictionary.sql" />
+    <Build Include="dbo\Tables\IncentivaleVoucher.sql" />
+    <Build Include="dbo\Tables\DictionaryTranslation.sql" />
+    <Build Include="dbo\Tables\EmailMessage.sql" />
+    <Build Include="dbo\Tables\Batch.sql" />
+    <Build Include="dbo\Tables\XtraVoucher.sql" />
+    <Build Include="dbo\Tables\EmailMessageActionLog.sql" />
+    <Build Include="dbo\Tables\BlackhawkVoucher.sql" />
+    <Build Include="dbo\Tables\EmailMessageActionLogArchive.sql" />
+    <Build Include="dbo\Tables\EmailMessageSendStatus.sql" />
+    <Build Include="dbo\Tables\EmailMessageArchive.sql" />
+    <Build Include="dbo\Tables\EmailMessageSendStatusBuffer.sql" />
+    <Build Include="dbo\Tables\EmailMessageTemplate.sql" />
+    <Build Include="dbo\Tables\SLMSMessageSendStatus.sql" />
+    <Build Include="dbo\Tables\YouGotAGiftVoucher.sql" />
+    <Build Include="dbo\Tables\EmailMessageTemplateArchive.sql" />
+    <Build Include="dbo\Tables\SLMSMessageSendStatusBuffer.sql" />
+    <Build Include="dbo\Tables\SLMSMessage.sql" />
+    <Build Include="dbo\Tables\SLMSMessageActionLog.sql" />
+    <Build Include="dbo\Tables\CashwaveVoucher.sql" />
+    <Build Include="dbo\Tables\SLMSMessageActionLogArchive.sql" />
+    <Build Include="dbo\Tables\SLMSMessageArchive.sql" />
+    <Build Include="dbo\Tables\SLMSMessageTemplate.sql" />
+    <Build Include="dbo\Tables\SLMSMessageTemplateArchive.sql" />
+    <Build Include="dbo\Tables\ServiceProvider.sql" />
+    <Build Include="dbo\Tables\APILog.sql" />
+    <Build Include="dbo\Tables\BatchLog.sql" />
+    <Build Include="dbo\Tables\SimulatorLog.sql" />
+    <Build Include="dbo\Tables\ServiceProviderStat.sql" />
+    <Build Include="dbo\Tables\AmilonVoucher.sql" />
+    <Build Include="dbo\Tables\SysConfig.sql" />
+    <Build Include="dbo\Tables\TPCConfig.sql" />
+    <Build Include="dbo\Tables\Task.sql" />
+    <Build Include="dbo\Tables\TPCConfigDetail.sql" />
+    <Build Include="dbo\Tables\TPCLog.sql" />
+    <Build Include="dbo\Tables\TaskActionLog.sql" />
+    <Build Include="dbo\Tables\MommentsVoucher.sql" />
+    <Build Include="dbo\Tables\Voucher.sql" />
+    <Build Include="dbo\Tables\TaskActionLogArchive.sql" />
+    <Build Include="dbo\Tables\TaskArchive.sql" />
+    <Build Include="dbo\Tables\UniqgiftVoucher.sql" />
+    <Build Include="dbo\Tables\TimezoneOffset.sql" />
+    <Build Include="dbo\Tables\UserProfile.sql" />
+    <Build Include="dbo\Tables\NetCoreDLR.sql" />
+    <Build Include="dbo\Tables\AmazonVoucher.sql" />
+    <Build Include="dbo\Tables\Product.sql" />
+    <Build Include="dbo\Tables\Vendor.sql" />
+    <Build Include="Security\jbonnet.sql" />
+    <Build Include="Security\TW_TX_DBS_Report.sql" />
+    <Build Include="Security\jchang.sql" />
+    <Build Include="Security\vgupta.sql" />
+    <Build Include="Security\jhsiao.sql" />
+    <Build Include="Security\kyao.sql" />
+    <Build Include="Security\aescot.sql" />
+    <Build Include="Security\TW_EV_UAT_DIVE.sql" />
+    <Build Include="Security\evuser.sql" />
+    <Build Include="Security\ishuang.sql" />
+    <Build Include="Security\sa-apac-appdy.sql" />
+    <Build Include="Security\jhsieh.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveEmailData.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveSLMSData.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveData_Email.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveData_SLMS.sql" />
+    <Build Include="dbo\Stored Procedures\spDiveCheckNotificationClientPending.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertAmazonJPVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\pi_TaskArchive_InsertTaskArchive.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spInsertAmazonCNVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\pi_ServiceProviderStat_InsertServiceProviderStat.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spInsertWogiMYRVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertWogiSGDVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertYouGotaGIFTVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertAmilonEUROVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertAmilonITVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryUnusedVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorXml.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryDelayedJob.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertOhGiftCardVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorsXml.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertVendor.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_LogError.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertBlackhawkVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertBonagoVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertPrezzeeVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spGetActiveBatchInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertWOGIIDRVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryNotFetchedDLRInfoForEmail.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertGiftawayVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertTangoVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertJBHIFIVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertGlobalGivingVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertTopUpPhoneVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertGoGiftDKVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertIncentivaleVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertGoGiftSEVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertGoGiftNOVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertGoGiftFIVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTasksByThreshold.sql" />
+    <Build Include="dbo\Stored Procedures\spGetLastBatchStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spGetRecentBatchStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertXtraVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\pi_ArchiveSLMSMessage.sql" />
+    <Build Include="dbo\Stored Procedures\pi_ArchiveEmailMessage.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveSLMSNotSent.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveEmailNotSent.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertCashwaveVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spSyncSendMessageStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spGetQuotationApprovalInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertMommentsVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertUniqgiftVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertProduct.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateNetCoreDLRInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryNotFetchedDLRInfoByWhatDate.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryNotMarshalledDLRInfoByWhatDate.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertCadoozVoucher.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertWogiMYAMAVoucher.sql" />
+    <Build Include="dbo\User Defined Types\NetCoreDLRInfoType.sql" />
+  </ItemGroup>
+</Project>
