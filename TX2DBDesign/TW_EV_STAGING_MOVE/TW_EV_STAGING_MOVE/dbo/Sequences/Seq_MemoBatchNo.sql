@@ -1,0 +1,7 @@
+﻿CREATE SEQUENCE [dbo].[Seq_MemoBatchNo]
+    AS BIGINT
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 9999
+    CYCLE;
+

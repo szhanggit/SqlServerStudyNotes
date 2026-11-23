@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.33801.198
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TW_EV_STAGING_MOVE", "TW_EV_STAGING_MOVE\TW_EV_STAGING_MOVE.sqlproj", "{27F6C85E-C55F-4E12-8C8C-0716576CBE55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27F6C85E-C55F-4E12-8C8C-0716576CBE55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27F6C85E-C55F-4E12-8C8C-0716576CBE55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27F6C85E-C55F-4E12-8C8C-0716576CBE55}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{27F6C85E-C55F-4E12-8C8C-0716576CBE55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27F6C85E-C55F-4E12-8C8C-0716576CBE55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27F6C85E-C55F-4E12-8C8C-0716576CBE55}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5CD21BC9-3686-4EEF-B051-4C59D39CCF4E}
+	EndGlobalSection
+EndGlobal

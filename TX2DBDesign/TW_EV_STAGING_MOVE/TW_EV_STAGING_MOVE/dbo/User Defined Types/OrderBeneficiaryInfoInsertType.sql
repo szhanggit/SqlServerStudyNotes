@@ -1,0 +1,20 @@
+﻿CREATE TYPE [dbo].[OrderBeneficiaryInfoInsertType] AS TABLE (
+    [OrderLineId]       INT             NOT NULL,
+    [ActiveDate]        DATETIME        NULL,
+    [Mobile]            VARCHAR (50)    NULL,
+    [Email]             VARCHAR (100)   NULL,
+    [FaceValue]         INT             NULL,
+    [FaceValueWithTax]  INT             NULL,
+    [SoldPrice]         DECIMAL (15, 4) NULL,
+    [SoldPriceWithTax]  DECIMAL (15, 4) NULL,
+    [VoucherQuantity]   INT             NOT NULL,
+    [ExpirySchemeId]    INT             NOT NULL,
+    [ExpiryDate]        DATETIME        NULL,
+    [ClientOrderNumber] VARCHAR (50)    NULL,
+    [Memo]              NVARCHAR (1000) NULL,
+    [Name]              NVARCHAR (100)  NULL,
+    [Address]           NVARCHAR (200)  NULL,
+    [PostCode]          VARCHAR (20)    NULL,
+    [EDOrderNumber]     VARCHAR (50)    NULL,
+    [LanguageId]        INT             NULL);
+

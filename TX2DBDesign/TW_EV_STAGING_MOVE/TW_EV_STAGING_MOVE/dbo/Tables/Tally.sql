@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[Tally] (
+    [Id] INT NOT NULL,
+    CONSTRAINT [UK_Tally_Id] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+

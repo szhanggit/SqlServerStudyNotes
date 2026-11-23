@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[MerchantTracing] (
+    [Id]                    INT            IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [MerchantId]            INT            NOT NULL,
+    [IdentityCode]          VARCHAR (50)   NOT NULL,
+    [Name]                  NVARCHAR (100) NOT NULL,
+    [ExternalCode]          NVARCHAR (100) NULL,
+    [InvoiceRegisterNumber] NVARCHAR (100) NOT NULL,
+    [ContactName1]          NVARCHAR (50)  NULL,
+    [ContactPhone1]         VARCHAR (50)   NULL,
+    [ContactName2]          NVARCHAR (50)  NULL,
+    [ContactPhone2]         VARCHAR (50)   NULL,
+    [CRMReference]          NVARCHAR (100) NULL,
+    [FinanceReference]      NVARCHAR (100) NULL,
+    [AddressId]             INT            NOT NULL,
+    [CategoryId]            INT            NULL,
+    [Status]                TINYINT        NOT NULL,
+    [Description]           NVARCHAR (500) NULL,
+    [Modifier]              NVARCHAR (50)  NOT NULL,
+    [Version]               INT            NOT NULL,
+    [VersionTime]           DATETIME       NOT NULL,
+    CONSTRAINT [PK_MerchantTracing] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_MerchantTracing_Address_AddressId] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Address] ([Id]),
+    CONSTRAINT [FK_MerchantTracing_Dictionary_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[Dictionary] ([Id]),
+    CONSTRAINT [FK_MerchantTracing_Merchant_MerchantId] FOREIGN KEY ([MerchantId]) REFERENCES [dbo].[Merchant] ([Id])
+);
+

@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[ClientTracing] (
+    [Id]                    INT            IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [ClientId]              INT            NOT NULL,
+    [Name]                  NVARCHAR (100) NOT NULL,
+    [IdentityCode]          VARCHAR (50)   NOT NULL,
+    [InvoiceRegisterNumber] NVARCHAR (100) NOT NULL,
+    [IndustryId]            INT            NULL,
+    [CRMReference]          NVARCHAR (100) NULL,
+    [FinanceReference]      NVARCHAR (100) NULL,
+    [Department]            NVARCHAR (100) NULL,
+    [AddressId]             INT            NOT NULL,
+    [GroupId]               INT            NULL,
+    [Status]                TINYINT        NOT NULL,
+    [Description]           NVARCHAR (500) NULL,
+    [Modifier]              NVARCHAR (50)  NOT NULL,
+    [Version]               INT            NOT NULL,
+    [VersionTime]           DATETIME       NOT NULL,
+    [SecurityKey]           VARCHAR (32)   NOT NULL,
+    CONSTRAINT [PK_ClientTracing_Id] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_ClientTracing_Address_AddressId] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Address] ([Id]),
+    CONSTRAINT [FK_ClientTracing_Client_ClientId] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Client] ([Id]),
+    CONSTRAINT [FK_ClientTracing_ClientGroup_GroupId] FOREIGN KEY ([GroupId]) REFERENCES [dbo].[ClientGroup] ([Id]),
+    CONSTRAINT [FK_ClientTracing_Dictionary_IndustryId] FOREIGN KEY ([IndustryId]) REFERENCES [dbo].[Dictionary] ([Id])
+);
+

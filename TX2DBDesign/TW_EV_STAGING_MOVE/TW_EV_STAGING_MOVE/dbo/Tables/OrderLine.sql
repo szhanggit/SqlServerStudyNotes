@@ -1,0 +1,43 @@
+﻿CREATE TABLE [dbo].[OrderLine] (
+    [Id]                          INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [OrderId]                     INT           NOT NULL,
+    [ClientQuotationProductId]    INT           NOT NULL,
+    [TotalQuantity]               INT           NOT NULL,
+    [EmailQuantity]               INT           NOT NULL,
+    [SLMSQuantity]                INT           NOT NULL,
+    [EmailTemplateVersionId]      INT           NULL,
+    [SLMSTemplateVersionId]       INT           NULL,
+    [DefaultExpirationDate]       DATETIME      NULL,
+    [VoucherReservationCodeId]    INT           NOT NULL,
+    [NeedShortUrl]                BIT           NOT NULL,
+    [Status]                      TINYINT       NOT NULL,
+    [ExpirationPolicyId]          INT           NULL,
+    [MessageEncoding]             NVARCHAR (25) NULL,
+    [PublishedQuantity]           INT           CONSTRAINT [DF_PQ] DEFAULT ((0)) NOT NULL,
+    [AdHocRuleProductId]          INT           NULL,
+    [OrderEmailTemplateVersionId] INT           NULL,
+    [OrderSLMSTemplateVersionId]  INT           NULL,
+    [NeedTrustAccount]            BIT           NULL,
+    [CancelledQuantity]           INT           NULL,
+    CONSTRAINT [PK_ORDERLINE] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_OrderLine_AdHocRuleProduct_AdHocRuleProductId] FOREIGN KEY ([AdHocRuleProductId]) REFERENCES [dbo].[AdHocRuleProduct] ([Id]),
+    CONSTRAINT [FK_OrderLine_ClientQuotationProduct_ClientQuotationProductId] FOREIGN KEY ([ClientQuotationProductId]) REFERENCES [dbo].[ClientQuotationProduct] ([Id]),
+    CONSTRAINT [FK_OrderLine_EmailTemplateVersion_EmailTemplateVersionId] FOREIGN KEY ([EmailTemplateVersionId]) REFERENCES [dbo].[EmailTemplateVersion] ([Id]),
+    CONSTRAINT [FK_OrderLine_ExpirationPolicy_ExpirationPolicyId] FOREIGN KEY ([ExpirationPolicyId]) REFERENCES [dbo].[ExpirationPolicy] ([Id]),
+    CONSTRAINT [FK_OrderLine_Order_OrderId] FOREIGN KEY ([OrderId]) REFERENCES [dbo].[Order] ([Id]),
+    CONSTRAINT [FK_OrderLine_OrderEmailTemplateVersion_OrderEmailTemplateVersionId] FOREIGN KEY ([OrderEmailTemplateVersionId]) REFERENCES [dbo].[OrderEmailTemplateVersion] ([Id]),
+    CONSTRAINT [FK_OrderLine_OrderSLMSTemplateVersion_OrderSLMSTemplateVersionId] FOREIGN KEY ([OrderSLMSTemplateVersionId]) REFERENCES [dbo].[OrderSLMSTemplateVersion] ([Id]),
+    CONSTRAINT [FK_OrderLine_SLMSTemplateVersion_SLMSTemplateVersionId] FOREIGN KEY ([SLMSTemplateVersionId]) REFERENCES [dbo].[SLMSTemplateVersion] ([Id]),
+    CONSTRAINT [FK_OrderLine_VoucherReservationCode_VoucherReservationCodeId] FOREIGN KEY ([VoucherReservationCodeId]) REFERENCES [dbo].[VoucherReservationCode] ([Id])
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20141219-165756]
+    ON [dbo].[OrderLine]([OrderId] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IDX_OrderLine_ClientQuotationProductId]
+    ON [dbo].[OrderLine]([ClientQuotationProductId] ASC);
+

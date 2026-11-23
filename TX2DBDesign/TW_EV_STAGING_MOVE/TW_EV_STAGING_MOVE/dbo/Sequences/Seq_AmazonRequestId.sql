@@ -1,0 +1,7 @@
+﻿CREATE SEQUENCE [dbo].[Seq_AmazonRequestId]
+    AS BIGINT
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 999999999
+    CYCLE;
+

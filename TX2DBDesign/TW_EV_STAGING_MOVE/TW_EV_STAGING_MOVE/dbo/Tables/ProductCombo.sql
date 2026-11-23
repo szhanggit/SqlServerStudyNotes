@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[ProductCombo] (
+    [Id] INT IDENTITY (1, 1) NOT NULL,
+    CONSTRAINT [PK_ProductCombo_Id] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+

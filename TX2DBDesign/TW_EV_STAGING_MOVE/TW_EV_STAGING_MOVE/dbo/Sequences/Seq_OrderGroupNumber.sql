@@ -1,0 +1,7 @@
+﻿CREATE SEQUENCE [dbo].[Seq_OrderGroupNumber]
+    AS SMALLINT
+    INCREMENT BY 1
+    MINVALUE 0
+    MAXVALUE 9999
+    CYCLE;
+

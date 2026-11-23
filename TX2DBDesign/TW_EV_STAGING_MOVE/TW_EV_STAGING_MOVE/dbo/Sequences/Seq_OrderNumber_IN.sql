@@ -1,0 +1,9 @@
+﻿CREATE SEQUENCE [dbo].[Seq_OrderNumber_IN]
+    AS INT
+    START WITH 10000
+    INCREMENT BY 1
+    MINVALUE 0
+    MAXVALUE 999999
+    CYCLE
+    NO CACHE;
+

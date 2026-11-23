@@ -1,0 +1,2 @@
+﻿CREATE USER [TW_RS_DBS_UATReport];
+
