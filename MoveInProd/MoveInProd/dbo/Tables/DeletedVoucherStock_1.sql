@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[DeletedVoucherStock] (
+    [Id]                       INT            IDENTITY (1, 1) NOT NULL,
+    [VoucherStockId]           BIGINT         NULL,
+    [ProgramId]                INT            NULL,
+    [ProductId]                INT            NULL,
+    [VoucherNumber]            VARCHAR (50)   NULL,
+    [ShortUrl]                 VARCHAR (15)   NULL,
+    [AuthCode]                 VARCHAR (10)   NULL,
+    [SessionId]                VARCHAR (50)   NULL,
+    [StockStatus]              INT            NULL,
+    [CreateTime]               DATETIME       NULL,
+    [AssignTime]               DATETIME       NULL,
+    [GUID]                     VARCHAR (50)   NULL,
+    [BalanceAvailable]         INT            NULL,
+    [ReservationBatchId]       BIGINT         NULL,
+    [ExpiryDate]               DATETIME       NULL,
+    [PinCode]                  VARCHAR (100)  NULL,
+    [BatchTransactionDetailId] INT            NOT NULL,
+    [TaskId]                   VARCHAR (100)  NULL,
+    [BackupOn]                 DATETIME       NULL,
+    [Channel]                  VARCHAR (100)  NULL,
+    [Comment]                  VARCHAR (1000) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+

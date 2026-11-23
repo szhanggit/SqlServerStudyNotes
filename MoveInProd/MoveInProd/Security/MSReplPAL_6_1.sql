@@ -1,0 +1,7 @@
+﻿CREATE ROLE [MSReplPAL_6_1]
+    AUTHORIZATION [dbo];
+
+
+GO
+ALTER ROLE [MSReplPAL_6_1] ADD MEMBER [sa-ein-txrepl];
+

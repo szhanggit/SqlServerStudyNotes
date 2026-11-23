@@ -1,0 +1,851 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>MoveInProd</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{db963ccf-0801-4d2b-b808-042582326775}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>MoveInProd</RootNamespace>
+    <AssemblyName>MoveInProd</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
+    <Folder Include="dbo\Sequences\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Voucher_1126_1.sql" />
+    <Build Include="dbo\Tables\OrderSLMSTemplateVersion_1.sql" />
+    <Build Include="dbo\Tables\EXT_FamiGiftcard_Buffer_1.sql" />
+    <Build Include="dbo\Tables\ProductExternalPropertySet_1.sql" />
+    <Build Include="dbo\Tables\ProductExpirySchemeSet_0911_1.sql" />
+    <Build Include="dbo\Tables\ProductVersion_07_30_1.sql" />
+    <Build Include="dbo\Tables\EXT_FamiGiftcard_1.sql" />
+    <Build Include="dbo\Tables\DeletedConsumeConfirmationInfo_1.sql" />
+    <Build Include="dbo\Tables\VoucherSupplierOperation_1.sql" />
+    <Build Include="dbo\Tables\CTBCRedemptionLog_1.sql" />
+    <Build Include="dbo\Tables\OrderSLMSTemplateVersionSet_1.sql" />
+    <Build Include="dbo\Tables\ProductPricingProductBased_1.sql" />
+    <Build Include="dbo\Tables\Program_08_02_1.sql" />
+    <Build Include="dbo\Tables\DeletedDistributionTaskMessage_1.sql" />
+    <Build Include="dbo\Tables\VoucherSupplierOperationParameter_1.sql" />
+    <Build Include="dbo\Tables\Dictionary_1.sql" />
+    <Build Include="dbo\Tables\ProductEmailTemplateVersion_1.sql" />
+    <Build Include="dbo\Tables\MWVLog_1.sql" />
+    <Build Include="dbo\Tables\ProductPricingValueBased_1.sql" />
+    <Build Include="dbo\Tables\VoucherReservationBatch_0926_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_C_67_0926_1.sql" />
+    <Build Include="dbo\Tables\DeletedDistributionTaskMessageVoucher_1.sql" />
+    <Build Include="dbo\Tables\ProductEmailTemplateVersionSet_1.sql" />
+    <Build Include="dbo\Tables\ProductRedeemDateBlacklist_1.sql" />
+    <Build Include="dbo\Tables\DictionaryTranslation_1.sql" />
+    <Build Include="dbo\Tables\DeletedVoucherTrustAccount_1.sql" />
+    <Build Include="dbo\Tables\ApiVoucherStockBook_1.sql" />
+    <Build Include="dbo\Tables\ProductSLMSTemplateVersion_1.sql" />
+    <Build Include="dbo\Tables\ProductRedeemDateBlacklistSet_1.sql" />
+    <Build Include="dbo\Tables\Voucher_0926_1.sql" />
+    <Build Include="dbo\Tables\DistributionTaskMessageVoucher_0926_1.sql" />
+    <Build Include="dbo\Tables\DeletedVoucher_1.sql" />
+    <Build Include="dbo\Tables\DistributionTask_1.sql" />
+    <Build Include="dbo\Tables\ProductSLMSTemplateVersionSet_1.sql" />
+    <Build Include="dbo\Tables\ProductRedeemTimeRestriction_1.sql" />
+    <Build Include="dbo\Tables\TX_KGB_Result_1.sql" />
+    <Build Include="dbo\Tables\CSUserClientQuotation_1.sql" />
+    <Build Include="dbo\Tables\MoveAndAdoraDataCompareInfo_1.sql" />
+    <Build Include="dbo\Tables\DeletedVoucherActionHistory_1.sql" />
+    <Build Include="dbo\Tables\DistributionTaskMessage_1.sql" />
+    <Build Include="dbo\Tables\TX_KGB_CheckInfo_1.sql" />
+    <Build Include="dbo\Tables\ProductRedeemTimeRestrictionSet_1.sql" />
+    <Build Include="dbo\Tables\EXT_GR_PacificCoffee_1.sql" />
+    <Build Include="dbo\Tables\DeletedVoucherCombo_1.sql" />
+    <Build Include="dbo\Tables\DistributionTaskMessageVoucher_1.sql" />
+    <Build Include="dbo\Tables\ProductSLMSContentTagValueSet_1.sql" />
+    <Build Include="dbo\Tables\DeletedVoucherStock_1.sql" />
+    <Build Include="dbo\Tables\DistributionTaskOrderInfo_1.sql" />
+    <Build Include="dbo\Tables\EXT_GR_PacificCoffee_Buffer_1.sql" />
+    <Build Include="dbo\Tables\ProductSLMSTemplateTagValue_1.sql" />
+    <Build Include="dbo\Tables\ELMAH_Error_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_C_67_1.sql" />
+    <Build Include="dbo\Tables\ProductStat_1.sql" />
+    <Build Include="dbo\Tables\ProductCombo_1.sql" />
+    <Build Include="dbo\Tables\EMV_Batch_1.sql" />
+    <Build Include="dbo\Tables\EmailTemplate_1.sql" />
+    <Build Include="dbo\Tables\EXT_IN_ResendInfo_1.sql" />
+    <Build Include="dbo\Tables\ProductComboSet_1.sql" />
+    <Build Include="dbo\Tables\EMV_ClientOrder_1.sql" />
+    <Build Include="dbo\Tables\ProductVersion_1.sql" />
+    <Build Include="dbo\Tables\VoucherTrashBatch_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_D_68_1.sql" />
+    <Build Include="dbo\Tables\EmailTemplateContentTag_1.sql" />
+    <Build Include="dbo\Tables\EXT_IN_EMVCancelRCN_1.sql" />
+    <Build Include="dbo\Tables\Program_1.sql" />
+    <Build Include="dbo\Tables\VoucherTrashBatchDetail_1.sql" />
+    <Build Include="dbo\Tables\Voucher_1009_1.sql" />
+    <Build Include="dbo\Tables\EMV_ClientOrderLine_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_C_67_1009_1.sql" />
+    <Build Include="dbo\Tables\EmailTemplateVersion_1.sql" />
+    <Build Include="dbo\Tables\VoucherMovingLog_1.sql" />
+    <Build Include="dbo\Tables\ProgramBarcodeSetting_1.sql" />
+    <Build Include="dbo\Tables\DistributionTaskMessageVoucher_1009_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProductCombo_1.sql" />
+    <Build Include="dbo\Tables\VoucherActionHistory_1009_1.sql" />
+    <Build Include="dbo\Tables\Reimbursement_1.sql" />
+    <Build Include="dbo\Tables\ExpirationPolicy_1.sql" />
+    <Build Include="dbo\Tables\EMV_ClientOrderTask_1.sql" />
+    <Build Include="dbo\Tables\ClientCreditHistory_1.sql" />
+    <Build Include="dbo\Tables\ReimbursementDetail_1.sql" />
+    <Build Include="dbo\Tables\EXT_GR_VoucherInfo_1.sql" />
+    <Build Include="dbo\Tables\EMV_ClientOrderTaskDetail_1.sql" />
+    <Build Include="dbo\Tables\ProductExpirySchemeSet20210108_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProduct20201015_1.sql" />
+    <Build Include="dbo\Tables\ReimbursementLine_1.sql" />
+    <Build Include="dbo\Tables\EXT_GR_VoucherInfo_Buffer_1.sql" />
+    <Build Include="dbo\Tables\VoucherTrustAccountBuffer_1.sql" />
+    <Build Include="dbo\Tables\TransactionTemp20200102_1.sql" />
+    <Build Include="dbo\Tables\VoucherCombo_1.sql" />
+    <Build Include="dbo\Tables\ReimbursementNotification_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_F_70_20201020_1.sql" />
+    <Build Include="dbo\Tables\OrderExtendInfo_1.sql" />
+    <Build Include="dbo\Tables\VoucherTrustAccount_1.sql" />
+    <Build Include="dbo\Tables\EMV_VoucherClientOrder_1.sql" />
+    <Build Include="dbo\Tables\Voucher20201020_1.sql" />
+    <Build Include="dbo\Tables\AppLog_1.sql" />
+    <Build Include="dbo\Tables\ReimbursementScheme_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_CPOrderLine_1.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoop_1.sql" />
+    <Build Include="dbo\Tables\TrustExpiryPolicy_1.sql" />
+    <Build Include="dbo\Tables\Voucher20201030_1.sql" />
+    <Build Include="dbo\Tables\VoucherOrderBuffer_1.sql" />
+    <Build Include="dbo\Tables\SubBusinessModel_1.sql" />
+    <Build Include="dbo\Tables\ReverseLimit_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_CPPurchaseOrder_1.sql" />
+    <Build Include="dbo\Tables\VoucherOrderBufferHistory_1.sql" />
+    <Build Include="dbo\Tables\TransactionTemp20200103_1.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopMerchant_1.sql" />
+    <Build Include="dbo\Tables\EMV_VoucherStock_1.sql" />
+    <Build Include="dbo\Tables\VoucherBuffer_1.sql" />
+    <Build Include="dbo\Tables\EXT_SG_OrderBeneficiaryInfo_1.sql" />
+    <Build Include="dbo\Tables\TrustAccountReference_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_FamilyMart_1.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopShop_1.sql" />
+    <Build Include="dbo\Tables\ServiceFee_1.sql" />
+    <Build Include="dbo\Tables\Voucher_20200120_1.sql" />
+    <Build Include="dbo\Tables\ClientCredit_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_FamilyMart_Buffer_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProductSoldPrice_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_A_65_20200120_1.sql" />
+    <Build Include="dbo\Tables\TrustAccountExpirySchemeSet_1.sql" />
+    <Build Include="dbo\Tables\ServiceFeeTriggerTime_1.sql" />
+    <Build Include="dbo\Tables\AdoraTask_20200120_1.sql" />
+    <Build Include="dbo\Tables\CreditActionHistory_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_OrderLineTrustAccount_1.sql" />
+    <Build Include="dbo\Tables\VoucherOrder_20200120_1.sql" />
+    <Build Include="dbo\Tables\Address_1.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopBuffer_1.sql" />
+    <Build Include="dbo\Tables\TransactionShadow_1.sql" />
+    <Build Include="dbo\Tables\TrustAccountExpiryScheme_1.sql" />
+    <Build Include="dbo\Tables\ClientPayment_1.sql" />
+    <Build Include="dbo\Tables\Shop_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_ProductBarcodeSetting_1.sql" />
+    <Build Include="dbo\Tables\EXT_GR_OrderBeneficiaryInfo_1.sql" />
+    <Build Include="dbo\Tables\AdoraTask_1.sql" />
+    <Build Include="dbo\Tables\TrustAccount_1.sql" />
+    <Build Include="dbo\Tables\CreditTransaction_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_SEBarcode_1.sql" />
+    <Build Include="dbo\Tables\APILog_1.sql" />
+    <Build Include="dbo\Tables\OrderLineTrustAccount_1.sql" />
+    <Build Include="dbo\Tables\VoucherSequenceNumber_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_SEBarcode_Temp_1.sql" />
+    <Build Include="dbo\Tables\SLMSTemplate_1.sql" />
+    <Build Include="dbo\Tables\APILogHistory_1.sql" />
+    <Build Include="dbo\Tables\ApplyCondition_TrustAccount_1.sql" />
+    <Build Include="dbo\Tables\VoucherExpiryNotificationConfiguration_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_SoftWorld_1.sql" />
+    <Build Include="dbo\Tables\ReimbursementScheme_20200131_1.sql" />
+    <Build Include="dbo\Tables\AppConfig_1.sql" />
+    <Build Include="dbo\Tables\VoucherReservationBatch20200224_1.sql" />
+    <Build Include="dbo\Tables\SLMSTemplateContentTag_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_SoftWorld_Buffer_1.sql" />
+    <Build Include="dbo\Tables\VoucherMovingLog20201119_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_Starbucks_1.sql" />
+    <Build Include="dbo\Tables\ApplyCondition_1.sql" />
+    <Build Include="dbo\Tables\SLMSTemplateVersion_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_C_6720200306_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_Starbucks_Buffer_1.sql" />
+    <Build Include="dbo\Tables\VoucherReservationBatch20200306_1.sql" />
+    <Build Include="dbo\Tables\ApplyCondition_BusinessType_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_TrustAccountReport_1.sql" />
+    <Build Include="dbo\Tables\SpecialSLMSTemplateVersion_1.sql" />
+    <Build Include="dbo\Tables\AddressUpdate20190227_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_TrustAccountReportCurrent_1.sql" />
+    <Build Include="dbo\Tables\OrderBeneficiaryInfo20200313_1.sql" />
+    <Build Include="dbo\Tables\Tally_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_TrustAccountReportHistory_1.sql" />
+    <Build Include="dbo\Tables\TWBBoxCanIssue_1.sql" />
+    <Build Include="dbo\Tables\ForwardReverseTranMapping_1.sql" />
+    <Build Include="dbo\Tables\EXT_INClientQuotation_1.sql" />
+    <Build Include="dbo\Tables\TimezoneOffset_1.sql" />
+    <Build Include="dbo\Tables\BatchLog_1.sql" />
+    <Build Include="dbo\Tables\Invoice_1.sql" />
+    <Build Include="dbo\Tables\OrderActivateMode_1.sql" />
+    <Build Include="dbo\Tables\Transaction_1.sql" />
+    <Build Include="dbo\Tables\BatchLogHistory_1.sql" />
+    <Build Include="dbo\Tables\Voucher20200714_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotation_1017_1.sql" />
+    <Build Include="dbo\Tables\InvoiceRequested_1.sql" />
+    <Build Include="dbo\Tables\TransactionArchiveSendBuffer_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProduct_1017_1.sql" />
+    <Build Include="dbo\Tables\BatchTransaction_1.sql" />
+    <Build Include="dbo\Tables\TransactionBuffer_1.sql" />
+    <Build Include="dbo\Tables\InvoiceToBeRequested_1.sql" />
+    <Build Include="dbo\Tables\Transaction_1023_1.sql" />
+    <Build Include="dbo\Tables\BatchTransactionDetail_1.sql" />
+    <Build Include="dbo\Tables\MediaLibrary_1.sql" />
+    <Build Include="dbo\Tables\TransactionFee_1.sql" />
+    <Build Include="dbo\Tables\BatchTransactionTask_1.sql" />
+    <Build Include="dbo\Tables\Member_1.sql" />
+    <Build Include="dbo\Tables\TransactionFeeBuffer_1.sql" />
+    <Build Include="dbo\Tables\TransactionDataFixingLog_1.sql" />
+    <Build Include="dbo\Tables\TransactionHistory_1.sql" />
+    <Build Include="dbo\Tables\BusinessModel_1.sql" />
+    <Build Include="dbo\Tables\Merchant_1.sql" />
+    <Build Include="dbo\Tables\ResellerPricing_1.sql" />
+    <Build Include="dbo\Tables\BusinessModelTransactionType_1.sql" />
+    <Build Include="dbo\Tables\TransactionTemp_1.sql" />
+    <Build Include="dbo\Tables\TransactionTemp20200323_10k_1.sql" />
+    <Build Include="dbo\Tables\Transaction_CTE20200323_10k_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotation20201203_1.sql" />
+    <Build Include="dbo\Tables\MerchantContract_1.sql" />
+    <Build Include="dbo\Tables\TransactionTemp20200323_20k_1.sql" />
+    <Build Include="dbo\Tables\Client_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProduct20200422_1.sql" />
+    <Build Include="dbo\Tables\ProgramVoucherRoute_1.sql" />
+    <Build Include="dbo\Tables\UploadFileType_1.sql" />
+    <Build Include="dbo\Tables\EXT_INClientQuotation20201203_1.sql" />
+    <Build Include="dbo\Tables\asdf_1.sql" />
+    <Build Include="dbo\Tables\Transaction_CTE20200323_20k_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationStatusHistory20201203_1.sql" />
+    <Build Include="dbo\Tables\MerchantIssueLog_1.sql" />
+    <Build Include="dbo\Tables\TransactionTemp20200323_30k_1.sql" />
+    <Build Include="dbo\Tables\VoucherStockBook_1.sql" />
+    <Build Include="dbo\Tables\UploadProductBuffer_1.sql" />
+    <Build Include="dbo\Tables\VoucherMovingLog20201204_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_C_6720200911_1.sql" />
+    <Build Include="dbo\Tables\Transaction_CTE20200323_30k_1.sql" />
+    <Build Include="dbo\Tables\EGV2187_Stock_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProductSoldPrice20200430_1.sql" />
+    <Build Include="dbo\Tables\UserBasicInfo_1.sql" />
+    <Build Include="dbo\Tables\MerchantTracing_1.sql" />
+    <Build Include="dbo\Tables\TransactionTemp20200323_40k_1.sql" />
+    <Build Include="dbo\Tables\ClientGroup_1.sql" />
+    <Build Include="dbo\Tables\EGV2499_Stock_1.sql" />
+    <Build Include="dbo\Tables\Voucher_1024_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProductSoldPriceAPACSGTXPS_789_1.sql" />
+    <Build Include="dbo\Tables\DiveTask_1.sql" />
+    <Build Include="dbo\Tables\ClearCacheProductStopAPI_1.sql" />
+    <Build Include="dbo\Tables\Transaction_CTE20200323_40k_1.sql" />
+    <Build Include="dbo\Tables\EGV1011_Stock_1.sql" />
+    <Build Include="dbo\Tables\Order_1.sql" />
+    <Build Include="dbo\Tables\ClientInvoiceCutoffDay_1.sql" />
+    <Build Include="dbo\Tables\EGV1035_Stock_1.sql" />
+    <Build Include="dbo\Tables\OrderLineCombo_1.sql" />
+    <Build Include="dbo\Tables\VoucherOrderBatch_1.sql" />
+    <Build Include="dbo\Tables\UserProfile_1.sql" />
+    <Build Include="dbo\Tables\CSSReceiverOperation_1.sql" />
+    <Build Include="dbo\Tables\EGV1048_Stock_1.sql" />
+    <Build Include="dbo\Tables\InstanceConfig_1.sql" />
+    <Build Include="dbo\Tables\ClientInvoiceCutoffSetting_1.sql" />
+    <Build Include="dbo\Tables\EGV0073_Stock_1.sql" />
+    <Build Include="dbo\Tables\ProductEmailSLMSTemplateApplyOrderTask_1.sql" />
+    <Build Include="dbo\Tables\OrderAttachment_1.sql" />
+    <Build Include="dbo\Tables\EGV1163_Stock_1.sql" />
+    <Build Include="dbo\Tables\Voucher_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotation_1.sql" />
+    <Build Include="dbo\Tables\EGV1165_Stock_1.sql" />
+    <Build Include="dbo\Tables\ProductEmailSLMSTemplateApplyOrderLog_1.sql" />
+    <Build Include="dbo\Tables\CSSResendBatchBuffer_1.sql" />
+    <Build Include="dbo\Tables\OrderBeneficiaryInfo_1.sql" />
+    <Build Include="dbo\Tables\EGV3483_Stock_1.sql" />
+    <Build Include="dbo\Tables\CSSResendBatch_1.sql" />
+    <Build Include="dbo\Tables\EGV1150_Stock_1.sql" />
+    <Build Include="dbo\Tables\OrderBeneficiaryInfoExtra_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationAttachment_1.sql" />
+    <Build Include="dbo\Tables\EGV1139_Stock_1.sql" />
+    <Build Include="dbo\Tables\MasterChildBusinessModelMapping_1.sql" />
+    <Build Include="dbo\Tables\CSSResendBatchVoucher_1.sql" />
+    <Build Include="dbo\Tables\VoucherActionHistory_1.sql" />
+    <Build Include="dbo\Tables\EGV1283_Stock_1.sql" />
+    <Build Include="dbo\Tables\OrderCreateBuffer_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationPricing_1.sql" />
+    <Build Include="dbo\Tables\EGV1666_Stock_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_FamilyMartBardCodeOne_1.sql" />
+    <Build Include="dbo\Tables\QuotationTemplateVersionSet_1.sql" />
+    <Build Include="dbo\Tables\VoucherExtendCode_1.sql" />
+    <Build Include="dbo\Tables\EGV1783_Stock_1.sql" />
+    <Build Include="dbo\Tables\OrderEmailContentTagValueSet_1.sql" />
+    <Build Include="dbo\Tables\TPCVendor_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationPrintOption_1.sql" />
+    <Build Include="dbo\Tables\EGV1760_Stock_1.sql" />
+    <Build Include="dbo\Tables\QuotationContentTagValueSet_1.sql" />
+    <Build Include="dbo\Tables\VoucherImportTemplate_1.sql" />
+    <Build Include="dbo\Tables\EGV1164_Stock_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_FamilyMartBardCodeOne_Buffer_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProduct_1.sql" />
+    <Build Include="dbo\Tables\EGV1234_Stock_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_A_65_1.sql" />
+    <Build Include="dbo\Tables\VoucherImpTemp_1.sql" />
+    <Build Include="dbo\Tables\VoucherSupplierAPILog_TX2_1.sql" />
+    <Build Include="dbo\Tables\OrderGroup_1.sql" />
+    <Build Include="dbo\Tables\EGV1043_Stock_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProductServiceFeeTriggerTime_1.sql" />
+    <Build Include="dbo\Tables\EGV0046_Stock_1.sql" />
+    <Build Include="dbo\Tables\VoucherNumberAlgorithm_1.sql" />
+    <Build Include="dbo\Tables\VoucherSupplierSyncOrderBuffer_TX2_1.sql" />
+    <Build Include="dbo\Tables\OrderLine_1.sql" />
+    <Build Include="dbo\Tables\EGV1133_Stock_1.sql" />
+    <Build Include="dbo\Tables\TransactionBak_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProductSoldPriceHistory_1.sql" />
+    <Build Include="dbo\Tables\ProductPricingDynamicFaceValue_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_B_66_1.sql" />
+    <Build Include="dbo\Tables\VoucherNumberRule_1.sql" />
+    <Build Include="dbo\Tables\Product_08_30_1.sql" />
+    <Build Include="dbo\Tables\OrderSLMSContentTagValueSet_1.sql" />
+    <Build Include="dbo\Tables\ProductVersion_08_30_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationServiceFee_1.sql" />
+    <Build Include="dbo\Tables\VoucherOrder_1.sql" />
+    <Build Include="dbo\Tables\VoucherRepository_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationServiceFeeTriggerTime_1.sql" />
+    <Build Include="dbo\Tables\ProcessLog_1.sql" />
+    <Build Include="dbo\Tables\OrderStatusHistory_1.sql" />
+    <Build Include="dbo\Tables\EXT_BOOKS_Prepaid_Buffer_1.sql" />
+    <Build Include="dbo\Tables\EXT_IN_APIOrderInfo_1.sql" />
+    <Build Include="dbo\Tables\VoucherReservationBatch_1.sql" />
+    <Build Include="dbo\Tables\EXT_BOOKS_Prepaid_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationStatusHistory_1.sql" />
+    <Build Include="dbo\Tables\DistributionEmailMessageStatus_1.sql" />
+    <Build Include="dbo\Tables\Product_1.sql" />
+    <Build Include="dbo\Tables\EXT_MyCard_Buffer_1.sql" />
+    <Build Include="dbo\Tables\ClientTracing_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_E_69_1.sql" />
+    <Build Include="dbo\Tables\EXT_SG_SerialNumber_Buffer_1.sql" />
+    <Build Include="dbo\Tables\DistributionSLMSMessageStatus_1.sql" />
+    <Build Include="dbo\Tables\VoucherReservationCode_1.sql" />
+    <Build Include="dbo\Tables\EXT_MyCard_1.sql" />
+    <Build Include="dbo\Tables\EXT_SG_SerialNumber_1.sql" />
+    <Build Include="dbo\Tables\ProductBarcodeSetting_1.sql" />
+    <Build Include="dbo\Tables\ConsumeConfirmationInfo_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_IQIYI_Buffer_1.sql" />
+    <Build Include="dbo\Tables\EXT_TW_IQIYI_1.sql" />
+    <Build Include="dbo\Tables\VoucherSendQuantity_1.sql" />
+    <Build Include="dbo\Tables\ProductCustomizedEmailTemplateVersion_1.sql" />
+    <Build Include="dbo\Tables\ConsumeMerchantUploadFileLog_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_F_70_1.sql" />
+    <Build Include="dbo\Tables\AdoraMoveSyncCheckLog_1.sql" />
+    <Build Include="dbo\Tables\AdHocRule_1.sql" />
+    <Build Include="dbo\Tables\VoucherShortUrl_1.sql" />
+    <Build Include="dbo\Tables\ProductCustomizedEmailTemplateVersionSet_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProduct_0910_1.sql" />
+    <Build Include="dbo\Tables\ContentTag_1.sql" />
+    <Build Include="dbo\Tables\AdoraMoveArcSyncCheckLog_1.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopShop20200522_1.sql" />
+    <Build Include="dbo\Tables\ResendingVoucher1223_1.sql" />
+    <Build Include="dbo\Tables\EXT_INGCID_Buffer_1.sql" />
+    <Build Include="dbo\Tables\Shop20200522_1.sql" />
+    <Build Include="dbo\Tables\AdHocRuleProduct_1.sql" />
+    <Build Include="dbo\Tables\ProductCustomizedSLMSTemplateVersion_1.sql" />
+    <Build Include="dbo\Tables\EXT_INGCID_1.sql" />
+    <Build Include="dbo\Tables\ContentTagValue_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_G_71_1.sql" />
+    <Build Include="dbo\Tables\EGV1053_Stock_1.sql" />
+    <Build Include="dbo\Tables\OrderActionHistory_1.sql" />
+    <Build Include="dbo\Tables\VoucherShortUrlTemp_1.sql" />
+    <Build Include="dbo\Tables\TempVoucher_1.sql" />
+    <Build Include="dbo\Tables\OrderEmailTemplateTagValue_1.sql" />
+    <Build Include="dbo\Tables\TempVoucherStock20201228_1.sql" />
+    <Build Include="dbo\Tables\ProductCustomizedSLMSTemplateVersionSet_1.sql" />
+    <Build Include="dbo\Tables\ContentTagValueHistory_1.sql" />
+    <Build Include="dbo\Tables\GROrderGroupFile_1.sql" />
+    <Build Include="dbo\Tables\ClientQuotationProduct20201010_1.sql" />
+    <Build Include="dbo\Tables\OrderEmailTemplateTagValueSet_1.sql" />
+    <Build Include="dbo\Tables\VoucherSyncBuffer_1.sql" />
+    <Build Include="dbo\Tables\ProductEmailContentTagValueSet_1.sql" />
+    <Build Include="dbo\Tables\CSUser_1.sql" />
+    <Build Include="dbo\Tables\VoucherTemp_1.sql" />
+    <Build Include="dbo\Tables\VoucherMovingLog20201023_1.sql" />
+    <Build Include="dbo\Tables\OrderEmailTemplateVersion_1.sql" />
+    <Build Include="dbo\Tables\Brand_1.sql" />
+    <Build Include="dbo\Tables\ProductEmailTemplateTagValue_1.sql" />
+    <Build Include="dbo\Tables\ConcurrencyLog_1.sql" />
+    <Build Include="dbo\Tables\OrderCancelRequest_1.sql" />
+    <Build Include="dbo\Tables\Wizard_1.sql" />
+    <Build Include="dbo\Tables\CSUserActionlog_1.sql" />
+    <Build Include="dbo\Tables\OrderEmailTemplateVersionSet_1.sql" />
+    <Build Include="dbo\Tables\ProductExpiryScheme_1.sql" />
+    <Build Include="dbo\Tables\ProductBannerImageSetting_1.sql" />
+    <Build Include="dbo\Tables\VoucherUpdateBuffer_1.sql" />
+    <Build Include="dbo\Tables\PreIssuedCampaignVoucher_1.sql" />
+    <Build Include="dbo\Tables\ProductVoucherSupplierOperationParameter_1.sql" />
+    <Build Include="dbo\Tables\CSUserClient_1.sql" />
+    <Build Include="dbo\Tables\OrderSLMSTemplateTagValue_1.sql" />
+    <Build Include="dbo\Tables\ProductExpirySchemeSet_1.sql" />
+    <Build Include="dbo\Tables\PreIssuedCampaignOrderInfo_1.sql" />
+    <Build Include="dbo\Tables\ClearCacheLog_1.sql" />
+    <Build Include="dbo\Tables\Voucher_1125_1.sql" />
+    <Build Include="dbo\Tables\EXT_Incomm_Apple_Buffer_1.sql" />
+    <Build Include="dbo\Tables\PreIssuedCampaignVoucherRequestInfo_1.sql" />
+    <Build Include="dbo\Tables\VoucherSupplier_1.sql" />
+    <Build Include="dbo\Tables\CTBCMapping_1.sql" />
+    <Build Include="dbo\Tables\TempVoucherBuffer_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_D_68_1125_1.sql" />
+    <Build Include="dbo\Tables\OrderSLMSTemplateTagValueSet_1.sql" />
+    <Build Include="dbo\Tables\EXT_Incomm_Apple_1.sql" />
+    <Build Include="dbo\Tables\ProductExternalProperty_1.sql" />
+    <Build Include="dbo\Tables\VoucherStock_D_68_1126_1.sql" />
+    <Build Include="dbo\Tables\TransactionCampaignTemp_1.sql" />
+    <Build Include="dbo\Tables\VoucherSupplierAPILog_Amazon_1.sql" />
+    <Build Include="dbo\Tables\CTBCOrder_1.sql" />
+    <Build Include="dbo\Tables\Product_07_30_1.sql" />
+    <Build Include="dbo\Views\vwVoucherStock_1.sql" />
+    <Build Include="Security\MStran_PAL_role_1.sql" />
+    <Build Include="Security\MSReplPAL_6_1_1.sql" />
+    <Build Include="Security\IN_EV_PROD_MOVE_1.sql" />
+    <Build Include="Security\IN_EV_DBS_MOVREP_1.sql" />
+    <Build Include="Security\stzhang_1.sql" />
+    <Build Include="Security\IN_EV_PROD_ADORA_1.sql" />
+    <Build Include="Security\ZAEINTXINDBSP01_MOVE_REPL_1.sql" />
+    <Build Include="Security\sa-ein-txrepl_1.sql" />
+    <Build Include="Security\RoleMemberships_1.sql" />
+    <Build Include="Security\RoleMemberships_2.sql" />
+    <Build Include="Security\RoleMemberships_3.sql" />
+    <Build Include="Security\RoleMemberships_4.sql" />
+    <Build Include="Security\RoleMemberships_5.sql" />
+    <Build Include="Security\RoleMemberships_6.sql" />
+    <Build Include="dbo\Functions\F_GetCountStatusByOrderID_1.sql" />
+    <Build Include="dbo\Functions\F_GetReimbursementValueByProductID_1.sql" />
+    <Build Include="dbo\Functions\F_GetServiceFeeAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetBillAmount_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\F_GetCostEmployeeWelfareAmount_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\F_GetCostMarketingAmount_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\F_GetCostTestAmount_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\F_GetDiscountAmount_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\F_GetEVAmount_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\F_GetFinanceDiscountAmount_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\F_GetFNEVAmount_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\F_GetFNEVWithholdAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetFNEVWithholdDiscount_1.sql" />
+    <Build Include="dbo\Functions\F_GetFNNWAAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetIEVAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetIIVAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetIRVAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetIVAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetNoShowCostAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetNoShowPriceAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetNWAAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetNWRAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetReimbursementAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetRVAmount_1.sql" />
+    <Build Include="dbo\Functions\F_GetServiceFeeAmountNew_1.sql" />
+    <Build Include="dbo\Functions\F_GetFNEVDiscount_1.sql" />
+    <Build Include="dbo\Stored Procedures\spIsRequestExist_1.sql" />
+    <Build Include="dbo\Stored Procedures\spIssueVoucherSuccess_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFixDataTool_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetFinanceReportFeeByMerchant_1.sql" />
+    <Build Include="dbo\Stored Procedures\spChangeProductName_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherBufferByAdoraTask_1.sql" />
+    <Build Include="dbo\Stored Procedures\spPublishOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetFinanceReportFeeByBusinessModel_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProductMaster_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherInfoByAdoraTask_1.sql" />
+    <Build Include="dbo\Stored Procedures\spPrePartialPublish_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetFinanceReportFeeByClient_1.sql" />
+    <Build Include="dbo\Stored Procedures\spINGetVoucherStatus_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateVoucherStatusForClearCache_1.sql" />
+    <Build Include="dbo\Stored Procedures\spPartialAssignVoucherByOrderLine_1.sql" />
+    <Build Include="dbo\Stored Procedures\spSumBeneficiaryVoucherQuantity_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAdoraPieceEndVoucherNumberByOrderLine_1.sql" />
+    <Build Include="dbo\Stored Procedures\spTryGetPartialVoucherSN_1.sql" />
+    <Build Include="dbo\Stored Procedures\spSyncShopSecurityKeyWithMerchant_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAdoraPieceEndVoucherNumberByOrderLineBuffer_1.sql" />
+    <Build Include="dbo\Stored Procedures\spTrustAccountReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertMWVLog_1.sql" />
+    <Build Include="dbo\Stored Procedures\spTryInsertVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateMoveAndAdoraDataCompareInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryTransactionHistoryByShop_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetEMV_ClientOrderLineByTXOrderNumber_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateActiveDateByOrderId_1.sql" />
+    <Build Include="dbo\Stored Procedures\spEMVInsertVoucherStock_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateBatchTransactionTask_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateCPPurchaseOrderAvailableQuantity_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateTX_KGB_Result_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateOrderLineQuantity_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckQuotationProductNeedApprove_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateTotalQuantity_1.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorsXml_1.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorXml_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAutoCalculateReimbursementMerchant_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForCommon_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spGetTagValueForPacificCoffee_1.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_LogError_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateChildClientQuotation_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTransactionForReimbursementBox_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProductVoucherSupplierOperationParameter_1.sql" />
+    <Build Include="dbo\Stored Procedures\spActivateAccounts_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateVoucherStatus_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertTransaction_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spGetMoveTransactionRowAmountByDate_1.sql" />
+    <Build Include="dbo\Stored Procedures\spActivePreissuedVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetEmailMessageStatus_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertConcurrencyLog_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetResendEmailMessage_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignCampaignVoucherToCache_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAddMoveAndAdoraDataCompareInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spArchiveBatchLog_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetResendSLMSMessage_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedCampaignVoucher_Normal_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMoveAndAdoraDataCompareInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetSLMSMessageStatus_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedCampaignVoucher_SevenEleven_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignVoucherByBen_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetSLMSMessageStatus_IN_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedCampaignVoucher_FamilyMart_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPartialTransactionForReimbursementBox_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedCampaignVoucher_FamilyMartBC1_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFixData_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVouchersForDownload_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCountReservationCode_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedCampaignVoucher_SoftWorld_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignDiveTasks_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedCampaignVoucher_Starbucks_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAutoCalculateReimbursement_1.sql" />
+    <Build Include="dbo\Stored Procedures\spDataFixingPreparing_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignTasks_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedCampaignVoucher_IQiYi_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCalcProductStat_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignVoucherByOrderLine_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedCampaignVoucher_HiLife_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCalculateInvoice_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGenerateVoucherOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCampaignVoucherInfoToSendAdora_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherTrashBatch_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCalculateInvoiceMandatory_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherTrashBatchDetail_1.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseTrashVoucherCredit_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCalculateReimbursement_1.sql" />
+    <Build Include="dbo\Stored Procedures\spVoucherStockMoving_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCalculateReimbursementMandatory_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateProgram_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCalculateTrustAccountReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCachedVoucher_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetEMV_ClientOrderLineByBatchId_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckOrderSyncToAuthFail_1.sql" />
+    <Build Include="dbo\Stored Procedures\spReleaseRCN_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckAndSaveVoucherForStarbucks_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckIsSevenElevenMultipartBarcode_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMerchantInfoForBillingBox_1.sql" />
+    <Build Include="dbo\Stored Procedures\spArchivePublishedBuffer_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckVoucherAcceptanceLoop_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignVoucherBufferByOrderLine_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCSSCountVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckVoucherShortUrlTemp_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForSG_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCleanAccountBatch_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateBeneficiaryAndActiveVoucher_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCleanVoucherTemp_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateVoucherConsumerInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryNeedResendVoucherListByEmail_1.sql" />
+    <Build Include="dbo\Stored Procedures\spSaveAndApplyToOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGenerateAdoraTasks_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateEMV_ClientOrderLineStatusByIds_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGenerateVoucherOrderBuffer_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertEXT_IN_ResendInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spINGetResendVoucher_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertEXT_IN_APIOrderInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProductDetails_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_ArchiveBatchLogJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateBeneficiaryInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_CompareTransactionCountJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_InsertTransactionJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_SyncAuthJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_SyncDistJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetQuotationProductLastDetailInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignVoucherByOrderLine_GR_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetOrderBeneficiaryInfoByOrderNumber_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_SyncTransactionJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_PublishOrderJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteVoucherSyncBuffer_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckEMVTaskStatus_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_DoBatchTransactionJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spSyncChildQuotation_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_ProductStatJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetGRVoucherInfoId_1.sql" />
+    <Build Include="dbo\Stored Procedures\spEMVCheckVoucherStock_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_ClearAccountToSyncJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGenerateDistributionTaskMessageVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteDistributionTaskMessages_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_ProcessTaskJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetEMV_AccountInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_AutoCalculateReimbursementJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetDistributionFailVoucher_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetEMV_ClientOrderLine_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_SyncTransactionCutLineJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetBillingReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_DoUpdateBatchTransactionJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCampaignReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetEMV_ClientOrderLineByRCN_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_OrderTrustAccountReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetClientInfoForBillingBox_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetEMV_ClientOrderTaskDetailByTaskId_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_DailyTrustAccountReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetClientReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetEMV_TaskInfo_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_AutoTrashVouchersJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spValidateOrderGroup_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCPPurchaseOrderByPONumber_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertEMV_Batch_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_AutoSendDistributionFailMailJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spTryInsertVouchers_HiLife_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetDistributionTaskMessageVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertEMV_ClientOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_TrustAccountJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateOrderGroupId_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetFinanceDetailReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertEMV_ClientOrderLine_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_ArchiveTransactionJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForFM_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_ArchivePublishedBufferJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForHL_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertEMV_VoucherStockInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_ProductEmailSLMSTemplateApplyOrderJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryReimbursementList_1.sql" />
+    <Build Include="dbo\Stored Procedures\spMoveEMVPreissueVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_AdoraIsEqualToMoveJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateEMV_ClientOrderLineStatus_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_AutoGenerateOrderFileJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetWPIssueReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_AutoReleaseVoucherJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetImportTemplateIdForProduct_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForTWSoftWorld_1.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteMoveVoucher_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_ExportBillingBoxPartOneInfoJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetInstantCashDenominationReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateClientCredit_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_ExportBillingBoxPartTwoInfoJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTrustReimbursementProdStatistic_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetInventoryInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForIQiYi_1.sql" />
+    <Build Include="dbo\Stored Procedures\CheckEMV_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_CreditLimitJob_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTrustRedemptionReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetInventoryInfoList_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForSE_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForGR_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckEMV_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckBizAPI_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetIssueTrustWarrantyDetail_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForStarBucks_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateVoucherExpiryNotificationConfiguration_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckClientQuotationProductSoldPrice_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTransactionForBillingBox_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMerchantReportDetailItems_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherIdByAlias_1.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryQuotationProductList_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetReimbursementDetailById_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMosConsumeReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spChangeClientQuotationStatus_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMosExpiredNotConsumeReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTransactionInfoForClienLib_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetShopInfoForBillingBox_1.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteClientQuotationProduct_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetServiceFeeForBillingBox_1.sql" />
+    <Build Include="dbo\Stored Procedures\spApplyProductContentTagToAllOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherGuidByShortUrl_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckExistNoApprovePrice_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetServiceFeeByQuotationAndProduct_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetQuotationProductListWithLastInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spPartialAssignVoucherByOrderLine_GR_1.sql" />
+    <Build Include="dbo\Stored Procedures\spClientQuotationApproveAll_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetReimbursementTransactionById_1.sql" />
+    <Build Include="dbo\Stored Procedures\spMoveCheckingData_1.sql" />
+    <Build Include="dbo\Stored Procedures\spClientQuotationProductApprove_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetReimbursementProdStatistic_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetReimbursementMaking_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMerchantContractForDownload_1.sql" />
+    <Build Include="dbo\Stored Procedures\spTrashCacheVoucher_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetRedemptionReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spTrashInStockVoucher_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckQuotationForTrustAccount_1.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryProcessDetail_1.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateAcceptanceLoopShop_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProductByProgramCode_1.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryProcessFail_1.sql" />
+    <Build Include="dbo\Stored Procedures\spSyncThirdPartyOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAutoTrashVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetQuotationApprovalProduct_1.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteOrderCreateBuffer_1.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchPreissueVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetOrderGroupUploadTemplate_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVouchersForTrash_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetOrderGroupSummary_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTrashVouchersInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignProductEmailTemplatesToOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetReimbursementById_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetGROderBeneficiaryInfoId_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckAndGetAPIOrderInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetQuotationInfoForBillingBox_1.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteEmailTemplateCustomize_1.sql" />
+    <Build Include="dbo\Stored Procedures\spMakeProductEmailTemplateToLatestVersion_1.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteEmailCustomizeTemplateTag_1.sql" />
+    <Build Include="dbo\Stored Procedures\spMakeProductSLMSTemplateToLatestVersion_1.sql" />
+    <Build Include="dbo\Stored Procedures\spSubProductSLMSApplyOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spSubProductEmailApplyOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spAddAppLog_1.sql" />
+    <Build Include="dbo\Stored Procedures\spProductEmailSLMSTemplateApplyOrder_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckApplyToOrderStatus_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckAndSaveVoucherForGR_1.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryFixFootNote_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckVoucherQuantity_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTransactionByAccountNumber_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherImpTempBySessionId_1.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryResendInfoByEmail_1.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spClearOrderCreateBuffer_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPivotDateTime_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTrashedTrustWarrantyDetail_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetSearchingId_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetChildProductQuotationProduct_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVouchersForDownload2_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetBarcodeInfoForDownload_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetQuotationApprovalInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertVoucherFromBuffer_1.sql" />
+    <Build Include="dbo\Stored Procedures\spSyncResendVoucher_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTrustWarrantyReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spEMVUpdateAndMoveVouchers_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetUsedTrustWarrantyDetail_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckAndSaveVoucherNumber_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetUserRateByExpireDateReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetUserRateByPublishDateReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckShop_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVoucher_SoftWorld_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherFromRepository_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVoucher_Starbucks_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckMerchant_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMoveTransNumForTheDay_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForFMBardCodeOne_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVoucher_FamilyMart_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherIdsToGenerateShortUrl_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherBarcodeInfo_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVoucher_FamilyMartBC1_1.sql" />
+    <Build Include="dbo\Stored Procedures\spArchiveTransaction_TW_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertVoucherSupplierAPILog_TPC_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVoucher_GR_1.sql" />
+    <Build Include="dbo\Stored Procedures\getSequenceNextValue_1.sql" />
+    <Build Include="dbo\Stored Procedures\InsertVoucherTrustAccountFromBuffer_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetVoucherPublishOn_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVoucher_HiLife_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateOrderGroup_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVoucher_IQiYi_1.sql" />
+    <Build Include="dbo\Stored Procedures\spClearAcceptanceLoopShop_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVoucher_Normal_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetWPTrustIssueReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreIssuedVoucher_SevenEleven_1.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTagValueForIn_1.sql" />
+    <Build Include="dbo\Stored Procedures\spInvoiceTransactionReport_1.sql" />
+    <Build Include="dbo\Stored Procedures\spCSSQueryVouchers_1.sql" />
+    <Build Include="dbo\User Defined Types\SingleListType_1.sql" />
+    <Build Include="dbo\User Defined Types\ProductEmailSLMSTemplateApplyOrderType_1.sql" />
+    <Build Include="dbo\User Defined Types\EMV_VoucherStockUpload_1.sql" />
+    <Build Include="dbo\User Defined Types\GetEMV_ClientOrderLineByRCNType_1.sql" />
+    <Build Include="dbo\User Defined Types\EMV_VoucherStockUploadRow_1.sql" />
+    <Build Include="dbo\User Defined Types\GetEMV_ClientOrderLineByTXOrderNumberType_1.sql" />
+    <Build Include="dbo\User Defined Types\UpdateEMV_ClientOrderLineStatusType_1.sql" />
+    <Build Include="dbo\Sequences\Seq_OrderNumber_1.sql" />
+    <Build Include="dbo\Sequences\Seq_Client_IdentityCode_1.sql" />
+    <Build Include="dbo\Sequences\Seq_QuotationNumber_1.sql" />
+    <Build Include="dbo\Sequences\Seq_FakeId_1.sql" />
+    <Build Include="dbo\Sequences\Seq_AmazonRequestId_1.sql" />
+    <Build Include="dbo\Sequences\Seq_BatchTransactionNumber_1.sql" />
+    <Build Include="dbo\Sequences\Seq_Merchant_IdentityCode_1.sql" />
+    <Build Include="dbo\Sequences\Seq_Shop_IdentityCode_1.sql" />
+    <Build Include="dbo\Sequences\Seq_OrderGroupNumber_1.sql" />
+  </ItemGroup>
+</Project>

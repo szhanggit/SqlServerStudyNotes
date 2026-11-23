@@ -1,0 +1,4 @@
+﻿
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [IN_EV_DBS_MOVREP];
+

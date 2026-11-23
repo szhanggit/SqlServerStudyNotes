@@ -1,0 +1,101 @@
+﻿CREATE TABLE [dbo].[TransactionHistory] (
+    [Id]                       BIGINT          IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [AccountNumber]            VARCHAR (50)    NOT NULL,
+    [ProgramCode]              VARCHAR (20)    NOT NULL,
+    [MerchantCode]             VARCHAR (50)    NOT NULL,
+    [ShopCode]                 VARCHAR (50)    NULL,
+    [TranType]                 SMALLINT        NOT NULL,
+    [TranLocalDate]            INT             NULL,
+    [TranLocalDateTime]        DATETIME        NULL,
+    [SettleDate]               INT             NULL,
+    [TranRealDateTime]         DATETIME        NOT NULL,
+    [Status]                   TINYINT         DEFAULT ((1)) NOT NULL,
+    [TranAmount]               INT             DEFAULT ((0)) NOT NULL,
+    [RefundedAmount]           INT             DEFAULT ((0)) NOT NULL,
+    [ResponseCode]             VARCHAR (5)     NULL,
+    [Channel]                  VARCHAR (20)    NULL,
+    [TranCode]                 VARCHAR (50)    NOT NULL,
+    [TranCodeRef]              VARCHAR (50)    NULL,
+    [BalanceAvailable]         INT             NULL,
+    [BalanceFrozen]            INT             NULL,
+    [MerchantId]               INT             NULL,
+    [ShopId]                   INT             NULL,
+    [ClientQuotationProductId] INT             NULL,
+    [ProductId]                INT             NULL,
+    [OrderId]                  INT             NULL,
+    [InvoiceToBeRequestedId]   BIGINT          NULL,
+    [ClientQuotationPricingId] INT             NULL,
+    [ReimbursementSchemeId]    INT             NULL,
+    [ReimbursementLineId]      BIGINT          NULL,
+    [InvoiceValue]             NUMERIC (20, 6) DEFAULT ((0)) NULL,
+    [ReimbursementValue]       NUMERIC (20, 6) DEFAULT ((0)) NULL,
+    [Bill]                     NUMERIC (20, 6) NULL,
+    [ServiceFee]               NUMERIC (20, 6) NULL,
+    [IIV]                      NUMERIC (20, 6) NULL,
+    [IV]                       NUMERIC (20, 6) NULL,
+    [Discount]                 NUMERIC (20, 6) NULL,
+    [IRV]                      NUMERIC (20, 6) NULL,
+    [RV]                       NUMERIC (20, 6) NULL,
+    [NWR]                      NUMERIC (20, 6) NULL,
+    [NWA]                      NUMERIC (20, 6) NULL,
+    [IEV]                      NUMERIC (20, 6) NULL,
+    [EV]                       NUMERIC (20, 6) NULL,
+    [NoShowPrice]              NUMERIC (20, 6) NULL,
+    [NoShowCost]               NUMERIC (20, 6) NULL,
+    [CostMarketing]            NUMERIC (20, 6) NULL,
+    [CostEmployeeWelfare]      NUMERIC (20, 6) NULL,
+    [CostTest]                 NUMERIC (20, 6) NULL,
+    [Rsv1]                     NVARCHAR (255)  NULL,
+    [Rsv2]                     NVARCHAR (255)  NULL,
+    [Rsv3]                     NVARCHAR (255)  NULL,
+    [FNEVWithhold]             NUMERIC (20, 6) NULL,
+    [FNEVDiscount]             NUMERIC (20, 6) NULL,
+    [FNEVWithholdDiscount]     NUMERIC (20, 6) NULL,
+    CONSTRAINT [PK_TransactionHistory_Id] PRIMARY KEY NONCLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_TransactionHistory_ClientQuotationPricing_ClientQuotationPricingId] FOREIGN KEY ([ClientQuotationPricingId]) REFERENCES [dbo].[ClientQuotationPricing] ([Id]),
+    CONSTRAINT [FK_TransactionHistory_ClientQuotationProduct_ClientQuotationProductId] FOREIGN KEY ([ClientQuotationProductId]) REFERENCES [dbo].[ClientQuotationProduct] ([Id]),
+    CONSTRAINT [FK_TransactionHistory_InvoiceToBeRequested_InvoiceToBeRequestedId] FOREIGN KEY ([InvoiceToBeRequestedId]) REFERENCES [dbo].[InvoiceToBeRequested] ([Id]),
+    CONSTRAINT [FK_TransactionHistory_Merchant_MerchantId] FOREIGN KEY ([MerchantId]) REFERENCES [dbo].[Merchant] ([Id]),
+    CONSTRAINT [FK_TransactionHistory_Order_OrderId] FOREIGN KEY ([OrderId]) REFERENCES [dbo].[Order] ([Id]),
+    CONSTRAINT [FK_TransactionHistory_Product_ProductId] FOREIGN KEY ([ProductId]) REFERENCES [dbo].[Product] ([Id]),
+    CONSTRAINT [FK_TransactionHistory_ReimbursementLine_ReimbursementLineId] FOREIGN KEY ([ReimbursementLineId]) REFERENCES [dbo].[ReimbursementLine] ([Id]),
+    CONSTRAINT [FK_TransactionHistory_ReimbursementScheme_ReimbursementSchemeId] FOREIGN KEY ([ReimbursementSchemeId]) REFERENCES [dbo].[ReimbursementScheme] ([Id]),
+    CONSTRAINT [FK_TransactionHistory_Shop_ShopId] FOREIGN KEY ([ShopId]) REFERENCES [dbo].[Shop] ([Id]),
+    CONSTRAINT [UK_TransactionHistory_AccountNumber_TranCode] UNIQUE CLUSTERED ([AccountNumber] ASC, [TranCode] ASC)
+);
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'        Redemption = 101,
+           ReverseRedemption = 201,
+           PreAuthorization = 102,
+           ReversePreAuthorization = 202,
+           PreAuthorizationComplete = 103,
+           ReversePreAuthorizationComplete = 203,
+           AccountVerification = 104,
+           BalanceEnquiry = 105,
+           PosTest = 301,
+           Issue = 401,
+           ReverseIssue = 501,
+           Activate = 402,
+           ReverseActivate = 502,
+           Expire = 403,
+           ReverseExpire = 503,
+           Extend=504,
+           PreAuthorizationExpire=106,
+           Reload = 107,
+           ReverseReload = 207,
+           TrashMoney = 404,
+           TrashNoMoney = 405', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'TransactionHistory', @level2type = N'COLUMN', @level2name = N'TranType';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'1--normal
+   2--reversed
+   ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'TransactionHistory', @level2type = N'COLUMN', @level2name = N'Status';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'1 direct call
+   2 from gateway', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'TransactionHistory', @level2type = N'COLUMN', @level2name = N'Channel';
+

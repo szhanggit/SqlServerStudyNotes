@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Shop] (
+    [Id]             INT            IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [MerchantId]     INT            NOT NULL,
+    [IdentityCode]   VARCHAR (50)   NOT NULL,
+    [ExternalCode]   VARCHAR (50)   NULL,
+    [Name]           NVARCHAR (100) NOT NULL,
+    [AddressId]      INT            NOT NULL,
+    [ContactName1]   NVARCHAR (50)  NULL,
+    [ContactPhone1]  VARCHAR (50)   NULL,
+    [ContactName2]   NVARCHAR (50)  NULL,
+    [ContactPhone2]  VARCHAR (50)   NULL,
+    [SecurityKey]    VARCHAR (48)   NULL,
+    [CreatedOn]      DATETIME       NOT NULL,
+    [LastModifiedOn] DATETIME       NOT NULL,
+    [LastModifier]   NVARCHAR (50)  NOT NULL,
+    [Status]         TINYINT        NOT NULL,
+    [SubsidiaryUEN]  NVARCHAR (30)  NULL,
+    [SubsidiaryName] NVARCHAR (100) NULL,
+    CONSTRAINT [PK_Shop] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Shop_Address_AddressId] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Address] ([Id]),
+    CONSTRAINT [FK_Shop_Merchant_MerchantId] FOREIGN KEY ([MerchantId]) REFERENCES [dbo].[Merchant] ([Id]),
+    CONSTRAINT [UK_Shop_IdentityCode] UNIQUE NONCLUSTERED ([IdentityCode] ASC),
+    CONSTRAINT [UK_Shop_MerchantId_ExternalCode] UNIQUE NONCLUSTERED ([MerchantId] ASC, [ExternalCode] ASC) WITH (FILLFACTOR = 90)
+);
+

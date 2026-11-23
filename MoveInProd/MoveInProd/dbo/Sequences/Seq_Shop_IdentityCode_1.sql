@@ -1,0 +1,7 @@
+﻿CREATE SEQUENCE [dbo].[Seq_Shop_IdentityCode]
+    AS BIGINT
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 9999999999
+    CYCLE;
+
