@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[tb_bp_batch_line_order_detail] (
+    [batch_order_detail_id]    BIGINT          IDENTITY (1, 1) NOT NULL,
+    [batch_line_id]            BIGINT          NOT NULL,
+    [order_number]             NVARCHAR (50)   NOT NULL,
+    [client_order_number]      NVARCHAR (50)   NOT NULL,
+    [beneficiary_name]         NVARCHAR (100)  NULL,
+    [email]                    NVARCHAR (50)   NULL,
+    [product_code]             NVARCHAR (50)   NOT NULL,
+    [quantity]                 INT             NOT NULL,
+    [mobile]                   NVARCHAR (50)   NULL,
+    [memo]                     NVARCHAR (1000) NULL,
+    [flex1]                    NVARCHAR (255)  NULL,
+    [flex2]                    NVARCHAR (255)  NULL,
+    [flex3]                    NVARCHAR (255)  NULL,
+    [flex4]                    NVARCHAR (255)  NULL,
+    [flex5]                    NVARCHAR (255)  NULL,
+    [flex6]                    NVARCHAR (255)  NULL,
+    [flex7]                    NVARCHAR (255)  NULL,
+    [flex8]                    NVARCHAR (255)  NULL,
+    [flex9]                    NVARCHAR (255)  NULL,
+    [flex10]                   NVARCHAR (255)  NULL,
+    [unique_external_order_id] NVARCHAR (100)  NULL,
+    CONSTRAINT [PK_tb_bp_batch_line_order_detail_id] PRIMARY KEY CLUSTERED ([batch_order_detail_id] ASC),
+    CONSTRAINT [FK_tb_bp_batch_line_tb_bp_batch_line_order_detail] FOREIGN KEY ([batch_line_id]) REFERENCES [dbo].[tb_bp_batch_line] ([batch_line_id]) ON DELETE CASCADE
+);
+

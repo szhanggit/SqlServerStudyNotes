@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[tb_bp_batch_line_voucher_operations_detail] (
+    [batch_line_voucher_operations_id] BIGINT         IDENTITY (1, 1) NOT NULL,
+    [batch_line_id]                    BIGINT         NOT NULL,
+    [voucher_number]                   NVARCHAR (150) NOT NULL,
+    [alias]                            NVARCHAR (20)  NULL,
+    [guid]                             NVARCHAR (100) NULL,
+    [action_type]                      NVARCHAR (30)  NOT NULL,
+    [amount]                           DECIMAL (18)   NULL,
+    [merchant_code]                    NVARCHAR (50)  NULL,
+    [shop_code]                        NVARCHAR (50)  NULL,
+    [terminal_code]                    NVARCHAR (50)  NULL,
+    [settle_date]                      DATE           NULL,
+    [tran_real_datetime]               DATETIME       NULL,
+    [expiry_date]                      DATETIME       NULL,
+    [rsv1]                             NVARCHAR (30)  NULL,
+    [tran_code_ref]                    NVARCHAR (50)  NULL,
+    [reason]                           NVARCHAR (255) NULL,
+    [business_date]                    DATETIME       NULL,
+    [program_code]                     NVARCHAR (50)  NULL,
+    [voucher_operation_format]         NVARCHAR (50)  NOT NULL,
+    CONSTRAINT [PK_tb_bp_batch_line_voucher_operations_detail_id] PRIMARY KEY CLUSTERED ([batch_line_voucher_operations_id] ASC),
+    CONSTRAINT [FK_VOUCHER_OPERATIONS_FORMAT] CHECK (((case when [voucher_number] IS NOT NULL then (1) else (0) end+case when [alias] IS NOT NULL then (1) else (0) end)+case when [guid] IS NOT NULL then (1) else (0) end)=(1)),
+    CONSTRAINT [FK_tb_bp_batch_line_tb_bp_batch_line_voucher_operations_detail] FOREIGN KEY ([batch_line_id]) REFERENCES [dbo].[tb_bp_batch_line] ([batch_line_id]) ON DELETE CASCADE
+);
+
