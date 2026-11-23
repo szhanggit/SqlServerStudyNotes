@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[JBHIFIVoucher] (
+    [Id]                BIGINT          IDENTITY (1, 1) NOT NULL,
+    [ProgramCode]       VARCHAR (20)    NOT NULL,
+    [VoucherId]         BIGINT          NULL,
+    [VoucherLink]       VARCHAR (500)   NULL,
+    [ValidityStartDate] VARCHAR (100)   NULL,
+    [ValidityEndDate]   VARCHAR (100)   NULL,
+    [CardStatusId]      INT             NULL,
+    [ProductCode]       VARCHAR (50)    NULL,
+    [CardCode]          VARCHAR (50)    NULL,
+    [Amount]            NUMERIC (20, 6) NULL,
+    [AvailableBalance]  NUMERIC (20, 6) NULL,
+    [CurrentBalance]    NUMERIC (20, 6) NULL,
+    [ResponseMessage]   VARCHAR (500)   NULL,
+    [SerialNumber]      VARCHAR (200)   NULL,
+    [PIN]               VARCHAR (100)   NULL,
+    [OrderNumber]       VARCHAR (200)   NULL,
+    [TPCLogId]          BIGINT          NULL,
+    [UserName]          NVARCHAR (200)  NULL,
+    [TranId]            NVARCHAR (100)  NULL,
+    [VendorCode]        VARCHAR (50)    NOT NULL,
+    CONSTRAINT [PK_JBHIFIVocher_Id] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (FILLFACTOR = 90),
+    CONSTRAINT [FK_JBHIFIVocher_Voucher_VoucherId] FOREIGN KEY ([VoucherId]) REFERENCES [dbo].[Voucher] ([Id])
+);
+
