@@ -1,0 +1,7 @@
+﻿CREATE SEQUENCE [redemption].[seq_host_ssn]
+    AS BIGINT
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 999999999
+    CYCLE;
+
