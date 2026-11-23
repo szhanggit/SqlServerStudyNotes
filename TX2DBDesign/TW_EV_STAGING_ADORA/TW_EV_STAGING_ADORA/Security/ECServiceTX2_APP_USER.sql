@@ -1,0 +1,2 @@
+﻿CREATE USER [ECServiceTX2_APP_USER];
+

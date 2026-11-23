@@ -1,0 +1,7 @@
+﻿CREATE SEQUENCE [dbo].[Seq_FakeId]
+    AS INT
+    INCREMENT BY 1
+    MINVALUE 0
+    MAXVALUE 999999
+    CYCLE;
+

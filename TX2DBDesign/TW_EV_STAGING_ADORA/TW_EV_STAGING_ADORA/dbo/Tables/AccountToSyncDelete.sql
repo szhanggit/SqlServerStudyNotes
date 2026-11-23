@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[AccountToSyncDelete] (
+    [Id]                               INT            IDENTITY (1, 1) NOT NULL,
+    [AccountNumber]                    VARCHAR (50)   NULL,
+    [ProgramId]                        INT            NULL,
+    [BalanceAvailable]                 INT            NULL,
+    [BalanceFrozen]                    INT            NULL,
+    [Status]                           INT            NULL,
+    [CreatedOn]                        DATETIME       NULL,
+    [ActiveTo]                         DATETIME       NULL,
+    [ActivatedOn]                      DATETIME       NULL,
+    [ConsumeTime]                      DATETIME       NULL,
+    [ConsumeMerchantCode]              VARCHAR (50)   NULL,
+    [ConsumeShopCode]                  VARCHAR (50)   NULL,
+    [ChangedUTCTimeL]                  BIGINT         NULL,
+    [ChangedTimestamp]                 ROWVERSION     NULL,
+    [ConsumeTerminalSSN]               VARCHAR (50)   NULL,
+    [LastTranOn]                       DATETIME       NULL,
+    [BatchTransactionDetailId]         INT            NOT NULL,
+    [BatchTransactionDetailExternalId] INT            NOT NULL,
+    [SessionId]                        VARCHAR (100)  NULL,
+    [BackupOn]                         DATETIME       NULL,
+    [Channel]                          VARCHAR (100)  NULL,
+    [Comment]                          VARCHAR (1000) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+

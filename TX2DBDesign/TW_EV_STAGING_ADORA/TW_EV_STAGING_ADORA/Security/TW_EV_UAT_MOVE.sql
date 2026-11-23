@@ -1,0 +1,2 @@
+﻿CREATE USER [TW_EV_UAT_MOVE];
+

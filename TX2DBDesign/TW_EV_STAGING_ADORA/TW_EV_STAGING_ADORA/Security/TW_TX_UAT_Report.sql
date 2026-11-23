@@ -1,0 +1,2 @@
+﻿CREATE USER [TW_TX_UAT_Report];
+

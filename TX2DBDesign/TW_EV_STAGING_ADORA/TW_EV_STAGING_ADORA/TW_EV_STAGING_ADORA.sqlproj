@@ -1,0 +1,499 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>TW_EV_STAGING_ADORA</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{c38e4a5a-07d1-46c2-a9fe-ee275731a64a}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>TW_EV_STAGING_ADORA</RootNamespace>
+    <AssemblyName>TW_EV_STAGING_ADORA</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="Storage\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
+    <Folder Include="dbo\Sequences\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\FailureReversalDetail_History.sql" />
+    <Build Include="dbo\Tables\AccountBuffer3.sql" />
+    <Build Include="dbo\Tables\Steven.sql" />
+    <Build Include="dbo\Tables\TransactionSyncCutLine.sql" />
+    <Build Include="dbo\Tables\MultiAccountsTransaction_History.sql" />
+    <Build Include="dbo\Tables\TPCLog.sql" />
+    <Build Include="dbo\Tables\tran_tmp.sql" />
+    <Build Include="dbo\Tables\MultiAccountsTransactionDetail_History.sql" />
+    <Build Include="dbo\Tables\PreIssuedCampaignAccountsBuffer.sql" />
+    <Build Include="dbo\Tables\MultiAccountsTransaction_HistoryIANMB.sql" />
+    <Build Include="dbo\Tables\MultiAccountsTransactionDetail_HistoryIANMB.sql" />
+    <Build Include="dbo\Tables\MultiAccountsTransactionIANMB.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoop.sql" />
+    <Build Include="dbo\Tables\BUF_PreAuthorization.sql" />
+    <Build Include="dbo\Tables\MultiAccountsTransactionDetailIANMB.sql" />
+    <Build Include="dbo\Tables\BUF_PreAuthorizationComplete.sql" />
+    <Build Include="dbo\Tables\BUF_ReserveRedemption.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopCategory.sql" />
+    <Build Include="dbo\Tables\BUF_ReversePreAuthorization.sql" />
+    <Build Include="dbo\Tables\aaaa20210926.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopMerchant.sql" />
+    <Build Include="dbo\Tables\AccountNotificationSubscription.sql" />
+    <Build Include="dbo\Tables\AccountBuffer4.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopShop.sql" />
+    <Build Include="dbo\Tables\BadTransaction20210927.sql" />
+    <Build Include="dbo\Tables\BatchTransactionDetail.sql" />
+    <Build Include="dbo\Tables\DoTransactionNotification.sql" />
+    <Build Include="dbo\Tables\BatchTransactionTask.sql" />
+    <Build Include="dbo\Tables\Account.sql" />
+    <Build Include="dbo\Tables\IssueAndActiveCampaignVoucherBuffer.sql" />
+    <Build Include="dbo\Tables\ELMAH_Error.sql" />
+    <Build Include="dbo\Tables\TransactionBufferForBatch.sql" />
+    <Build Include="dbo\Tables\AccountHistory.sql" />
+    <Build Include="dbo\Tables\BUF_BatchTrash.sql" />
+    <Build Include="dbo\Tables\AccountStatusHistory.sql" />
+    <Build Include="dbo\Tables\Transaction20210926.sql" />
+    <Build Include="dbo\Tables\Batch.sql" />
+    <Build Include="dbo\Tables\SOGO_Performance_Test.sql" />
+    <Build Include="dbo\Tables\BatchAbnormalAccountActivity.sql" />
+    <Build Include="dbo\Tables\SOGO_Performance_Test_0530.sql" />
+    <Build Include="dbo\Tables\BatchClearStatistics.sql" />
+    <Build Include="dbo\Tables\BatchDetail.sql" />
+    <Build Include="dbo\Tables\BatchFraudTransaction.sql" />
+    <Build Include="dbo\Tables\DiveNotificationLog.sql" />
+    <Build Include="dbo\Tables\Dictionary.sql" />
+    <Build Include="dbo\Tables\BUF_Redemption.sql" />
+    <Build Include="dbo\Tables\TransactionExpTemp.sql" />
+    <Build Include="dbo\Tables\DictionaryTranslation.sql" />
+    <Build Include="dbo\Tables\APILog_Json.sql" />
+    <Build Include="dbo\Tables\ExpirationPolicy.sql" />
+    <Build Include="dbo\Tables\TransactionForExpiredAccountBuffer.sql" />
+    <Build Include="dbo\Tables\MaxNumRestriction.sql" />
+    <Build Include="dbo\Tables\AccountToGenTran.sql" />
+    <Build Include="dbo\Tables\AccountToGenTranV2.sql" />
+    <Build Include="dbo\Tables\Merchant.sql" />
+    <Build Include="dbo\Tables\MerchantCategory.sql" />
+    <Build Include="dbo\Tables\AccountBuffer1.sql" />
+    <Build Include="dbo\Tables\ArchiveDiveNotificationLog.sql" />
+    <Build Include="dbo\Tables\AccountLETrans.sql" />
+    <Build Include="dbo\Tables\TransactionExpTemp_2.sql" />
+    <Build Include="dbo\Tables\MerchantContract.sql" />
+    <Build Include="dbo\Tables\Product.sql" />
+    <Build Include="dbo\Tables\EXT_TW_CathayLifeShopName.sql" />
+    <Build Include="dbo\Tables\AccountBuffer2.sql" />
+    <Build Include="dbo\Tables\TransactionBKForSupport.sql" />
+    <Build Include="dbo\Tables\Program.sql" />
+    <Build Include="dbo\Tables\APILog_POS.sql" />
+    <Build Include="dbo\Tables\Restriction.sql" />
+    <Build Include="dbo\Tables\AccountLEBufferDup.sql" />
+    <Build Include="dbo\Tables\AccountKey.sql" />
+    <Build Include="dbo\Tables\Member.sql" />
+    <Build Include="dbo\Tables\RestrictionDateBlacklist.sql" />
+    <Build Include="dbo\Tables\AccountToGenReverseActivatePreIssuedTran.sql" />
+    <Build Include="dbo\Tables\AccountToSync.sql" />
+    <Build Include="dbo\Tables\PublishedEvent.sql" />
+    <Build Include="dbo\Tables\AccountTranCodeTemp20210802.sql" />
+    <Build Include="dbo\Tables\RestrictionDayOfWeek.sql" />
+    <Build Include="dbo\Tables\TransactionBuffer.sql" />
+    <Build Include="dbo\Tables\MemberAccount.sql" />
+    <Build Include="dbo\Tables\ArchiveFailedDiveNotificationLog.sql" />
+    <Build Include="dbo\Tables\TransactionTemp_20200709.sql" />
+    <Build Include="dbo\Tables\RestrictionTimeOfDay.sql" />
+    <Build Include="dbo\Tables\AccountLE.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopShopUpdate20180907.sql" />
+    <Build Include="dbo\Tables\MemberVoucher.sql" />
+    <Build Include="dbo\Tables\ReverseLimit.sql" />
+    <Build Include="dbo\Tables\SecurityKey.sql" />
+    <Build Include="dbo\Tables\SGAccountTypeProductMapping.sql" />
+    <Build Include="dbo\Tables\Shop.sql" />
+    <Build Include="dbo\Tables\AppLog.sql" />
+    <Build Include="dbo\Tables\TransactionLE_ext.sql" />
+    <Build Include="dbo\Tables\Terminal.sql" />
+    <Build Include="dbo\Tables\NotificationItemV2.sql" />
+    <Build Include="dbo\Tables\NotificationItem.sql" />
+    <Build Include="dbo\Tables\MultiAccountsTransaction.sql" />
+    <Build Include="dbo\Tables\VoucherTemp.sql" />
+    <Build Include="dbo\Tables\AccountLEDelete.sql" />
+    <Build Include="dbo\Tables\TimezoneOffset.sql" />
+    <Build Include="dbo\Tables\AccountBatchReverseActivateRecords.sql" />
+    <Build Include="dbo\Tables\AccountLETransDelete.sql" />
+    <Build Include="dbo\Tables\MultiAccountsTransactionDetail.sql" />
+    <Build Include="dbo\Tables\Transaction.sql" />
+    <Build Include="dbo\Tables\AccountBatchActivateRecords.sql" />
+    <Build Include="dbo\Tables\Transaction_APACSGTXPS7514.sql" />
+    <Build Include="dbo\Tables\TrashSmartChoiceBuffer.sql" />
+    <Build Include="dbo\Tables\MasterTranInfo.sql" />
+    <Build Include="dbo\Tables\AccountBatchActivateInfo.sql" />
+    <Build Include="dbo\Tables\steven1.sql" />
+    <Build Include="dbo\Tables\TransactionHistory.sql" />
+    <Build Include="dbo\Tables\tcl20200406.sql" />
+    <Build Include="dbo\Tables\AccountExpireBuffer.sql" />
+    <Build Include="dbo\Tables\FailureReversalDetail.sql" />
+    <Build Include="dbo\Tables\MerchantContract_08172021.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopShopUpdate.sql" />
+    <Build Include="dbo\Tables\TransactionExpireBuffer.sql" />
+    <Build Include="dbo\Tables\TempAccount_20200710.sql" />
+    <Build Include="dbo\Tables\UserProfile.sql" />
+    <Build Include="dbo\Tables\Clearing.sql" />
+    <Build Include="dbo\Tables\AccountLEBuffer.sql" />
+    <Build Include="dbo\Tables\ClearingDetail.sql" />
+    <Build Include="dbo\Tables\AccountDeletionBuffer.sql" />
+    <Build Include="dbo\Tables\ClearingDiff.sql" />
+    <Build Include="dbo\Tables\AccountLETransBuffer.sql" />
+    <Build Include="dbo\Tables\AdoraLosingAcceptanceLoopLog.sql" />
+    <Build Include="dbo\Tables\flyway_schema_history.sql" />
+    <Build Include="dbo\Tables\SGTransaction.sql" />
+    <Build Include="dbo\Tables\ShopWork.sql" />
+    <Build Include="dbo\Tables\AccountDelete.sql" />
+    <Build Include="dbo\Tables\WorkKey.sql" />
+    <Build Include="dbo\Tables\SGTransactionMapping.sql" />
+    <Build Include="dbo\Tables\AccountHistoryDelete.sql" />
+    <Build Include="dbo\Tables\AccountBefore_20181225.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopShopBuffer.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopMerchantBuffer.sql" />
+    <Build Include="dbo\Tables\AccountKeyDelete.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopCategoryBuffer.sql" />
+    <Build Include="dbo\Tables\LEIdTemp.sql" />
+    <Build Include="dbo\Tables\AcceptanceLoopBuffer.sql" />
+    <Build Include="dbo\Tables\AccountToSyncDelete.sql" />
+    <Build Include="dbo\Tables\TerminalManage.sql" />
+    <Build Include="dbo\Tables\ArchiveAccountBuffer.sql" />
+    <Build Include="dbo\Tables\SGMobileAPILog.sql" />
+    <Build Include="dbo\Tables\MasterTranInfoStaging.sql" />
+    <Build Include="dbo\Tables\PreIssuedCampaignOrderInfo.sql" />
+    <Build Include="dbo\Views\VW_VoucherInfo_RealTime.sql" />
+    <Build Include="dbo\Views\VW_RealTimeInfo.sql" />
+    <Build Include="Storage\ADORA_FG1.sql" />
+    <Build Include="Storage\Transaction_FG.sql" />
+    <Build Include="Security\db_executor.sql" />
+    <Build Include="Security\jbonnet.sql" />
+    <Build Include="Security\TW_TX_DBS_Report.sql" />
+    <Build Include="Security\aescot.sql" />
+    <Build Include="Security\echen.sql" />
+    <Build Include="Security\eyang.sql" />
+    <Build Include="Security\ehsu.sql" />
+    <Build Include="Security\jchang.sql" />
+    <Build Include="Security\jhsiao.sql" />
+    <Build Include="Security\jhsieh.sql" />
+    <Build Include="Security\jliu.sql" />
+    <Build Include="Security\yli1.sql" />
+    <Build Include="Security\pchung.sql" />
+    <Build Include="Security\kyao.sql" />
+    <Build Include="Security\TW_EV_UAT_ADORA.sql" />
+    <Build Include="Security\TW_EV_UAT_MOVE.sql" />
+    <Build Include="Security\ishuang.sql" />
+    <Build Include="Security\ECServiceTX2_APP_USER.sql" />
+    <Build Include="Security\TW_TX_DBS_SJBServices.sql" />
+    <Build Include="Security\AATECH_sa-apac-sqlstag2.sql" />
+    <Build Include="Security\apacbiuser.sql" />
+    <Build Include="Security\walin.sql" />
+    <Build Include="Security\sa-apac-appdy.sql" />
+    <Build Include="Security\TW_TX_UAT_Report.sql" />
+    <Build Include="Security\echi.sql" />
+    <Build Include="Security\ahsu.sql" />
+    <Build Include="Security\TW_EV_STAGING_ADORA.sql" />
+    <Build Include="Security\TW_EV_STAGING_ADORA_1.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Functions\fnCalcLocalDatetime.sql" />
+    <Build Include="dbo\Functions\fnCalcLocalDate.sql" />
+    <Build Include="dbo\Stored Procedures\spPreAuthorizationComplete.sql" />
+    <Build Include="dbo\Stored Procedures\getSequenceNextValue.sql" />
+    <Build Include="dbo\Stored Procedures\spArchiveMultiAccountsTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spActivateAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spDetectFraudTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseActivateOrTrashAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spSGReverseRedemption.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateTransaction2.sql" />
+    <Build Include="dbo\Stored Procedures\spExtendAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spOneAccountPreAuthorization.sql" />
+    <Build Include="dbo\Stored Procedures\spSendPresent.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateTransactionHistory.sql" />
+    <Build Include="dbo\Stored Procedures\spOneAccountPreAuthorizationComplete.sql" />
+    <Build Include="dbo\Stored Procedures\spClearingStatisticInfoV2.sql" />
+    <Build Include="dbo\Stored Procedures\spOneAccountReserveRedemption.sql" />
+    <Build Include="dbo\Stored Procedures\spDailyClearingV2.sql" />
+    <Build Include="dbo\Stored Procedures\spOneAccountReversePreAuthorization.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAccountToSync.sql" />
+    <Build Include="dbo\Stored Procedures\spShiftClearingV2.sql" />
+    <Build Include="dbo\Stored Procedures\spFindStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spFindTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spIsCampaignOrder.sql" />
+    <Build Include="dbo\Stored Procedures\spFindTransactionHistory.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertTransactionForBatch.sql" />
+    <Build Include="dbo\Stored Procedures\spFindTransactions.sql" />
+    <Build Include="dbo\Stored Procedures\spGenerateDashboardReport.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteAccountInfo2.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckExpirationPolicy.sql" />
+    <Build Include="dbo\Stored Procedures\spGetSequenceNumbers.sql" />
+    <Build Include="dbo\Stored Procedures\spPreAuthorization.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAdoraTransactionRowAmountByDate.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateLEFromBuffer.sql" />
+    <Build Include="dbo\Stored Procedures\spUndoHistoryMultiAccountsTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseActivateOrTrashAccountForBatch.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateFinanceTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spActivateAccountList.sql" />
+    <Build Include="dbo\Stored Procedures\spReversePreAuthorization.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseReloadAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spSyncShopFromWorkTable.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spQueuedMultiAccountsPreAuthorization.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spQueuedMultiAccountsReversePreAuthorization.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateTransactionForError.sql" />
+    <Build Include="dbo\Stored Procedures\spQueuedMultiAccountsReserveRedemption.sql" />
+    <Build Include="dbo\Stored Procedures\spQueuedMultiAccountsPreAuthorizationComplete.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorXml.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAccountToSyncMaxTimeByProgram.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertQueuedMultiAccountsTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\sw_ps_get_auth_key.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorsXml.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAdoraTransNumForTheDay.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_LogError.sql" />
+    <Build Include="dbo\Stored Procedures\spGetUnSyncVoucherNumByProgram.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteIssueAndActiveCampaignVoucherWithSessionId.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseActivatePreIssuedTransactionGeneration.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchIssueAndActiveCampaignVoucherInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertFailureReversalTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryAccountBasicInfoDtoList.sql" />
+    <Build Include="dbo\Stored Procedures\spClearStatistics.sql" />
+    <Build Include="dbo\Stored Procedures\spRedemptionForBatch.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertTransactionBufferForBatch.sql" />
+    <Build Include="dbo\Stored Procedures\spMultiAccountsRedemption.sql" />
+    <Build Include="dbo\Stored Procedures\spGetRecentBatchStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spGetLastBatchStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spExpireBatch.sql" />
+    <Build Include="dbo\Stored Procedures\sw_pf_check_merchant_code.sql" />
+    <Build Include="dbo\Stored Procedures\sw_pf_get_last_tran_code.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchFromTransactionExpTemp.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertPosApiLog.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spIssueAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spMoveTransactionHistory.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateMaxFailNumber.sql" />
+    <Build Include="dbo\Stored Procedures\spSyncAcceptanceLoop.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertedExpiredAccounts.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateTranFromGenV2.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdatePosApiLog.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryTransactionCount.sql" />
+    <Build Include="dbo\Stored Procedures\spTrashSmartChoice.sql" />
+    <Build Include="dbo\Stored Procedures\spArchiveNotificationLog.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteAccountInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateNotificationLog.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryFinanceLEAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spClearingStatisticInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseExpireAccountForBatch.sql" />
+    <Build Include="dbo\Stored Procedures\spDiveNotificationLog.sql" />
+    <Build Include="dbo\Stored Procedures\spDiveNotificationLogByTranType.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spCreatePreIssuedAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spReloadAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spFindAccounts.sql" />
+    <Build Include="dbo\Stored Procedures\spFindAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spFindAccountHistory.sql" />
+    <Build Include="dbo\Stored Procedures\spRedemption.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseActivatePreIssuedAccounts.sql" />
+    <Build Include="dbo\Stored Procedures\spReserveRedemption.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData_PreAuthorizationExpireJob.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTerminalEntityInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData_ExpireAccountJob.sql" />
+    <Build Include="dbo\Stored Procedures\spArchiveFailedNotificationLog.sql" />
+    <Build Include="dbo\Stored Procedures\spGetShopEntityInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData_CleanAccountJob.sql" />
+    <Build Include="dbo\Stored Procedures\spFailedDiveNotificationLogByTranType.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMerchantEntityInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData_ActivateAccountJob.sql" />
+    <Build Include="dbo\Stored Procedures\spFailedDiveNotificationLog.sql" />
+    <Build Include="dbo\Stored Procedures\spSaveAndApplyToOrder.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData_TransactionGenerationJob.sql" />
+    <Build Include="dbo\Stored Procedures\spDiveNotificationLogByTranTypeV2.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData_CreateAccountJob.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spFindAccountV2.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData_DoBatchTransactionTaskJob.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateTranAmount.sql" />
+    <Build Include="dbo\Stored Procedures\spFindAccountHistoryV2.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData_CreateLETransactionJob.sql" />
+    <Build Include="dbo\Stored Procedures\spFindTransactionByTerminalSSN.sql" />
+    <Build Include="dbo\Stored Procedures\spFindTransactionHistoryV2.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData_ProcessOldLEJob.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCathayLifeShopNames.sql" />
+    <Build Include="dbo\Stored Procedures\spClearAccountToSync.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckIfSuperChildVouchersAllUsed.sql" />
+    <Build Include="dbo\Stored Procedures\spAccountBuffer2Check.sql" />
+    <Build Include="dbo\Stored Procedures\spSaveOrUpdatePreIssuedCampaignOrderInfo.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spAddAppLog.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckTaskForAccount.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spQueryReverseFinanceLEAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseExpireAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckJsonAPI.sql" />
+    <Build Include="dbo\Stored Procedures\spTrashPreIssuedCampaignAccounts.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckNotificationClientTimeOut.sql" />
+    <Build Include="dbo\Stored Procedures\spSetIssueAndActiveCampaignVoucherWithSessionId.sql" />
+    <Build Include="dbo\Stored Procedures\spLEActivateAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckPosAPI.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateLEStatus.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spLEReverseActivateAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckJsonAPINode1.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertJsonApiLog.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateReverseFinanceLEAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spActivateAccounts.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckNotificationClientPending.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateJsonApiLog.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckJsonAPINode2.sql" />
+    <Build Include="dbo\Stored Procedures\spResultFromSP.sql" />
+    <Build Include="dbo\Stored Procedures\spRemoveAccountBuffer1.sql" />
+    <Build Include="dbo\Stored Procedures\spTransferAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spAssignTranCodeToAccountLEBuffer.sql" />
+    <Build Include="dbo\Stored Procedures\spCheckBatchActivateAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spSyncUserInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertAccountLE.sql" />
+    <Build Include="dbo\Stored Procedures\spDoubleCheckBatchActivateAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCurrentDayMerchantRedemptList.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertAccountBatchActivateInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCurrentDayMerchantRedemptCount.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMerchantAndShopNameByCode.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreAuthorizationExpire.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spPreAuthorizationExpireBatch.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateFinanceExpireDate.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPreAuthorizationExpireInHistory.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spUpdateAccountStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spProcessOldLE.sql" />
+    <Build Include="dbo\Stored Procedures\sw_pf_check_account_exist.sql" />
+    <Build Include="dbo\Stored Procedures\spCleanAccountBatch.sql" />
+    <Build Include="dbo\Stored Procedures\spAdoraCheckingData.sql" />
+    <Build Include="dbo\Stored Procedures\spLEBatchReverseActivate.sql" />
+    <Build Include="dbo\Stored Procedures\spSeqReverseActivateAccountList.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchMoveBatchData.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertMissingAdoraAcceptanceLoopShop_TWUAT.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAcceptanceLoopIdByMerchantCategory.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchAdoraBatchData.sql" />
+    <Build Include="dbo\Stored Procedures\spSeqActivateAccountList.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAcceptanceLoopIdByMerchant.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAcceptanceLoopIdByTerminal.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryBatchActivateSequenceInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAcceptanceLoopIdByShop.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryBatchReverseActivateSequenceInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAcceptanceLoopById.sql" />
+    <Build Include="dbo\Stored Procedures\spVoucherInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCurrentDayMerchantReportItems.sql" />
+    <Build Include="dbo\Stored Procedures\spAdoraCheckNotUpdatedMerchantContract.sql" />
+    <Build Include="dbo\Stored Procedures\spGetCurrentDayMerchantReportDetailItems.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteAccounts.sql" />
+    <Build Include="dbo\Stored Procedures\spAdoraCheckMissingMerchantContract.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMerchantReportDetailItems.sql" />
+    <Build Include="dbo\Stored Procedures\spBatchTrashAccounts.sql" />
+    <Build Include="dbo\Stored Procedures\spAdoraCheckMerchantStatusFailedToSync.sql" />
+    <Build Include="dbo\Stored Procedures\spGetMerchantReportItems.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertMissingAdoraAcceptanceLoopShop.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateAccountBatchActivateInfo.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateAccountLE.sql" />
+    <Build Include="dbo\Stored Procedures\spAdoraCheckDirtyDataInCache.sql" />
+    <Build Include="dbo\Stored Procedures\spBlockSingleAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spAdoraCheckMoveVouchersFromAccountToAccountHist.sql" />
+    <Build Include="dbo\Stored Procedures\spDailyClearing.sql" />
+    <Build Include="dbo\Stored Procedures\spActivatePreIssuedAccount.sql" />
+    <Build Include="dbo\Stored Procedures\spShiftClearing.sql" />
+    <Build Include="dbo\Stored Procedures\spActivatePreIssuedAccountForThirdParty.sql" />
+    <Build Include="dbo\Stored Procedures\spMultiAccountsReserveRedemption.sql" />
+    <Build Include="dbo\Stored Procedures\spTransactionGeneration.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateAccountLETransStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spMultiAccountsReversePreAuthorization.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseActivatePreIssuedAccounts_ae120720.sql" />
+    <Build Include="dbo\Stored Procedures\spMultiAccountsPreAuthorizationComplete.sql" />
+    <Build Include="dbo\Stored Procedures\spMultiAccountsPreAuthorization.sql" />
+    <Build Include="dbo\Stored Procedures\spAdoraCheckAdoraTransactionArchive.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertMultiAccountsTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spVoucherInfoV2.sql" />
+    <Build Include="dbo\Stored Procedures\spDoTranForBatch.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\spChangeProductNameAdora.sql" />
+    <Build Include="dbo\Stored Procedures\spChangeInvoice.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertSGTransactionMapping.sql" />
+    <Build Include="dbo\Stored Procedures\spSGRedemption.sql" />
+    <Build Include="dbo\Stored Procedures\spClearingStatisticInfo_katie.sql" />
+    <Build Include="dbo\Stored Procedures\spReverseActivatedTransactionGeneration.sql" />
+    <Build Include="dbo\Stored Procedures\spIsCampaignOrderas.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertSGTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spBlockAccount.sql" />
+    <Build Include="dbo\User Defined Types\AccountNumberProgramIdType.sql" />
+    <Build Include="dbo\User Defined Types\SequenceNumberUTCTimeType.sql" />
+    <Build Include="dbo\User Defined Types\Account_Table_Type.sql" />
+    <Build Include="dbo\User Defined Types\Transaction_Table_Type.sql" />
+    <Build Include="dbo\User Defined Types\PreIssuedCampaignOrderInfoType.sql" />
+    <Build Include="dbo\User Defined Types\AdoraMSPropType.sql" />
+    <Build Include="dbo\User Defined Types\Alert_Input.sql" />
+    <Build Include="dbo\User Defined Types\Monitor_Execution_Input.sql" />
+    <Build Include="dbo\User Defined Types\DiveNotificationLogInfo.sql" />
+    <Build Include="dbo\User Defined Types\SingleIntListType.sql" />
+    <Build Include="dbo\User Defined Types\TripleIntListType.sql" />
+    <Build Include="dbo\Sequences\Seq_FakeId.sql" />
+    <Build Include="dbo\Sequences\HostSsn_Sequence.sql" />
+  </ItemGroup>
+</Project>
