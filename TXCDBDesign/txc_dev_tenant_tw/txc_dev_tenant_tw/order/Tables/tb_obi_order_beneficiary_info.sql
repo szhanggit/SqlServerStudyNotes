@@ -1,0 +1,25 @@
+﻿CREATE TABLE [order].[tb_obi_order_beneficiary_info] (
+    [id]                  BIGINT          IDENTITY (1, 1) NOT NULL,
+    [order_line_id]       INT             NOT NULL,
+    [mobile]              NVARCHAR (50)   NULL,
+    [email]               NVARCHAR (100)  NULL,
+    [voucher_quantity]    INT             NOT NULL,
+    [active_date]         DATETIME        NULL,
+    [expiry_scheme_id]    INT             NOT NULL,
+    [expiry_date]         DATETIME        NULL,
+    [client_order_number] NVARCHAR (50)   NULL,
+    [memo]                NVARCHAR (1000) NULL,
+    [name]                NVARCHAR (100)  NULL,
+    [address]             NVARCHAR (200)  NULL,
+    [post_code]           NVARCHAR (20)   NULL,
+    [ED_order_number]     NVARCHAR (50)   NULL,
+    [member_id]           INT             NULL,
+    [language_id]         INT             NULL,
+    [status]              INT             NULL,
+    [face_value]          INT             NULL,
+    [face_value_with_tax] INT             NULL,
+    [sold_price]          NUMERIC (15, 4) NULL,
+    [sold_price_with_tax] NUMERIC (15, 4) NULL,
+    CONSTRAINT [PK_tb_obi_order_beneficiary_info] PRIMARY KEY CLUSTERED ([id] ASC)
+);
+

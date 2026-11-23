@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>txc_dev_tenant_tw</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{fc2b571d-cd44-41d6-aafc-0a06056daaaa}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>txc_dev_tenant_tw</RootNamespace>
+    <AssemblyName>txc_dev_tenant_tw</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="product\" />
+    <Folder Include="product\Tables\" />
+    <Folder Include="order\" />
+    <Folder Include="order\Tables\" />
+    <Folder Include="client\" />
+    <Folder Include="client\Tables\" />
+    <Folder Include="quotation\" />
+    <Folder Include="quotation\Tables\" />
+    <Folder Include="merchant_info\" />
+    <Folder Include="merchant_info\Tables\" />
+    <Folder Include="__ShardManagement\" />
+    <Folder Include="__ShardManagement\Tables\" />
+    <Folder Include="general\" />
+    <Folder Include="general\Tables\" />
+    <Folder Include="credit\" />
+    <Folder Include="credit\Tables\" />
+    <Folder Include="template\" />
+    <Folder Include="template\Tables\" />
+    <Folder Include="tpc\" />
+    <Folder Include="tpc\Tables\" />
+    <Folder Include="media\" />
+    <Folder Include="media\Tables\" />
+    <Folder Include="distribution\" />
+    <Folder Include="distribution\Tables\" />
+    <Folder Include="sync\" />
+    <Folder Include="sync\Tables\" />
+    <Folder Include="soc\" />
+    <Folder Include="soc\Tables\" />
+    <Folder Include="Security\" />
+    <Folder Include="__ShardManagement\Functions\" />
+    <Folder Include="merchant_info\Stored Procedures\" />
+    <Folder Include="soc\Stored Procedures\" />
+    <Folder Include="order\Stored Procedures\" />
+    <Folder Include="product\Stored Procedures\" />
+    <Folder Include="__ShardManagement\Stored Procedures\" />
+    <Folder Include="template\Stored Procedures\" />
+    <Folder Include="client\Stored Procedures\" />
+    <Folder Include="quotation\Stored Procedures\" />
+    <Folder Include="quotation\User Defined Types\" />
+    <Folder Include="general\User Defined Types\" />
+    <Folder Include="product\User Defined Types\" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\User Defined Types\" />
+    <Folder Include="merchant_info\User Defined Types\" />
+    <Folder Include="merchant_info\Sequences\" />
+    <Folder Include="dbo\Sequences\" />
+    <Folder Include="client\Sequences\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="product\Tables\flyway_schema_history.sql" />
+    <Build Include="order\Tables\tb_eqom_emv_quotation_order_map.sql" />
+    <Build Include="product\Tables\tb_pess_product_expiry_scheme_set.sql" />
+    <Build Include="order\Tables\tb_svrh_send_voucher_request_history.sql" />
+    <Build Include="product\Tables\tb_pes_product_expiry_scheme.sql" />
+    <Build Include="client\Tables\tb_cbih_client_basic_information_history.sql" />
+    <Build Include="product\Tables\tb_es_extension_scheme.sql" />
+    <Build Include="quotation\Tables\tb_qa_quotation_attachment.sql" />
+    <Build Include="merchant_info\Tables\tb_contract.sql" />
+    <Build Include="merchant_info\Tables\tb_contract_payment_term.sql" />
+    <Build Include="order\Tables\tb_gr_svrh_send_voucher_request_history.sql" />
+    <Build Include="product\Tables\tb_p_product_price.sql" />
+    <Build Include="merchant_info\Tables\tb_contract_price_option.sql" />
+    <Build Include="__ShardManagement\Tables\ShardMapManagerLocal.sql" />
+    <Build Include="merchant_info\Tables\tb_contract_cost_scheme.sql" />
+    <Build Include="client\Tables\tb_cc_client_contact.sql" />
+    <Build Include="merchant_info\Tables\tb_contract_cost_rounding_rule.sql" />
+    <Build Include="client\Tables\tb_cch_client_contact_history.sql" />
+    <Build Include="merchant_info\Tables\tb_contract_cost_rounding_places.sql" />
+    <Build Include="client\Tables\tb_chm_client_history_mapping.sql" />
+    <Build Include="merchant_info\Tables\tb_mg_merchant_group.sql" />
+    <Build Include="merchant_info\Tables\tb_contract_status.sql" />
+    <Build Include="merchant_info\Tables\tb_bt_barcode_type.sql" />
+    <Build Include="merchant_info\Tables\tb_mgmm_merchant_group_merchant_map.sql" />
+    <Build Include="order\Tables\tb_bf_batch_file.sql" />
+    <Build Include="merchant_info\Tables\tb_pt_pin_type.sql" />
+    <Build Include="merchant_info\Tables\tb_vna_voucher_number_algorithm.sql" />
+    <Build Include="merchant_info\Tables\tb_al_acceptance_loop.sql" />
+    <Build Include="merchant_info\Tables\tb_vnr_voucher_number_rule.sql" />
+    <Build Include="merchant_info\Tables\tb_contract_sku_type.sql" />
+    <Build Include="merchant_info\Tables\tb_contract_sku.sql" />
+    <Build Include="order\Tables\flyway_schema_history.sql" />
+    <Build Include="client\Tables\flyway_schema_history.sql" />
+    <Build Include="merchant_info\Tables\tb_sku_status.sql" />
+    <Build Include="order\Tables\tb_ob_order_basic.sql" />
+    <Build Include="order\Tables\tb_ob_order_activate_mode.sql" />
+    <Build Include="order\Tables\tb_ol_order_line.sql" />
+    <Build Include="merchant_info\Tables\tb_alm_acceptance_loop_merchant.sql" />
+    <Build Include="order\Tables\tb_oam_order_activate_mode.sql" />
+    <Build Include="product\Tables\tb_p_product_super_voucher_description.sql" />
+    <Build Include="product\Tables\tb_p_product_voucher_number_rule.sql" />
+    <Build Include="product\Tables\tb_vna_voucher_number_algorithm.sql" />
+    <Build Include="product\Tables\tb_p_product_wizard.sql" />
+    <Build Include="product\Tables\tb_p_product_template.sql" />
+    <Build Include="general\Tables\tb_bm_business_model.sql" />
+    <Build Include="product\Tables\tb_p_product_template_version.sql" />
+    <Build Include="product\Tables\tb_p_product_template_tag_value_set.sql" />
+    <Build Include="product\Tables\tb_p_product_template_set.sql" />
+    <Build Include="product\Tables\tb_p_product_template_tag_value.sql" />
+    <Build Include="general\Tables\tb_bsm_business_sub_model.sql" />
+    <Build Include="product\Tables\tb_p_product_external_property.sql" />
+    <Build Include="product\Tables\tb_p_product_combo_batch.sql" />
+    <Build Include="product\Tables\tb_p_product_external_property_set.sql" />
+    <Build Include="credit\Tables\flyway_schema_history.sql" />
+    <Build Include="template\Tables\flyway_schema_history.sql" />
+    <Build Include="credit\Tables\tb_cc_client_credit.sql" />
+    <Build Include="merchant_info\Tables\tb_alms_acceptance_loop_merchant_shop.sql" />
+    <Build Include="template\Tables\tb_t_template.sql" />
+    <Build Include="merchant_info\Tables\tb_almss_acceptance_loop_merchant_shop_staging.sql" />
+    <Build Include="order\Tables\tb_obi_order_beneficiary_info.sql" />
+    <Build Include="credit\Tables\tb_cfa_client_financial_account.sql" />
+    <Build Include="template\Tables\tb_t_template_version.sql" />
+    <Build Include="credit\Tables\tb_cqfa_client_quotation_financial_account.sql" />
+    <Build Include="credit\Tables\tb_cfh_client_fund_history.sql" />
+    <Build Include="product\Tables\tb_p_product.sql" />
+    <Build Include="template\Tables\tb_t_tag.sql" />
+    <Build Include="client\Tables\tb_cbi_client_basic_information.sql" />
+    <Build Include="product\Tables\tb_p_product_version.sql" />
+    <Build Include="credit\Tables\tb_cqfh_client_quotation_fund_history.sql" />
+    <Build Include="quotation\Tables\flyway_schema_history.sql" />
+    <Build Include="product\Tables\tb_p_product_combo.sql" />
+    <Build Include="order\Tables\tb_gocd_gr_client_order.sql" />
+    <Build Include="quotation\Tables\tb_qp_quotation_product.sql" />
+    <Build Include="order\Tables\tb_gocd_gr_order_create_detail.sql" />
+    <Build Include="general\Tables\tb_ac_apply_condition.sql" />
+    <Build Include="quotation\Tables\tb_qpsp_quotation_product_sold_price.sql" />
+    <Build Include="general\Tables\tb_ac_apply_condition_business_type.sql" />
+    <Build Include="quotation\Tables\tb_qpsph_quotation_product_sold_price_history.sql" />
+    <Build Include="template\Tables\tb_t_template_version_tag.sql" />
+    <Build Include="merchant_info\Tables\flyway_schema_history.sql" />
+    <Build Include="general\Tables\tb_ac_apply_condition_trust_account.sql" />
+    <Build Include="quotation\Tables\tb_qpsftt_quotation_product_service_fee_trigger_time.sql" />
+    <Build Include="product\Tables\tb_buttv_batch_update_template_tag_value.sql" />
+    <Build Include="product\Tables\tb_buttvd_batch_update_template_tag_value_details.sql" />
+    <Build Include="quotation\Tables\tb_qpc_quotation_product_combo.sql" />
+    <Build Include="merchant_info\Tables\tb_m_merchant.sql" />
+    <Build Include="general\Tables\tb_a_address.sql" />
+    <Build Include="merchant_info\Tables\tb_a_address.sql" />
+    <Build Include="quotation\Tables\tb_q_quotation.sql" />
+    <Build Include="order\Tables\tb_o_order_email_template.sql" />
+    <Build Include="general\Tables\tb_d_dictionary.sql" />
+    <Build Include="quotation\Tables\tb_qsh_quotation_status_history.sql" />
+    <Build Include="merchant_info\Tables\tb_s_shop.sql" />
+    <Build Include="quotation\Tables\tb_qb_quotation_billing.sql" />
+    <Build Include="tpc\Tables\flyway_schema_history.sql" />
+    <Build Include="general\Tables\tb_d_dictionarytranslation.sql" />
+    <Build Include="merchant_info\Tables\tb_t_terminal.sql" />
+    <Build Include="quotation\Tables\tb_qsf_quotation_service_fee.sql" />
+    <Build Include="general\Tables\tb_ep_expiration_policy.sql" />
+    <Build Include="tpc\Tables\tb_s_status.sql" />
+    <Build Include="quotation\Tables\tb_qsftt_quotation_service_fee_trigger_time.sql" />
+    <Build Include="merchant_info\Tables\tb_wk_work_key.sql" />
+    <Build Include="tpc\Tables\tb_v_vendors.sql" />
+    <Build Include="product\Tables\tb_p_product_reverse_limit.sql" />
+    <Build Include="quotation\Tables\tb_sf_service_fee.sql" />
+    <Build Include="media\Tables\flyway_schema_history.sql" />
+    <Build Include="merchant_info\Tables\tb_b_brand.sql" />
+    <Build Include="quotation\Tables\tb_sftt_service_fee_trigger_time.sql" />
+    <Build Include="distribution\Tables\flyway_schema_history.sql" />
+    <Build Include="media\Tables\tb_m_media.sql" />
+    <Build Include="quotation\Tables\tb_qm_quotation_map.sql" />
+    <Build Include="distribution\Tables\tb_dm_distribution_message.sql" />
+    <Build Include="tpc\Tables\tb_o_orders.sql" />
+    <Build Include="distribution\Tables\tb_dmd_distribution_message_data.sql" />
+    <Build Include="tpc\Tables\tb_r_response.sql" />
+    <Build Include="distribution\Tables\tb_v_vendor.sql" />
+    <Build Include="tpc\Tables\tb_v_vouchers.sql" />
+    <Build Include="product\Tables\tb_p_product_banner_image_setting.sql" />
+    <Build Include="tpc\Tables\tb_vt_vendor_token.sql" />
+    <Build Include="product\Tables\tb_p_product_barcode_setting.sql" />
+    <Build Include="tpc\Tables\tb_vp_vendor_products.sql" />
+    <Build Include="product\Tables\tb_p_product_backup_sku.sql" />
+    <Build Include="sync\Tables\tb_s_synchronization.sql" />
+    <Build Include="sync\Tables\tb_s_synchronization_history.sql" />
+    <Build Include="product\Tables\tb_p_product_redeem_date_blacklist.sql" />
+    <Build Include="__ShardManagement\Tables\ShardMapsLocal.sql" />
+    <Build Include="merchant_info\Tables\tb_vg_voucher_generator.sql" />
+    <Build Include="order\Tables\tb_vo_voucher_order.sql" />
+    <Build Include="order\Tables\tb_t_tally.sql" />
+    <Build Include="template\Tables\tb_tv_tag_value.sql" />
+    <Build Include="product\Tables\tb_p_product_redeem_date_blacklist_set.sql" />
+    <Build Include="__ShardManagement\Tables\ShardsLocal.sql" />
+    <Build Include="order\Tables\tb_eco_emv_client_order.sql" />
+    <Build Include="__ShardManagement\Tables\ShardMappingsLocal.sql" />
+    <Build Include="quotation\Tables\tb_mcs_merchant_commercial_setting.sql" />
+    <Build Include="order\Tables\tb_ecol_emv_client_order_line.sql" />
+    <Build Include="product\Tables\tb_p_product_redeem_time_restriction.sql" />
+    <Build Include="soc\Tables\flyway_schema_history.sql" />
+    <Build Include="order\Tables\tb_eco_emv_rcn_key.sql" />
+    <Build Include="product\Tables\tb_p_product_customized_template.sql" />
+    <Build Include="product\Tables\tb_p_product_redeem_time_restriction_set.sql" />
+    <Build Include="merchant_info\Tables\tb_contract_sku_cost.sql" />
+    <Build Include="Security\db_executor.sql" />
+    <Build Include="Security\esg-datastudio-adf-d.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="__ShardManagement\Functions\fnGetStoreVersionMajorLocal.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_voucher_pin_code.sql" />
+    <Build Include="soc\Stored Procedures\sp_insert_audit_event.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_voucher_bar_code.sql" />
+    <Build Include="soc\Stored Procedures\sp_insert_audit_trace.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_voucher_number_algorithm.sql" />
+    <Build Include="order\Stored Procedures\sp_sel_emv_client_order_line_new.sql" />
+    <Build Include="order\Stored Procedures\sp_sel_file_to_process.sql" />
+    <Build Include="order\Stored Procedures\sp_upd_status_emv_client_order_line.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_time_restriction_list.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_svrh_send_voucher_request_history.sql" />
+    <Build Include="order\Stored Procedures\sp_publish_order_fail_list.sql" />
+    <Build Include="order\Stored Procedures\sp_publish_order_list.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_external_property.sql" />
+    <Build Include="order\Stored Procedures\sp_sel_file_to_process_gr.sql" />
+    <Build Include="order\Stored Procedures\sp_publish_order_list_IN.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_redeem_date_blacklist.sql" />
+    <Build Include="order\Stored Procedures\sp_sel_gr_client_order_line_new.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_insert_wallet_link.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_price_by_product_id.sql" />
+    <Build Include="order\Stored Procedures\sp_upd_status_gr_client_order_line.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_svrh_gr_send_voucher_request_history.sql" />
+    <Build Include="order\Stored Procedures\sp_sel_gr_client_order_line_pending.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_memo.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetStoreVersionLocalHelper.sql" />
+    <Build Include="product\Stored Procedures\sp_del_time_restriction.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetAllShardsLocal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spValidateShardLocal.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_ins_shop.sql" />
+    <Build Include="product\Stored Procedures\sp_ins_time_restriction.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spRemoveShardLocal.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_upd_shop.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_history.sql" />
+    <Build Include="product\Stored Procedures\sp_ins_date_restriction.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_terminal_list.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spGetAllShardMappingsLocal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spFindShardMappingByKeyLocal.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spValidateShardMappingLocal.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_shop_list.sql" />
+    <Build Include="product\Stored Procedures\sp_ins_product_backup_sku.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spKillSessionsForShardMappingLocal.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_emv_client_order_line.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spUpdateShardLocal.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_emv_client_order.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spBulkOperationShardMappingsLocal.sql" />
+    <Build Include="order\Stored Procedures\sp_chk_emv_rcn.sql" />
+    <Build Include="__ShardManagement\Stored Procedures\spAddShardLocal.sql" />
+    <Build Include="order\Stored Procedures\sp_get_emv_files_by_status.sql" />
+    <Build Include="order\Stored Procedures\sp_upd_emv_file_status.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_brand_list.sql" />
+    <Build Include="order\Stored Procedures\sp_any_file_name.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_batch_file_metadata.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_template_tag_value.sql" />
+    <Build Include="order\Stored Procedures\sp_sel_emv_client_order_line_pending.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_template.sql" />
+    <Build Include="template\Stored Procedures\sp_sel_template.sql" />
+    <Build Include="template\Stored Procedures\sp_sel_template_tags.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_product_template.sql" />
+    <Build Include="order\Stored Procedures\getSequenceNextValue.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_shop_list_by_id.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_order_line.sql" />
+    <Build Include="order\Stored Procedures\sp_upd_order_line.sql" />
+    <Build Include="client\Stored Procedures\sp_generate_identity_code.sql" />
+    <Build Include="product\Stored Procedures\sp_select_productIdAndCode.sql" />
+    <Build Include="order\Stored Procedures\sp_del_order_line.sql" />
+    <Build Include="order\Stored Procedures\sp_get_order_line_list.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_status.sql" />
+    <Build Include="order\Stored Procedures\sp_get_order_line.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_memo.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_order_activate_mode.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_super_voucher_description.sql" />
+    <Build Include="order\Stored Procedures\sp_upd_order_activate_mode.sql" />
+    <Build Include="product\Stored Procedures\sp_ins_product_super_voucher_description.sql" />
+    <Build Include="order\Stored Procedures\sp_get_order_activate_mode.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_product_super_voucher_description.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_brand.sql" />
+    <Build Include="order\Stored Procedures\sp_upd_order_template_info.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_expiration_policy.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_chk_brand.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_order_basic.sql" />
+    <Build Include="product\Stored Procedures\sp_get_brand_by_product_id.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_list.sql" />
+    <Build Include="order\Stored Procedures\sp_upd_order_basic.sql" />
+    <Build Include="product\Stored Procedures\sp_chk_product.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_ins_terminal.sql" />
+    <Build Include="order\Stored Procedures\sp_get_order_basic_info.sql" />
+    <Build Include="product\Stored Procedures\sp_chk_contract.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_ins_workkey.sql" />
+    <Build Include="product\Stored Procedures\sp_create_product_wizard.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_workKey_list.sql" />
+    <Build Include="product\Stored Procedures\sp_get_product_wizard.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_order_beneficiary_info.sql" />
+    <Build Include="product\Stored Procedures\sp_update_product_wizard.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_manage_terminal_list.sql" />
+    <Build Include="order\Stored Procedures\sp_get_order_beneficiary_info_list_by_order.sql" />
+    <Build Include="product\Stored Procedures\sp_get_product_combo.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_upd_workkey.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_ups_brand.sql" />
+    <Build Include="template\Stored Procedures\sp_sel_Tag_list.sql" />
+    <Build Include="order\Stored Procedures\sp_get_gr_files_by_status.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_by_product_code.sql" />
+    <Build Include="order\Stored Procedures\sp_upd_gr_file_status.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_by_id.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_gr_client_order.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_by_version_id.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_time_stopissue.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_gr_order_create_detail.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_ins_brand.sql" />
+    <Build Include="product\Stored Procedures\sp_get_product_template.sql" />
+    <Build Include="product\Stored Procedures\sp_sync_product.sql" />
+    <Build Include="client\Stored Procedures\sp_sel_client_list.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_acceptance_loop.sql" />
+    <Build Include="client\Stored Procedures\sp_ins_client.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_condition.sql" />
+    <Build Include="client\Stored Procedures\sp_upd_client.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_product.sql" />
+    <Build Include="client\Stored Procedures\sp_sel_address_by_city.sql" />
+    <Build Include="product\Stored Procedures\sp_ins_external_property.sql" />
+    <Build Include="product\Stored Procedures\sp_del_external_property.sql" />
+    <Build Include="product\Stored Procedures\sp_get_product_combo_master.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_product_price.sql" />
+    <Build Include="product\Stored Procedures\sp_del_date_restriction.sql" />
+    <Build Include="quotation\Stored Procedures\getSequenceNextValue.sql" />
+    <Build Include="order\Stored Procedures\sp_sel_voucher_order_beneficiary_info_seq.sql" />
+    <Build Include="product\Stored Procedures\sp_sel_product_banner_image_setting.sql" />
+    <Build Include="order\Stored Procedures\sp_sel_order_for_order_split.sql" />
+    <Build Include="product\Stored Procedures\sp_upd_product_banner_image_setting.sql" />
+    <Build Include="order\Stored Procedures\sp_sel_count_benefiaciary_info.sql" />
+    <Build Include="order\Stored Procedures\sp_ins_voucher_order.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_ins_vouchernumber_rule.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_upt_vouchernumber_rule_third_party.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_chk_acceptance_loop.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_ins_vouchernumber_rule_third_party.sql" />
+    <Build Include="merchant_info\Stored Procedures\sp_sel_voucher_genarator.sql" />
+    <Build Include="client\Stored Procedures\sp_sel_address_by_country.sql" />
+    <Build Include="quotation\User Defined Types\tvp_QuoteProductComboAdd.sql" />
+    <Build Include="quotation\User Defined Types\tvp_QuoteProductSrvFeeTriggerTimeAdd.sql" />
+    <Build Include="quotation\User Defined Types\tvp_QuoteProductChildComboAdd.sql" />
+    <Build Include="quotation\User Defined Types\tvp_BatchQuoteProductAdd.sql" />
+    <Build Include="quotation\User Defined Types\tvp_BatchQuoteProductSoldPriceAdd.sql" />
+    <Build Include="quotation\User Defined Types\tvp_BatchQuoteProductComboAdd.sql" />
+    <Build Include="quotation\User Defined Types\tvp_QuoteProdComboSeqUpd.sql" />
+    <Build Include="general\User Defined Types\DateTimeListType.sql" />
+    <Build Include="product\User Defined Types\TimeRestrictionListType.sql" />
+    <Build Include="product\User Defined Types\ExternalPropertyListType.sql" />
+    <Build Include="quotation\User Defined Types\tvp_get_quotation_list_by_id.sql" />
+    <Build Include="dbo\User Defined Types\tvp_ins_multiple_obi.sql" />
+    <Build Include="product\User Defined Types\ProductTemplateTags.sql" />
+    <Build Include="dbo\User Defined Types\tvp_gr_order_create_detail.sql" />
+    <Build Include="dbo\User Defined Types\tvp_emv_client_order_line.sql" />
+    <Build Include="general\User Defined Types\id_list_type.sql" />
+    <Build Include="product\User Defined Types\product_backup_sku_type.sql" />
+    <Build Include="dbo\User Defined Types\tvp_sku_unique_check.sql" />
+    <Build Include="dbo\User Defined Types\tvp_sku_overlap_check.sql" />
+    <Build Include="dbo\User Defined Types\tvp_ins_contract_sku.sql" />
+    <Build Include="dbo\User Defined Types\tvp_ins_contract_sku_cost.sql" />
+    <Build Include="dbo\User Defined Types\tvp_upd_contract_sku_cost.sql" />
+    <Build Include="merchant_info\User Defined Types\tvp_update_contract_sku.sql" />
+    <Build Include="Security\__ShardManagement.sql" />
+    <Build Include="Security\client.sql" />
+    <Build Include="Security\credit.sql" />
+    <Build Include="Security\distribution.sql" />
+    <Build Include="Security\general.sql" />
+    <Build Include="Security\media.sql" />
+    <Build Include="Security\merchant_info.sql" />
+    <Build Include="Security\order.sql" />
+    <Build Include="Security\product.sql" />
+    <Build Include="Security\quotation.sql" />
+    <Build Include="Security\soc.sql" />
+    <Build Include="Security\sync.sql" />
+    <Build Include="Security\template.sql" />
+    <Build Include="Security\tpc.sql" />
+    <Build Include="merchant_info\Sequences\seq_terminal_identity_code.sql" />
+    <Build Include="dbo\Sequences\Seq_OrderNumber.sql" />
+    <Build Include="merchant_info\Sequences\seq_merchant_identity_code.sql" />
+    <Build Include="merchant_info\Sequences\Seq_shop_Identity_Code.sql" />
+    <Build Include="client\Sequences\seq_client_identity_code.sql" />
+    <Build Include="dbo\Sequences\Seq_QuotationNumber.sql" />
+    <Build Include="Security\TXCCMK.sql" />
+    <Build Include="Security\TXCCEK.sql" />
+  </ItemGroup>
+</Project>

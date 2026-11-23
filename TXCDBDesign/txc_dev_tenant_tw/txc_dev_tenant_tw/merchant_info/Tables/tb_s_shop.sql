@@ -1,0 +1,26 @@
+﻿CREATE TABLE [merchant_info].[tb_s_shop] (
+    [id]               INT            IDENTITY (1, 1) NOT NULL,
+    [identity_code]    NVARCHAR (50)  NOT NULL,
+    [name]             NVARCHAR (100) NOT NULL,
+    [merchant_id]      INT            NOT NULL,
+    [address_id]       INT            NOT NULL,
+    [external_code]    NVARCHAR (50)  NULL,
+    [contact_name]     NVARCHAR (100) NULL,
+    [contact_phone]    NVARCHAR (50)  NULL,
+    [security_key]     NVARCHAR (48)  NOT NULL,
+    [status]           TINYINT        NULL,
+    [subsidiary_uen]   NVARCHAR (30)  NULL,
+    [subsidiary_name]  NVARCHAR (100) NULL,
+    [created_on]       DATETIME       NOT NULL,
+    [last_modified_on] DATETIME       NOT NULL,
+    [last_modifier]    NVARCHAR (50)  NOT NULL,
+    [work_key_id]      INT            NULL,
+    [contact_name2]    NVARCHAR (50)  NULL,
+    [contact_phone2]   NVARCHAR (50)  NULL,
+    [timestamp]        ROWVERSION     NOT NULL,
+    CONSTRAINT [PK_tb_s_shop] PRIMARY KEY CLUSTERED ([id] ASC),
+    CONSTRAINT [FK_tb_s_shop_tb_m_merchant] FOREIGN KEY ([merchant_id]) REFERENCES [merchant_info].[tb_m_merchant] ([id]),
+    CONSTRAINT [UK_tb_s_shop_merchant_id_external_code] UNIQUE NONCLUSTERED ([merchant_id] ASC, [external_code] ASC),
+    CONSTRAINT [UK_tb_s_shop_merchant_id_identity_code] UNIQUE NONCLUSTERED ([merchant_id] ASC, [identity_code] ASC)
+);
+
