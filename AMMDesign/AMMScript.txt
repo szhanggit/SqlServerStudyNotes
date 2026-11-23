@@ -1,0 +1,25 @@
+SET IDENTITY_INSERT [dbo].tb_aai_api_action_info ON
+GO
+
+if exists (select * from tb_aai_api_action_info with(nolock) where key_value = '93E23B7F-071C-435B-9BAB-1B3F7E4A4AC6')
+begin
+insert into tb_aai_api_action_info (api_info_id， controller_name, action_name, key_value) values (34， 'Product', 'Get', '93E23B7F-071C-435B-9BAB-1B3F7E4A4AC6');
+end
+
+if exists (select * from tb_aai_api_action_info with(nolock) where key_value = 'F13943B1-1A97-4DE7-9CCD-96C53FA00278')
+begin
+insert into tb_aai_api_action_info (api_info_id， controller_name, action_name, key_value) values (35， 'Product', 'Post', 'F13943B1-1A97-4DE7-9CCD-96C53FA00278');
+end
+
+if exists (select * from tb_aai_api_action_info with(nolock) where key_value = 'D7279CE1-B718-4B14-9029-2F9902A0E1C9')
+begin
+insert into tb_aai_api_action_info (api_info_id， controller_name, action_name, key_value) values (36， 'Product', 'Put', 'D7279CE1-B718-4B14-9029-2F9902A0E1C9');
+end
+
+if exists (select * from tb_aai_api_action_info with(nolock) where key_value = 'C931871A-0CD3-416D-B257-CF85E6692DE9')
+begin
+insert into tb_aai_api_action_info (api_info_id， controller_name, action_name, key_value) values (37， 'Product', 'Delete', 'C931871A-0CD3-416D-B257-CF85E6692DE9');
+end
+
+SET IDENTITY_INSERT [dbo].tb_aai_api_action_info OFF
+GO

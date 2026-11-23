@@ -1,0 +1,15 @@
+var token = HttpContext.Request.Headers["X-MS-TOKEN-AAD-ACCESS-TOKEN"];
+It contains Oid.
+
+
+D:\git\TXC-MicroServices\MicroServices\BFFGateway\src\GatewayApi\Controllers\AmmSrv\TokenController.cs
+Generate RSA token.
+
+If you are not super admin, shall use RSA token.
+
+D:\git\TXC-MicroServices\MicroServices\BFFGateway\src\GatewayApi\Controllers\AmmSrv\AuthController.cs
+var grpcResponse = await _coreService.GetUserPermissionClaimAsync(grpcRequest);
+D:\git\TXC-MicroServices\MicroServices\AMM\src\API\Services\Core\User\GetUserPermissionClaimService.cs
+
+
+https://edenred.atlassian.net/wiki/spaces/TXCLOUD/pages/13082886223/AMM
