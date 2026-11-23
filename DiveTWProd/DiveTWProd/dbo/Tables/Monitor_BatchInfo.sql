@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Monitor_BatchInfo] (
+    [Id]                             INT            IDENTITY (1, 1) NOT NULL,
+    [Application]                    NVARCHAR (100) NOT NULL,
+    [Environment]                    NVARCHAR (100) NOT NULL,
+    [BatchName]                      NVARCHAR (100) NOT NULL,
+    [LastCheckTime]                  DATETIME       NOT NULL,
+    [LastExecutionStartTime]         DATETIME       NULL,
+    [LastExecutionEndTime]           DATETIME       NULL,
+    [LastExpectedExecutionStartTime] DATETIME       NULL,
+    [LastExpectedExecutionEndTime]   DATETIME       NULL,
+    [LastExecutionResult]            TINYINT        NULL,
+    [NextExpectedExecutionStartTime] DATETIME       NULL,
+    [NextExpectedExecutionEndTime]   DATETIME       NULL,
+    [ExecutionPlan]                  TINYINT        NOT NULL,
+    [CronExpression]                 VARCHAR (50)   NULL,
+    [ExecutionInterval]              INT            NULL,
+    [MaxExecutionTime]               INT            NULL,
+    [Message]                        NVARCHAR (500) NULL,
+    [Comment]                        NVARCHAR (500) NULL,
+    [Status]                         BIT            NOT NULL,
+    [TimeDifference]                 INT            NULL,
+    [LastAlertTime]                  DATETIME       NULL,
+    CONSTRAINT [PK_Monitor_BatchInfo_Id] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (FILLFACTOR = 90)
+);
+

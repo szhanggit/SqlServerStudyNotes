@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>DiveTWProd</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{4ee4fbd1-4a11-42b0-9575-69d24c6a9fad}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>DiveTWProd</RootNamespace>
+    <AssemblyName>DiveTWProd</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\ServiceProvider.sql" />
+    <Build Include="dbo\Tables\ServiceProviderStat.sql" />
+    <Build Include="dbo\Tables\SysConfig.sql" />
+    <Build Include="dbo\Tables\ArchiveLog.sql" />
+    <Build Include="dbo\Tables\EmailMessageArchiveTemp.sql" />
+    <Build Include="dbo\Tables\Task.sql" />
+    <Build Include="dbo\Tables\SLMSMessageArchiveTemp.sql" />
+    <Build Include="dbo\Tables\TaskActionLog.sql" />
+    <Build Include="dbo\Tables\TaskActionLogArchive.sql" />
+    <Build Include="dbo\Tables\TaskArchive.sql" />
+    <Build Include="dbo\Tables\VoucherBuffer.sql" />
+    <Build Include="dbo\Tables\TimezoneOffset.sql" />
+    <Build Include="dbo\Tables\UserProfile.sql" />
+    <Build Include="dbo\Tables\EmailMessageSendStatus.sql" />
+    <Build Include="dbo\Tables\EmailMessageSendStatusBuffer.sql" />
+    <Build Include="dbo\Tables\SLMSMessageSendStatus.sql" />
+    <Build Include="dbo\Tables\SLMSMessageSendStatusBuffer.sql" />
+    <Build Include="dbo\Tables\TaskTrack.sql" />
+    <Build Include="dbo\Tables\dtm20201015.sql" />
+    <Build Include="dbo\Tables\ELMAH_Error.sql" />
+    <Build Include="dbo\Tables\dtm20201016.sql" />
+    <Build Include="dbo\Tables\NotificationItem.sql" />
+    <Build Include="dbo\Tables\SLMSMessage_20200107.sql" />
+    <Build Include="dbo\Tables\SimulatorLog.sql" />
+    <Build Include="dbo\Tables\NetCoreDLR.sql" />
+    <Build Include="dbo\Tables\Consumer.sql" />
+    <Build Include="dbo\Tables\Dictionary.sql" />
+    <Build Include="dbo\Tables\CheckPara20210127.sql" />
+    <Build Include="dbo\Tables\Batch.sql" />
+    <Build Include="dbo\Tables\DictionaryTranslation.sql" />
+    <Build Include="dbo\Tables\NotificationItem_Errorlog_20200518.sql" />
+    <Build Include="dbo\Tables\EmailMessage.sql" />
+    <Build Include="dbo\Tables\EmailMessageActionLog.sql" />
+    <Build Include="dbo\Tables\EmailMessageActionLogArchive.sql" />
+    <Build Include="dbo\Tables\EmailMessageArchive.sql" />
+    <Build Include="dbo\Tables\EmailMessageTemplate.sql" />
+    <Build Include="dbo\Tables\EmailMessageTemplateArchive.sql" />
+    <Build Include="dbo\Tables\Monitor_BatchInfo.sql" />
+    <Build Include="dbo\Tables\SLMSMessage.sql" />
+    <Build Include="dbo\Tables\Monitor_AlertChannel.sql" />
+    <Build Include="dbo\Tables\SLMSMessageActionLog.sql" />
+    <Build Include="dbo\Tables\Monitor_AlertReceiver.sql" />
+    <Build Include="dbo\Tables\SLMSMessageActionLogArchive.sql" />
+    <Build Include="dbo\Tables\SLMSMessageArchive.sql" />
+    <Build Include="dbo\Tables\SLMSMessageTemplate.sql" />
+    <Build Include="dbo\Tables\SLMSMessageTemplateArchive.sql" />
+    <Build Include="Security\ER_EV_DBS_DIVE.sql" />
+    <Build Include="Security\TW_TX_DBS_Report.sql" />
+    <Build Include="Security\jhsiao.sql" />
+    <Build Include="Security\jchang.sql" />
+    <Build Include="Security\hwu.sql" />
+    <Build Include="Security\ishuang.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveData_Email.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveData_SLMS.sql" />
+    <Build Include="dbo\Stored Procedures\spDiveCheckNotificationClientPending.sql" />
+    <Build Include="dbo\Stored Procedures\spGetTasksByThreshold.sql" />
+    <Build Include="dbo\Stored Procedures\pi_TaskArchive_InsertTaskArchive.sql" />
+    <Build Include="dbo\Stored Procedures\pi_ServiceProviderStat_InsertServiceProviderStat.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorXml.sql" />
+    <Build Include="dbo\Stored Procedures\pi_ArchiveEmailMessage.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorsXml.sql" />
+    <Build Include="dbo\Stored Procedures\pi_ArchiveSLMSMessage.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_LogError.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveEmailNotSent.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveSLMSNotSent.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveEmailData.sql" />
+    <Build Include="dbo\Stored Procedures\spFetchDiveSLMSData.sql" />
+    <Build Include="dbo\Stored Procedures\spSyncSendMessageStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spGetRecentMessageStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spGetRecentBatchStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spGetLastBatchStatus.sql" />
+    <Build Include="dbo\Stored Procedures\spCountMessagesNotProcessed.sql" />
+    <Build Include="dbo\Stored Procedures\spQueryNotFetchedDLRInfoForEmail.sql" />
+    <Build Include="dbo\Stored Procedures\spGetActiveBatchInfo.sql" />
+  </ItemGroup>
+</Project>
