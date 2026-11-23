@@ -1,0 +1,204 @@
+31. Creating Dynamic Datasets
+select Dataset/webstore/DS_abls_buyalot_json => Clone it and name to be "DS_abls_buyalot_files_json"; Description: JSON Source dataset
+Parameters:
+Name					Type	Default value
+container				String
+directory				String
+fileName				String
+
+Connection:
+File path: 				@dataset().container/@dataset().directory/@dataset().fileName
+
+Schema => Clear
+
+Connection => Publish => Preview
+
+container:	sales
+directory:	.
+fileName:	onlinesales.json
+
+
+
+Clone Dataset/DS_adls_data_engineering_json to be "DS_adls_data_engineering_folders_json"
+Parameters:
+Name			Type	Default value
+container		String
+directory		String
+fileName		String
+
+File path: 				@dataset().container/@dataset().directory/@dataset().fileName
+
+Connection => Publish => Preview
+container:	webdevelopment
+directory:	webstore/raw/onlinesales
+fileName:	onlinesales.json
+
+
+It is possible to read all of the files under a folder.
+File path: 				@dataset().container/@dataset().directory
+
+
+Dataset/metadata => click ... => New dataset => select "Azure SQL Database" => continue => Name: "DS_asql_source_to_target_details"; Linked service: "LS_asql_data_engineering_emtadata"
+Connection:
+Table: dbo.SourceToTargetView => Preview
+
+
+
+
+32. Reading from Source To Target Part 1
+Go to storage account "stwebstoredata001" => Containers => Click "+ Container" and name it "salesref" => upload all of those three json files
+Clone "PL_data_ingestion_json_v5" to be "PL_data_ingestion_json_v6".
+Variables
+Name		Type	Default value
+v_status	String	Success
+v_stage		String	SOURCE_TO_RAW
+
+Drag General/Lookup on the canvas => 
+General/Name: 		"Get Source To Target Details"
+General/Timeout:	0.00:10:00
+General/Settings/Source dataset	DS_asql_source_to_target_details
+General/Settings/Use query		Stored procedure
+General/Settings/Stored procedure name		[dbo].[GetSourceToTargetInfo] => click "Import parameter"
+
+Name				Type		Value
+SourceSystemCode	String		@pipeline().parameters.systemCode
+Stage				String		@variables('v_stage')
+
+Deselect "First row only"
+
+Make "Loopup" -> "Copy data"
+
+
+
+33. Reading from Source To Target Part 2
+Drag "Iteration & conditionals"/ForEach
+Make "Lookup" -> "ForEach"
+Name "ForEach" as "ForEach Source To Target Info".
+"ForEach"/Settings/Items => @activity('Get Source To Target Details').output.value
+Paste the rest of activities into "ForEach".
+"Copy data"/Source/Source dataset: DS_abls_buyalot_files_json
+Dataset properties:
+Name				Value								Type
+container			@item().SourceContainer				string
+directory			@item().SourceRelativePathSchema	string
+fileName			@item().SourceTechnicalName			string
+"Copy data"/Sink/Sink dataset: DS_adls_data_engineering_folders_json
+Dataset properties:
+Name				Value								Type
+container			@item().TargetContainer				string
+directory			@concat(item().TargetRelativePathSchema, '/', formatDateTime(pipeline().parameters.snapshotDate, 'yyyy-MM-dd'))	string				
+fileName			@item().TargetTechnicalName			string
+
+
+"Execute Pipeline"/Settings/
+Parameters:
+Name					Type		Value
+sourceToTargetID		string		@item().SourceToTargetID
+
+
+
+
+34. Explaining the Source To Target Stored Procedure
+35. Add Orchestration Pipeline Part 1
+Create a new folder "orchestration" under Pipeline.
+Create a new pipeline under "orchestration" folder and name it "PL_orch_daily_batch_run". Description: Daily Batch Run orchestration of ingestion pipeline.
+Variable；
+Name					Type	Default value
+v_frequency				String	Daily
+v_systemcode			String	OWS
+
+Open initialize_run.sql
+DELETE from dbo.PipelineLog
+
+Drag "General"/"Lookup" 
+"Lookup"/General/Name: Get Batch Run Details
+"Lookup"/General/Timeout:	0.00:10:00
+"Lookup"/Settings/Source dataset: DS_asql_batch_details
+"Lookup"/Settings/Use query: Stored procedure
+"Lookup"/Settings/Stored procedure name:	[dbo].[GetBatch]
+Click "Import parameter"
+Parameter:
+Name			Type		Value
+PFrequency		String		@variables('v_frequency')
+PSystemCode		String		@variables('v_systemcode')
+
+
+
+36. Add Orchestration Pipeline Part 2
+Drag "Iteration & conditionals"/ForEach
+Make "Lookup" -> "ForEach"
+Name "ForEach" as "ForEach Batch Run Information".
+"ForEach"/Settings/Items: @activity('Get Batch Run Details').output.value
+
+Add activites into "ForEach":
+Drag "PL_data_ingestion_json_v6" and rename it to "Run Ingestion"
+“Execute Pipeline"/Settings/Parameters:
+Name			Type		Value						Default value
+systemCode		string		@variables('v_systemcode')
+datasetName		string		@item().DatasetName
+runID			string		@item().RunID
+snapshotDate	string		@item().SnapshotDate
+
+
+
+Drap "General"/"Stored procedure"
+Make "Lookup" -> "ForEach" -> "Stored procedure"
+"Stored procedure"/General/Name: Set Batch Status
+"Stored procedure"/Settings/Linked service:				LS_asql_data_engineering_metadata
+"Stored procedure"/Settings/Stored procedure name:		[dbo].[SetBatchStatus]
+Click "Import":
+Name				Type		Value
+PFrequency			String		@variables('v_frequency')
+PSystemCode			String		@variables('v_systemcode')
+
+validate
+publish
+
+
+
+select * from [merchant_info].[tb_m_merchant]
+select * from [merchant_info].[tb_mg_merchant_group]
+select * from [merchant_info].[tb_mgmm_merchant_group_merchant_map]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

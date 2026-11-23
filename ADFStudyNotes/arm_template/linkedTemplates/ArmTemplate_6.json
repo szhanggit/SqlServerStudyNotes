@@ -1,0 +1,2452 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "esg-txcloud-new-asse-adf-s"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_acceptance_loop_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductAcceptanceLoopId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCMerchantId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCShopId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TX2MerchantId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TX2ShopId",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductAcceptanceLoopSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_acceptance_loop_sync_gr')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2_gr",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2_GR"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductAcceptanceLoopId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCMerchantId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCShopId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TX2MerchantId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TX2ShopId",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductAcceptanceLoopSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_banner_image_setting_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductBannerImageSettingSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_banner_image_setting_sync_gr')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2_gr",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2_GR"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductBannerImageSettingSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_barcode_setting')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "Id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Barcode1Type",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "IsBarcode1DisplayText",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "IsBarcode1APIEnabled",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "Barcode2Type",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "IsBarcode2DisplayText",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "IsBarcode2APIEnabled",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "Barcode3Type",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "IsBarcode3DisplayText",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "IsBarcode3APIEnabled",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "Barcode4Type",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "IsBarcode4DisplayText",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "IsBarcode4APIEnabled",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "ShowcodeType",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "IsShowcodeTypeDisplayText",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "IsShowcodeTypeEnabled",
+                        "type": "bit"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "ProductBarcodeSetting"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_combo_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductComboSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_combo_sync_gr')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2_gr",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2_GR"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductComboSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_expiry_scheme_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductExpirySchemeId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ExpirationPolicyId",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductExpirySchemeSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_expiry_scheme_sync_gr')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2_gr",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2_GR"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductExpirySchemeId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ExpirationPolicyId",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductExpirySchemeSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_external_property_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductExternalPropertyId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "PropertyName",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "PropertyValue",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "Description",
+                        "type": "nvarchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductExternalPropertySync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_external_property_sync_gr')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2_gr",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2_GR"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductExternalPropertyId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "PropertyName",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "PropertyValue",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "Description",
+                        "type": "nvarchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductExternalPropertySync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_price_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductPriceId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "FaceValue",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "FaceValueWithTax",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "SellingPricePrepaid",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "SellingPricePrepaidWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "SellingPricePostpaid",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "SellingPricePostpaidWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "Cost",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "CostWithTax",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "CustomerFeePrepaid",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "CustomerFeePrepaidWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "CustomerFeePostpaid",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "CustomerFeePostpaidWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "MerchantFee",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "MerchantFeeWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "Balance",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "DefaultSellingPrice",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "DefaultProductCost",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductPriceSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_price_sync_gr')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2_gr",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2_GR"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductPriceId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "FaceValue",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "FaceValueWithTax",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "SellingPricePrepaid",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "SellingPricePrepaidWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "SellingPricePostpaid",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "SellingPricePostpaidWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "Cost",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "CostWithTax",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "CustomerFeePrepaid",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "CustomerFeePrepaidWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "CustomerFeePostpaid",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "CustomerFeePostpaidWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "MerchantFee",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "MerchantFeeWithTax",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "Balance",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "DefaultSellingPrice",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    },
+                    {
+                        "name": "DefaultProductCost",
+                        "type": "decimal",
+                        "precision": 15,
+                        "scale": 4
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductPriceSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_redeem_date_blacklist_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductRedeemDateBlacklistId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCBlackDate",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "BlackDate",
+                        "type": "date"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductRedeemDateBlacklistSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_redeem_date_blacklist_sync_gr')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2_gr",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2_GR"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductRedeemDateBlacklistId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "BlackDate",
+                        "type": "date"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductRedeemDateBlacklistSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_redeem_time_restriction_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductRedeemTimeRestrictionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "DayOfTheWeek",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "StartTime",
+                        "type": "time",
+                        "scale": 7
+                    },
+                    {
+                        "name": "EndTime",
+                        "type": "time",
+                        "scale": 7
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductRedeemTimeRestrictionSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_redeem_time_restriction_sync_gr')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2_gr",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2_GR"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductRedeemTimeRestrictionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "DayOfTheWeek",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "StartTime",
+                        "type": "time",
+                        "scale": 7
+                    },
+                    {
+                        "name": "EndTime",
+                        "type": "time",
+                        "scale": 7
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductRedeemTimeRestrictionSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProgramId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductCode",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "ExternalProductCode",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "ProductName",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "Description",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "Note",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "VoucherNumberGenerateWay",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "TXCVoucherNumberRuleId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "CanTopup",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "MinRedeemQuantity",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "MaxIssuingQuantity",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ValidFrom",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "ValidTo",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "ReverseLimitId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "PreAuthorizationExpiryInterval",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "PreAuthorizationExpiryUnit",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "UseTimeControl",
+                        "type": "smallint",
+                        "precision": 5
+                    },
+                    {
+                        "name": "UseTimeControlInterval",
+                        "type": "smallint",
+                        "precision": 5
+                    },
+                    {
+                        "name": "MaxTotalRedeemAmountControl",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "MaxTotalRedeemAmountControlInterval",
+                        "type": "smallint",
+                        "precision": 5
+                    },
+                    {
+                        "name": "MaxSingleRedeemAmount",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Status",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "ExpirationDate",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "BrandStory",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "CanIssue",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "StopIssueTime",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "ReminderId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "MultipleSelectionType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "ProductIssuerType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "TXCIssueMerchant",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "PinCodeType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "PinCodeLength",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "IsMasterProduct",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "MerchantAcquirerId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductTag",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "AddToWallet",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "ProductSubType",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCBrandId",
+                        "type": "nchar"
+                    },
+                    {
+                        "name": "Memo",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "WalletStatus",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCWalletImage",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductCategory",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "IsDeferredChild",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "CanExtend",
+                        "type": "nchar"
+                    },
+                    {
+                        "name": "ExtensionSchemeId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "MaxExtendTimes",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ExtensionEndDate",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "SameAsValidEndDateOnContract",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "CreatedBy",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "CreatedOn",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "Modifier",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "Version",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "VersionTime",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "IsCurrentVersion",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "TXCProductTemplateId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductPriceId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductExpirySchemeId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductRedeemDateBlacklistId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductRedeemTimeRestrictionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductExternalPropertyId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductAcceptanceLoopId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductSKUId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProgramId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "VoucherNumberRuleId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "IssueMerchant",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "BrandId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "WalletImage",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductEmailTemplateVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductSLMSTemplateVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductPricingProductBasedId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductPricingValueBasedId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductExpirySchemeId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductRedeemDateBlacklistId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductRedeemTimeRestrictionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductExternalPropertyId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductAcceptanceLoopId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "IsMultiBrand",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "ShowcodeType",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "DisplayText",
+                        "type": "bit"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_sync_gr')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2_gr",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2_GR"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProgramId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductCode",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "ExternalProductCode",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "ProductName",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "Description",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "Note",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "VoucherNumberGenerateWay",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "TXCVoucherNumberRuleId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "CanTopup",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "MinRedeemQuantity",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "MaxIssuingQuantity",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ValidFrom",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "ValidTo",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "ReverseLimitId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "PreAuthorizationExpiryInterval",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "PreAuthorizationExpiryUnit",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "UseTimeControl",
+                        "type": "smallint",
+                        "precision": 5
+                    },
+                    {
+                        "name": "UseTimeControlInterval",
+                        "type": "smallint",
+                        "precision": 5
+                    },
+                    {
+                        "name": "MaxTotalRedeemAmountControl",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "MaxTotalRedeemAmountControlInterval",
+                        "type": "smallint",
+                        "precision": 5
+                    },
+                    {
+                        "name": "MaxSingleRedeemAmount",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Status",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "ExpirationDate",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "BrandStory",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "CanIssue",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "StopIssueTime",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "ReminderId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "MultipleSelectionType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "ProductIssuerType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "TXCIssueMerchant",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "PinCodeType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "PinCodeLength",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "IsMasterProduct",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "MerchantAcquirerId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductTag",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "AddToWallet",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "ProductSubType",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCBrandId",
+                        "type": "nchar"
+                    },
+                    {
+                        "name": "Memo",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "WalletStatus",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCWalletImage",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductCategory",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "IsDeferredChild",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "CanExtend",
+                        "type": "nchar"
+                    },
+                    {
+                        "name": "ExtensionSchemeId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "MaxExtendTimes",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ExtensionEndDate",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "SameAsValidEndDateOnContract",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "CreatedBy",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "CreatedOn",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "Modifier",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "Version",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "VersionTime",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "IsCurrentVersion",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "TXCProductTemplateId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductPriceId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductExpirySchemeId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductRedeemDateBlacklistId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductRedeemTimeRestrictionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductExternalPropertyId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductAcceptanceLoopId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TXCProductSKUId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProgramId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "VoucherNumberRuleId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "IssueMerchant",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "BrandId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "WalletImage",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductEmailTemplateVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductSLMSTemplateVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductPricingProductBasedId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductPricingValueBasedId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductExpirySchemeId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductRedeemDateBlacklistId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductRedeemTimeRestrictionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductExternalPropertyId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "ProductAcceptanceLoopId",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductSync"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_product_template_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "tx2",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "server_name": {
+                            "value": "@dataset().server_name",
+                            "type": "Expression"
+                        },
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        },
+                        "user_name": {
+                            "value": "@dataset().user_name",
+                            "type": "Expression"
+                        },
+                        "secret_name": {
+                            "value": "@dataset().secret_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "server_name": {
+                        "type": "string"
+                    },
+                    "database_name": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    },
+                    "secret_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TX2"
+                },
+                "annotations": [],
+                "type": "SqlServerTable",
+                "schema": [
+                    {
+                        "name": "RunId",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TXCProductTemplateId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TemplateType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "TemplateSubType",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "TXCTemplateVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TagId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Value",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "TextValue",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "TX2TemplateVersionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TX2MediaLibraryId",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TXCProductTemplateSync"
+                }
+            },
+            "dependsOn": []
+        }
+    ]
+}

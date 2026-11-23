@@ -1,0 +1,1688 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "esg-txcloud-new-asse-adf-s"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_product_super_voucher_description')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "product_super_voucher_description_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "product_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "description_content",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "created_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "created_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "version",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "product",
+                    "table": "tb_p_product_super_voucher_description"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_product_template')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "product_template_id",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "product",
+                    "table": "tb_p_product_template"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_product_template_set')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "product_template_set_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "product_template_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "template_type",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "product_template_version_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "template_sub_type",
+                        "type": "tinyint",
+                        "precision": 3
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "product",
+                    "table": "tb_p_product_template_set"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_product_template_tag_value')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "product_template_tag_value_id",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "product",
+                    "table": "tb_p_product_template_tag_value"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_product_template_tag_value_set')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "product",
+                    "table": "tb_p_product_template_tag_value_set"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_product_template_version')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "product_template_version_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "template_version_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "product_template_tag_value_id",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "product",
+                    "table": "tb_p_product_template_version"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_product_version')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "product_version_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "product_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "external_product_code",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "brand_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "sku_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "product_name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "description",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "is_deferred_child",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "is_cart_version",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "reminder_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "product_category",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "product_tag",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "product_issuer",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "pin_code_type",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "pin_code_length",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "operation_note",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "sales_note",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "customer_service_note",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "min_redeem_quantity",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "max_issuing_quantity",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "valid_from",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "valid_to",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "reverse_limit_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "pre_authorization_expiry_interval",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "pre_authorization_expiry_unit",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "use_time_control",
+                        "type": "smallint",
+                        "precision": 5
+                    },
+                    {
+                        "name": "use_time_control_interval",
+                        "type": "smallint",
+                        "precision": 5
+                    },
+                    {
+                        "name": "max_total_redeem_amount_control",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "max_total_redeem_amount_control_interval",
+                        "type": "smallint",
+                        "precision": 5
+                    },
+                    {
+                        "name": "max_single_redeem_amount",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "add_to_wallet",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "wallet_status",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "can_extend",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "extension_scheme_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "max_extend_times",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "extension_end_date",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "same_as_contract_end_date",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "acceptance_loop_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "template_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "price_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "expiry_scheme_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "expiry_date",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "redeem_date_blacklist_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "redeem_time_restriction_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "combo_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "external_property_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "version",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "is_current_version",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "created_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "created_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "last_updated_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "last_updated_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "voucher_issuer_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "issue_merchant",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "wallet_description",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "wallet_image",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "product",
+                    "table": "tb_p_product_version"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_reverse_limit')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "reverse_limit_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "description",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "type",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "valid_period",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "is_end_of_day",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "created_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "created_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "last_updated_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "last_updated_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "timestamp",
+                        "type": "timestamp"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "product",
+                    "table": "tb_p_product_reverse_limit"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_shop')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "identity_code",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "merchant_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "address_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "external_code",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "contact_name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "contact_phone",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "security_key",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "status",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "subsidiary_uen",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "subsidiary_name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "created_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "last_modified_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "last_modifier",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "work_key_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "contact_name2",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "contact_phone2",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "timestamp",
+                        "type": "timestamp"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "merchant_info",
+                    "table": "tb_s_shop"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_sync')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "sync_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "sync_name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "sync_description",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "last_sync_status",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "last_sync_period_from",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "last_sync_period_to",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "remarks",
+                        "type": "nvarchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "sync",
+                    "table": "tb_s_synchronization"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_sync2')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "sync_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "sync_name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "description",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "status",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "last_success_sync_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "remarks",
+                        "type": "nvarchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "sync",
+                    "table": "tb_s_synchronization2"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_tag')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "tag_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "tag_name",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "display_name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "description",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "category",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "type",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "scope_level",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "default_value",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "apply_to_html_template",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "apply_to_text_template",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "reflection_type",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "timestamp",
+                        "type": "timestamp"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "template",
+                    "table": "tb_t_tag"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_template')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "template_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "template_name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "type",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "sub_type",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "status",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "default_language",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "timestamp",
+                        "type": "timestamp"
+                    },
+                    {
+                        "name": "created_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "created_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "last_modified_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "last_modified_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "template",
+                    "table": "tb_t_template"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_template_version')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "template_version_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "template_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "language_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "version",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "is_current_version",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "description",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "subject1",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "content1",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "subject2",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "content2",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "subject3",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "content3",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "TX2ConnectionId",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "attachment_template_version_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "timestamp",
+                        "type": "timestamp"
+                    },
+                    {
+                        "name": "created_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "created_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "last_modified_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "last_modified_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "template",
+                    "table": "tb_t_template_version"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_template_version_tag')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "template_version_tag_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "template_version_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "tag_id",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "template",
+                    "table": "tb_t_template_version_tag"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_tenant_config')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "tenantconfig_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "tenant_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "configtype",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "configname",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "version",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "value",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "comment",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "creation_time",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "tb_tc_tenant_config"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_test_input_table')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": "@dataset().database_name"
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string",
+                        "defaultValue": "txc_dev_tenant_tcc"
+                    }
+                },
+                "folder": {
+                    "name": "TXC/Client"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "Id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "IdentityKey",
+                        "type": "varbinary"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "test",
+                    "table": "inputtable"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_tpc_vendors')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "program_code",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "vendor_code",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "setting",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "invoke_type",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "interval_minutes",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "maximum_times",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "status",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "created_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "created_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "modified_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "modified_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "tpc",
+                    "table": "tb_v_vendors"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_voucher_number_algorithm')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "name_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "reflection_type",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "description_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "support_mode",
+                        "type": "tinyint",
+                        "precision": 3
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "merchant_info",
+                    "table": "tb_vna_voucher_number_algorithm"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_voucher_number_rule')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "voucher_number_prefix",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "voucher_number_type",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "voucher_number_length",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "voucher_number_example",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "pin_type",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "dist_voucher_num_under_barcode",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "barcode_type_id",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "algorithm_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "created_by",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "created_datetime",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "merchant_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "rule_name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "voucher_number_generator",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "voucher_generate_way",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "request_expiry_date",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "has_multipart_barcode",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "on_demand",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "updated_by",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "updated_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "is_deleted",
+                        "type": "bit"
+                    },
+                    {
+                        "name": "deleted_by",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "deleted_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "vendor_id",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "merchant_info",
+                    "table": "tb_vnr_voucher_number_rule"
+                }
+            },
+            "dependsOn": []
+        }
+    ]
+}

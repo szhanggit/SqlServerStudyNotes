@@ -1,0 +1,1273 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "esg-txcloud-new-asse-adf-s"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/in_uat_create_contract')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_create_contract",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "CreateContract",
+                                "tenant_database_name": "txc_txcuat_tenant_in",
+                                "tx2_server_name": "172.22.78.7,1433",
+                                "tx2_database_name": "IN_EV_TXCUAT_MOVE",
+                                "tx2_user_name": "IN_EV_UAT_MOVE",
+                                "tx2_secret_name": "TX2-IN-UAT-Move-PWD",
+                                "tenant_id": 2
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/uat/IN UAT"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:29:37Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/in_uat_create_voucher_number_rule')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_create_voucher_number_rule",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "CreateVoucherNumberRule",
+                                "tenant_database_name": "txc_txcuat_tenant_in",
+                                "tx2_server_name": "172.22.78.7,1433",
+                                "tx2_database_name": "IN_EV_TXCUAT_MOVE",
+                                "tx2_user_name": "IN_EV_UAT_MOVE",
+                                "tx2_secret_name": "TX2-IN-UAT-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/uat/IN UAT"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:29:37Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/in_uat_product')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_product",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "Product",
+                                "tenant_database_name": "txc_txcuat_tenant_in",
+                                "tx2_server_name": "172.22.78.7,1433",
+                                "tx2_database_name": "IN_EV_TXCUAT_MOVE",
+                                "tx2_user_name": "IN_EV_UAT_MOVE",
+                                "tx2_secret_name": "TX2-IN-UAT-Move-PWD",
+                                "time_offset_minute": 330
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/uat/IN UAT"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:29:37Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/in_uat_product_banner_image_setting')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_product_banner_image_setting",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "ProductBannerImageSetting",
+                                "tenant_database_name": "txc_txcuat_tenant_in",
+                                "tx2_server_name": "172.22.78.7,1433",
+                                "tx2_database_name": "IN_EV_TXCUAT_MOVE",
+                                "tx2_user_name": "IN_EV_UAT_MOVE",
+                                "tx2_secret_name": "TX2-IN-UAT-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/uat/IN UAT"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:29:37Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/in_uat_update_acceptance_loop')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_acceptance_loop",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateAcceptanceLoop",
+                                "tenant_database_name": "txc_txcuat_tenant_in",
+                                "tx2_server_name": "172.22.78.7,1433",
+                                "tx2_database_name": "IN_EV_TXCUAT_MOVE",
+                                "tx2_user_name": "IN_EV_UAT_MOVE",
+                                "tx2_secret_name": "TX2-IN-UAT-Move-PWD",
+                                "tx2_adora_server_name": "172.22.78.7,1433",
+                                "tx2_adora_database_name": "IN_EV_TXCUAT_ADORA",
+                                "tx2_adora_user_name": "IN_EV_UAT_ADORA",
+                                "tx2_adora_secret_name": "TX2-IN-UAT-Adora-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/uat/IN UAT"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:29:37Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/in_uat_update_contract')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_contract",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateContract",
+                                "tenant_database_name": "txc_txcuat_tenant_in",
+                                "tx2_server_name": "172.22.78.7,1433",
+                                "tx2_database_name": "IN_EV_TXCUAT_MOVE",
+                                "tx2_user_name": "IN_EV_UAT_MOVE",
+                                "tx2_secret_name": "TX2-IN-UAT-Move-PWD",
+                                "tenant_id": 2
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/uat/IN UAT"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:29:37Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/in_uat_update_product_combo')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_product_combo",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "ProductCombo",
+                                "tenant_database_name": "txc_txcuat_tenant_in",
+                                "tx2_server_name": "172.22.78.7,1433",
+                                "tx2_database_name": "IN_EV_TXCUAT_MOVE",
+                                "tx2_user_name": "IN_EV_UAT_MOVE",
+                                "tx2_secret_name": "TX2-IN-UAT-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/uat/IN UAT"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:29:37Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/in_uat_update_sku_facevalue_multiplier')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_sku_faceValue_multiplier",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateSkuFaceValueAndMultipler",
+                                "tenant_database_name": "txc_txcuat_tenant_in",
+                                "tx2_server_name": "172.22.78.7,1433",
+                                "tx2_database_name": "IN_EV_TXCUAT_MOVE",
+                                "tx2_user_name": "IN_EV_UAT_MOVE",
+                                "tx2_secret_name": "TX2-IN-UAT-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/uat/IN UAT"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:29:37Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/in_uat_update_voucher_number_rule')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_voucher_number_rule",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateVoucherNumberRule",
+                                "tenant_database_name": "txc_txcuat_tenant_in",
+                                "tx2_server_name": "172.22.78.7,1433",
+                                "tx2_database_name": "IN_EV_TXCUAT_MOVE",
+                                "tx2_user_name": "IN_EV_UAT_MOVE",
+                                "tx2_secret_name": "TX2-IN-UAT-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/uat/IN UAT"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:29:37Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/manual_sync_sub')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "CreateVoucherNumberRule",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_create_voucher_number_rule",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "CreateVoucherNumberRule",
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "Product",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "CreateVoucherNumberRule",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_product",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "Product",
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                },
+                                "time_offset_minute": {
+                                    "value": "@pipeline().parameters.time_offset_minute",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "ProductBannerImageSetting",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "Product",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_product_banner_image_setting",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "ProductBannerImageSetting",
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "ProductCombo",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "ProductBannerImageSetting",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_product_combo",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "ProductCombo",
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "UpdateAcceptanceLoop",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "ProductCombo",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_acceptance_loop",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateAcceptanceLoop",
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_adora_server_name": {
+                                    "value": "@pipeline().parameters.tx2_adora_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_adora_database_name": {
+                                    "value": "@pipeline().parameters.tx2_adora_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_adora_user_name": {
+                                    "value": "@pipeline().parameters.tx2_adora_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_adora_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_adora_secret_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "UpdateSkuFaceValueAndMultipler",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "UpdateAcceptanceLoop",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_sku_faceValue_multiplier",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateSkuFaceValueAndMultipler",
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "UpdateVoucherNumberRule",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "UpdateSkuFaceValueAndMultipler",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_voucher_number_rule",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateVoucherNumberRule",
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "CreateContract",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "UpdateVoucherNumberRule",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_create_contract",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "CreateContract",
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                },
+                                "tenant_id": {
+                                    "value": "@pipeline().parameters.tenant_id",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "UpdateContract",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "CreateContract",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_contract",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateContract",
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                },
+                                "tenant_id": {
+                                    "value": "@pipeline().parameters.tenant_id",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "BatchUpdateProductTag",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "UpdateContract",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "batch_update_product_tag_main",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "parameters": {
+                    "tenant_database_name": {
+                        "type": "string"
+                    },
+                    "tx2_server_name": {
+                        "type": "string"
+                    },
+                    "tx2_database_name": {
+                        "type": "string"
+                    },
+                    "tx2_user_name": {
+                        "type": "string"
+                    },
+                    "tx2_secret_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_server_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_database_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_user_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_secret_name": {
+                        "type": "string"
+                    },
+                    "time_offset_minute": {
+                        "type": "int"
+                    },
+                    "tenant_id": {
+                        "type": "int"
+                    }
+                },
+                "folder": {
+                    "name": "synchronization_manual"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T08:39:33Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_batch_update_product_tag')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "batch_update_product_tag_main",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "tenant_database_name": "txc_staging_tenant_sg"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:14:19Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_create_contract')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_create_contract",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "CreateContract",
+                                "tenant_database_name": "txc_staging_tenant_sg",
+                                "tx2_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_database_name": "SG_EV_STAGING_MOVE",
+                                "tx2_user_name": "SG_EV_STAGING_MOVE",
+                                "tx2_secret_name": "TX2-SG-Stating-Move-PWD",
+                                "tenant_id": 6
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:14:18Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_create_voucher_number_rule')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_create_voucher_number_rule",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "CreateVoucherNumberRule",
+                                "tenant_database_name": "txc_staging_tenant_sg",
+                                "tx2_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_database_name": "SG_EV_STAGING_MOVE",
+                                "tx2_user_name": "SG_EV_STAGING_MOVE",
+                                "tx2_secret_name": "TX2-SG-Stating-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:14:19Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_product')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_product",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "Product",
+                                "tenant_database_name": "txc_staging_tenant_sg",
+                                "tx2_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_database_name": "SG_EV_STAGING_MOVE",
+                                "tx2_user_name": "SG_EV_STAGING_MOVE",
+                                "tx2_secret_name": "SG-EV-STAGING-MOVE",
+                                "time_offset_minute": 480
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T08:39:33Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_product_banner_image_setting')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_product_banner_image_setting",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "ProductBannerImageSetting",
+                                "tenant_database_name": "txc_staging_tenant_sg",
+                                "tx2_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_database_name": "SG_EV_STAGING_MOVE",
+                                "tx2_user_name": "SG_EV_STAGING_MOVE",
+                                "tx2_secret_name": "TX2-SG-Stating-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:14:19Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_update_acceptance_loop')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_acceptance_loop",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateAcceptanceLoop",
+                                "tenant_database_name": "txc_staging_tenant_sg",
+                                "tx2_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_database_name": "SG_EV_STAGING_MOVE",
+                                "tx2_user_name": "SG_EV_STAGING_MOVE",
+                                "tx2_secret_name": "TX2-SG-Stating-Move-PWD",
+                                "tx2_adora_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_adora_database_name": "SG_EV_STAGING_ADORA",
+                                "tx2_adora_user_name": "SG_EV_STAGING_ADORA",
+                                "tx2_adora_secret_name": "TX2-SG-Stating-Adora-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:14:18Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_update_contract')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_contract",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateContract",
+                                "tenant_database_name": "txc_staging_tenant_sg",
+                                "tx2_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_database_name": "SG_EV_STAGING_MOVE",
+                                "tx2_user_name": "SG_EV_STAGING_MOVE",
+                                "tx2_secret_name": "TX2-SG-Stating-Move-PWD",
+                                "tenant_id": 6
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:14:19Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_update_product_combo')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_product_combo",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "ProductCombo",
+                                "tenant_database_name": "txc_staging_tenant_sg",
+                                "tx2_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_database_name": "SG_EV_STAGING_MOVE",
+                                "tx2_user_name": "SG_EV_STAGING_MOVE",
+                                "tx2_secret_name": "TX2-SG-Stating-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:14:18Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_update_sku_facevalue_multiplier')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_sku_faceValue_multiplier",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateSkuFaceValueAndMultipler",
+                                "tenant_database_name": "txc_staging_tenant_sg",
+                                "tx2_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_database_name": "SG_EV_STAGING_MOVE",
+                                "tx2_user_name": "SG_EV_STAGING_MOVE",
+                                "tx2_secret_name": "TX2-SG-Stating-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:14:18Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/sg_staging_update_voucher_number_rule')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Execute Pipeline1",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "sync_update_voucher_number_rule",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "sync_name": "UpdateVoucherNumberRule",
+                                "tenant_database_name": "txc_staging_tenant_sg",
+                                "tx2_server_name": "zaesgtxapdbsa01.gold.net",
+                                "tx2_database_name": "SG_EV_STAGING_MOVE",
+                                "tx2_user_name": "SG_EV_STAGING_MOVE",
+                                "tx2_secret_name": "TX2-SG-Stating-Move-PWD"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "folder": {
+                    "name": "synchronization_manual/staging/SG  Staging"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T09:14:18Z"
+            },
+            "dependsOn": []
+        }
+    ]
+}

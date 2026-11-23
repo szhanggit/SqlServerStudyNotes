@@ -1,0 +1,1236 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "esg-txcloud-new-asse-adf-s"
+        },
+        "staging_sg_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "CreateContract"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tenant_id": {
+            "type": "int",
+            "defaultValue": 6
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "CreateVoucherNumberRule"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_product_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "Product"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "SG-EV-STAGING-MOVE"
+        },
+        "staging_sg_product_properties_pipeline_parameters_time_offset_minute": {
+            "type": "int",
+            "defaultValue": 480
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "ProductBannerImageSetting"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "SG-EV-STAGING-MOVE"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "UpdateAcceptanceLoop"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_ADORA"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_ADORA"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-SG-Stating-Adora-PWD"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "UpdateContract"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tenant_id": {
+            "type": "int",
+            "defaultValue": 6
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "ProductCombo"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "SG-EV-STAGING-MOVE"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "UpdateSkuFaceValueAndMultipler"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "UpdateVoucherNumberRule"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_tw_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "CreateContract"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tenant_id": {
+            "type": "int",
+            "defaultValue": 7
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "CreateVoucherNumberRule"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_product_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "Product"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TW-EV-STAGING-MOVE"
+        },
+        "staging_tw_product_properties_pipeline_parameters_time_offset_minute": {
+            "type": "int",
+            "defaultValue": 480
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "ProductBannerImageSetting"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TW-EV-STAGING-MOVE"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "UpdateAcceptanceLoop"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_ADORA"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_ADORA"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-TW-Stating-Adora-PWD"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "UpdateContract"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tenant_id": {
+            "type": "int",
+            "defaultValue": 7
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "ProductCombo"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TW-EV-STAGING-MOVE"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "UpdateSkuFaceValueAndMultipler"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "type": "string",
+            "defaultValue": "UpdateVoucherNumberRule"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "type": "string",
+            "defaultValue": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "type": "string",
+            "defaultValue": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "type": "string",
+            "defaultValue": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "type": "string",
+            "defaultValue": "TX2-TW-Stating-Move-PWD"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_batch_update_product_tag')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "batch_update_product_tag_main",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "tenant_database_name": "[parameters('staging_sg_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 5,
+                    "startTime": "2023-01-26T09:09:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_create_contract')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_create_contract",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_sg_create_contract_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_sg_create_contract_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_sg_create_contract_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_sg_create_contract_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_sg_create_contract_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_sg_create_contract_properties_pipeline_parameters_tx2_secret_name')]",
+                        "tenant_id": "[parameters('staging_sg_create_contract_properties_pipeline_parameters_tenant_id')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_create_voucher_number_rule')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_create_voucher_number_rule",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_sg_create_voucher_number_rule_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_product')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_product",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_sg_product_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_sg_product_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_sg_product_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_sg_product_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_sg_product_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_sg_product_properties_pipeline_parameters_tx2_secret_name')]",
+                        "time_offset_minute": "[parameters('staging_sg_product_properties_pipeline_parameters_time_offset_minute')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 5,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_product_banner_image_setting')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_product_banner_image_setting",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_sg_product_banner_image_setting_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_sg_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 5,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_update_acceptance_loop')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_acceptance_loop",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name')]",
+                        "tx2_adora_server_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name')]",
+                        "tx2_adora_database_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name')]",
+                        "tx2_adora_user_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name')]",
+                        "tx2_adora_secret_name": "[parameters('staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_update_contract')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_contract",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_sg_update_contract_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_sg_update_contract_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_sg_update_contract_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_sg_update_contract_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_sg_update_contract_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_sg_update_contract_properties_pipeline_parameters_tx2_secret_name')]",
+                        "tenant_id": "[parameters('staging_sg_update_contract_properties_pipeline_parameters_tenant_id')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_update_product_combo')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_product_combo",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_sg_update_product_combo_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_sg_update_product_combo_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_sg_update_product_combo_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_sg_update_product_combo_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_sg_update_product_combo_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_sg_update_product_combo_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 5,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_update_sku_faceValue_multiplier')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_sku_faceValue_multiplier",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_sg_update_voucher_number_rule')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_voucher_number_rule",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_sg_update_voucher_number_rule_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_batch_update_product_tag')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "batch_update_product_tag_main",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "tenant_database_name": "[parameters('staging_tw_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 5,
+                    "startTime": "2023-01-26T09:09:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_create_contract')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_create_contract",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_tw_create_contract_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_tw_create_contract_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_tw_create_contract_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_tw_create_contract_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_tw_create_contract_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_tw_create_contract_properties_pipeline_parameters_tx2_secret_name')]",
+                        "tenant_id": "[parameters('staging_tw_create_contract_properties_pipeline_parameters_tenant_id')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_create_voucher_number_rule')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_create_voucher_number_rule",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_tw_create_voucher_number_rule_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_product')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_product",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_tw_product_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_tw_product_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_tw_product_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_tw_product_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_tw_product_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_tw_product_properties_pipeline_parameters_tx2_secret_name')]",
+                        "time_offset_minute": "[parameters('staging_tw_product_properties_pipeline_parameters_time_offset_minute')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 5,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_product_banner_image_setting')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_product_banner_image_setting",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_tw_product_banner_image_setting_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_tw_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 5,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_update_acceptance_loop')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_acceptance_loop",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name')]",
+                        "tx2_adora_server_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name')]",
+                        "tx2_adora_database_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name')]",
+                        "tx2_adora_user_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name')]",
+                        "tx2_adora_secret_name": "[parameters('staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_update_contract')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_contract",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_tw_update_contract_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_tw_update_contract_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_tw_update_contract_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_tw_update_contract_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_tw_update_contract_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_tw_update_contract_properties_pipeline_parameters_tx2_secret_name')]",
+                        "tenant_id": "[parameters('staging_tw_update_contract_properties_pipeline_parameters_tenant_id')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 15,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_update_product_combo')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_product_combo",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_tw_update_product_combo_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_tw_update_product_combo_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_tw_update_product_combo_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_tw_update_product_combo_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_tw_update_product_combo_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_tw_update_product_combo_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 5,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_update_sku_faceValue_multiplier')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_sku_faceValue_multiplier",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/staging_tw_update_voucher_number_rule')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Stopped",
+                "pipeline": {
+                    "pipelineReference": {
+                        "referenceName": "sync_update_voucher_number_rule",
+                        "type": "PipelineReference"
+                    },
+                    "parameters": {
+                        "sync_name": "[parameters('staging_tw_update_voucher_number_rule_properties_pipeline_parameters_sync_name')]",
+                        "tenant_database_name": "[parameters('staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name')]",
+                        "tx2_server_name": "[parameters('staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name')]",
+                        "tx2_database_name": "[parameters('staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name')]",
+                        "tx2_user_name": "[parameters('staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name')]",
+                        "tx2_secret_name": "[parameters('staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name')]"
+                    }
+                },
+                "type": "TumblingWindowTrigger",
+                "typeProperties": {
+                    "frequency": "Minute",
+                    "interval": 10,
+                    "startTime": "2023-03-29T00:00:00Z",
+                    "delay": "00:00:00",
+                    "maxConcurrency": 1,
+                    "retryPolicy": {
+                        "intervalInSeconds": 30
+                    },
+                    "dependsOn": []
+                }
+            },
+            "dependsOn": []
+        }
+    ]
+}

@@ -1,0 +1,391 @@
+Submit Batch Ingestion Metadata: Once Off Batch Ingestion Set Up(System, Datasets and Frequency of Ingestion)
+SystemInfo(dbo): SystemCode, DatasetName
+Stores information about systems. In this instance, it is the "Buyalot Online Web Store" and the "Data Engineering Data Lake".
+
+Initialize Batch Ingestion: Initialize the Batch Ingestion and Determine which system and dataset are ready for ingestion.
+BatchRun(dbo): RunId, BatchId, SystemCode, RunNumber
+Stores information of previous, current (in-process) and the next batch run.
+
+
+Run Ingestion: Ingest Data Source to datalake per source system and dataset.
+SourceToTargetMetadata(dbo): SourceId, TargetId, Stage
+DataObjectMetadata(dbo): SystemInfoId, DataObjectInfo, DataObjectName
+Stores "source-to-target" information.
+
+
+12. Create Active Directory User
+In the main menu, go to "Azure Active Directory" => Users => Add User
+
+13. Assign the Contributor Role to the User
+In the main menu, go to Subscriptions => Azure Subscription => Access Control IAM (Identity Access Management) => Grant access to this resource => Add role assignment 
+=> select "Contributor" and click "Next" => "+ Select members" => Choose new the user
+Check: go to role assignment
+
+
+14. Disable Security Defaults
+Let's disable multifactor authentication (MFA)
+In the main menu, go to "Azure Active Directory" => Properties => Manage security defaults => Enable Security defaults to be "No" => select Other and write some reason.
+
+15. Creating the Metadata Database
+In the main menu, go to "SQL databases" => Create SQL database 
+=> Resource Group: rg-de-dataingestion-dev-001; Database name: de_meta; Server: demetaserverst001; Server admin login: de_admin; 
+=> Config Database => Looking for basic standard, premium? Choose basic. 
+Networking: Connectivity method: Public endpoint; Allow Azure services and resources to access this server (Yes); Add current client IP address (Yes).
+Go to resource
+Pin to the dashboard.
+If need to add more client IP into whitelist,
+Under de_meta, go to "Set server firewall" => Save
+
+16. Install Azure Data Studio
+Go to database => Query editor(preview)
+Go to database => Overview => Connect with... => Azure Data Studio => Download Azure Data Studio
+Go to database => Go to get server name. It is in the first page. "Server name", 
+Open Azure Data Studio => Click new connection => Add connection
+
+17. Create Metadata Tables and Stored Procedures
+Run create_metadata_tables.sql
+Run create_views.sql
+Run create_stored_procs.sql
+Run insert_metadata.sql
+Run insert_email_script.sql
+
+
+18. Reconfigure Existing Data Factory Artifacts
+Go to adf-dataingestion-dev => Open Azure Data Factory Studio => Manage => Linked services => Create a new one.
+Go to blue pencil => Dataset and pick one => select property on the right panel => change dataset name => Validate All => Publish.
+
+
+
+19. Set Up Logic App for Handling Email Notification
+Menu => All Resource => Create New => Integration => Logic App (Create) 
+=> Resource group: rg-de-dataingestion-dev-001; Logic app name: app-adf-dataingestion-email; Deselect "Associate with integration service environment"
+Go to resource
+Pin to the dashboard
+Click "Open designer" in app-adf-dataingestion-email		Home > Microsoft.EmptyWorkflow
+select "When a HTTP request is received" => Click "Use sample payload to generate schema"
+Enter or paste a sample JSON payload:
+{
+	"subject": "<subject of the email message>",
+	"messageBody": "<body of the email message>",
+	"emailAddress": "<email address>"
+} 
+=> "+ New step" => Choose an operation:
+Search for "Gmail", and choose "Send email(V2)" => Connection name "Data Engineering GMAIL" => Sign in
+see more => Dynamic content(email address). It shall be populated on "To".
+Add new parameter => Subject(fiiled with subject), Body(filled with messageBody) => Save
+Get url from "When a HTTP request is received"/Http Post Url
+
+20. Modify the Data Factory Pipeline to Send an Email Notification
+Open data factory => Open Azure Data Factory Studio => Blue Pen => Pipeline => Load one 
+=> Click property and rename it to be "PL_data_ingestion_json" => Publish.
+To clone a pipeline: Click action "..." => Clone and name it as "PL_data_ingestion_json_v2"
+General => Web => link these two activities.
+In activity Web:
+General: Name as "Send Email"; Timeout: 0.00.10:00 (It means 10 minutes); Description: Send Email Notification
+Settings: Url: get it from tutorial 19; Method: Post;
+Headers: 
+Name			Value
+Content-Type	application/json
+Click "Add dynamic content"	
+@json(concat('{
+	"emailAddress": "steven.zhang@edenred.com"
+	"subject": "ADF Pipeline (PL_data_ingestion_json)"
+	"messageBody": "Ingestion of Web Store Data into the Data Lake has completed successfully"
+}'))
+=> Finish.
+
+Click "Debug" and open "Output"
+
+(Adding Database)21. Create Linked Service for Metadata Database and Email Dataset
+In azure data factory studio, select "manage" => Linked services "+ New" => select "Azure SQL Database" => Continue
+=> Name "LS_asql_data_engierrning_metadata"; Description: "Connection to the Metadata Database"; Server name: "demetaserver"; Database name: "de_meta"; Authentication type: "SQL authentication" => test connection => create.
+Blue Pen => Create a new folder "metadata" under Dataset => select "..." and select New dataset => select "Azure SQL Database" =>Name: "DS_asql_email_addresses"; Choose linked service "LS_asql_data_engineering_metadata"; Table name: dbo.EmailRecipients 
+=> ok => select preview for testing => Publish
+
+22. Create Utility Pipeline to Send Email Notifications
+In azure data factory studio, Under Pipeline create a new folder called "Utility" => select "..." and new pipeline => Name: "PL_util_send_email_notifications"; Description: "This is a utility pipeline that sends email notifications".
+Parameters:
+	Name		Type	Default value
+	systemCode	String	OWS
+	datesetName	String	Sales
+General => "Lookup" drag it on canvas => In "Lookup", General, Name: "Get Email Address"; Description: "Gets the Email Recipients for a specific system code and dataset name"; Timeout: 0.00:10:00
+=> In "Lookup", Settings, Source dataset: DS_asql_email_addresses; Use query "Stored procedure"; Stored procedure name: [dbo].[GetEmailAddresses]; 
+Import parameter: 
+Name			Type		Value
+DatasetName		String		@pipeline().parameters.datesetName
+SystemCode		String		@pipeline().parameters.systemCode
+=> Deselect "First row only" => seledct "Preview Data"
+Under "Iternation & conditionals", drag "ForEach" => Under "ForEach", General, name: "ForEach Email Address"; Description: "Send a message to each email address".
+Under "ForEach", Settings Items: @activity("Get Email Addresses").output.value => Finish
+Under "ForEach" => click a white pencil => Paste "Send Email" => "PL_data_ingestion_json_v2" with all settings.
+Under "Send Email" => Settings: body:
+@json(concat('{
+	"emailAddress": "', item().emailAddress, '"
+	"subject": "ADF Pipeline (PL_data_ingestion_json)"
+	"messageBody": "Ingestion of Web Store Data into the Data Lake has completed successfully"
+}'))  => Finish
+Validate => Debug
+
+23. Explaining the Email Recipients Tables
+select a.FirstName, a.LastName, a.EmailAddress, b.* 
+from dbo.EmailRecipients a with(nolock)
+inner join dbo.SystemInfo b with(nolock) on b.ID = a.SystemInfoID
+
+
+24. Explaining the Get Email Addresses Stored Procedures
+Clone PL_data_ingestion_json_v2 to be PL_data_ingestion_json_v3.
+Parameters:
+Name		Type	Default value
+systemCode	String	OWS
+datasetName	String	Sales
+
+25. Mofify Ingestion Pipeline to use the Email Utility Pipeline
+Delete send email, keep Copy data, add "Execute Pipeline"
+Under "Execute Pipeline", General, Name: Send Email Notification
+Settings: 
+Invoked pipeline: "PL_util_send_email_notifications"
+Parameters
+Name		Type	Value								Default value
+systemCode	string	@pipeline().parameters.systemCode	OWS
+datesetName	string	@pipeline().parameters.datasetName	Sales
+
+Validate
+Debug
+
+Publish
+
+
+26.	Tracking the Triggered Pipeline
+Clone PL_data_ingestion_json_v3 to be PL_data_ingestion_json_v4
+Add parameters to the pipeline:
+runID			string			1
+snapShopDate	string			2021-07-11
+Drag General/Stored procedure (Copy data -> Stored procedure -> Execute Pipeline) => 
+Set Stored procedure:
+General/Name: 		Log Pipeline Success
+General/Timeout:	0.00:10:00
+Settings/Linked service: LS_asql_data_engineering_metadata
+Settings/Stored procedure name: [dbo].[InsertPipelineLog]
+Click "Stored procedure parameters"/Import
+Name				Type			Value
+EndTime				DateTime		@convertFromUtc(utcnow(), 'South Africa Standard Time')
+PipelineID			String			@pipeline().RunId
+PipelineName		String			@pipeline().Pipeline
+RunId				String			@pipeline().parameters.runID
+SnapshotDate		DateTime		@formatDateTime(pipeline().parameters.snapshotDate, 'yyyy-MM-dd')
+SourceToTargetID	Int32			2
+StartTime			DateTime		@convetFromUtc(pipeline().TriggerTime, 'South Africa Standard Time')
+Status				String			Success
+UpdateAt			DateTime		@convetFromUtc(pipeline().TriggerTime, 'South Africa Standard Time')
+
+
+
+
+
+
+
+27. Making the Email Notification Dynamic
+Add two extra parameters to PL_util_send_email_notifications
+Name		Type	Default value
+systemCode	String	OWS
+datesetName	String	Sales
+subject		String	
+message		String	
+In the foreach, Send Email:
+Settings/Body
+@json(concat('{
+	"emailAddress": "', item().emailAddress, '"
+	"subject": "', pipeline().parameters.subject,'"
+	"messageBody": "', pipeline().parameters.message,'"
+}'))
+
+
+Add a new pipeline under utility and name it as "PL_util_set_status_message":
+Description: Sets the status message from a calling pipeline and constructs a subject and a message
+Parameters:
+Name				Type		Default Value
+status				String
+triggeredPipeline	String
+systemCode			String
+datasetName			String
+
+Drag "Iteration & conditionals"/Switch and name it "Switch Status"
+Description: Construct a message and subject depending on the supplied statusof either 'success' or 'failed'
+Activities:
+Expression:		@pipeline().parameters.status
+Click "+ Add case"
+Add activity, click the pen, drag PL_util_send_email_notifications and rename it to be "Send Email Notifications - Success Message"
+Settings:
+Name			Type		Value
+systemCode		String		@pipeline().parameters.systemCode
+datesetName		String		@pipeline().parameters.datasetName
+subject			String		@concat('ADF Pipeline: ', @pipeline().parameters.TriggeredPipeline)
+message			String		@concat(@pipeline().parameters.TriggeredPipeline, ' has been completed successfully.')
+
+Fail activity:
+Add activity, click the pen, drag PL_util_send_email_notifications and rename it to be "Send Email Notifications - Failed Message"
+Settings:
+Name			Type		Value
+systemCode		String		@pipeline().parameters.systemCode
+datesetName		String		@pipeline().parameters.datasetName
+subject			String		@concat('ADF Pipeline: ', @pipeline().parameters.TriggeredPipeline)
+message			String		@concat(@pipeline().parameters.TriggeredPipeline, ' has been failed.')
+
+Default activity:
+Add activity, click the pen, drag PL_util_send_email_notifications and rename it to be "Send Email Notifications - Failed Message"
+Settings:
+Name			Type		Value
+systemCode		String		@pipeline().parameters.systemCode
+datesetName		String		@pipeline().parameters.datasetName
+subject			String		@concat('ADF Pipeline: ', @pipeline().parameters.TriggeredPipeline)
+message			String		@concat(@pipeline().parameters.TriggeredPipeline, ' has no valid status.')
+
+
+
+
+
+28. Making Logging of Pipeline Information Dynamic
+Add a new pipeline under utility and name it "PL_util_log_pipeline_metadata".
+Description:	Log Pipeline Run Information (Metadata)
+
+Parameters:
+Name				Type		Default Value
+snapshotDate		String
+status				String
+runID				String
+sourceToTargetID	String
+pipelineTriggerTime	String
+pipelineID			String
+pipelineName		String
+systemCode			String
+datasetName			String
+
+Copy the stored procedure component from the previous tutorial.
+General/Name: 			Log Pipeline Run Information Metadata
+General/Description: 	
+
+Settings/Stored procedure parameters
+
+
+Name				Type			Value
+EndTime				DateTime		@convertFromUtc(utcnow(), 'South Africa Standard Time')
+PipelineID			String			@pipeline().paramters.pipelineID
+PipelineName		String			@pipeline().paramters.pipelineName
+RunId				String			@pipeline().paramters.runID
+SnapshotDate		DateTime		@pipeline().paramters.snapshotDate
+SourceToTargetID	Int32			@pipeline().paramters.sourceToTarget
+StartTime			DateTime		@pipeline().paramters.pipelineTriggerTime
+Status				String			@pipeline().paramters.status
+UpdateAt			DateTime		@convetFromUtc(pipeline().TriggerTime, 'South Africa Standard Time')
+
+Drag "PL_util_set_status_message" and name it "Set Status and Send Message"
+Stored procsedure -> PL_util_set_status_message
+Settings/Parameters:
+Name				Type	Value
+status				String	@pipeline().paramters.status
+triggeredPipeline	String	@pipeline().paramters.pipelineName
+systemCode			String	@pipeline().paramters.systemCode
+datasetName			String	@pipeline().paramters.datasetName
+
+
+
+
+
+
+
+29. Add a new way to log the main ingestion pipeline (Variable)
+Clone PL_data_ingestion_json_v4 to be PL_data_ingestion_json_v5
+Only keep "Copy data"
+
+Variables:
+Name		Type		Default value
+v_status	String		Success
+
+
+Go to "Copy data" and click bottom right icon "Add output"(It can add "Success", "Failure", "Completion", and "Skipped")
+Drag General/Set variable to make 'Copy data' -> 'Set variable' and name it "Set Success Status" 
+Under 'Set variable'/ Variables:
+
+Name:	v_status
+Value:	Success
+
+
+Drag General/Set variable to make 'Copy data' -> 'Set variable' and name it "Set Fail Status" 
+Under 'Set variable'/ Variables:
+
+Name:	v_status
+Value:	Failed
+
+Drag 'PL_util_log_pipeline_metadata' under utility, make 'Copy data' -> 'Set variable' -> 'PL_util_log_pipeline_metadata' and rename as 'Log Pipeline Metadata - Success'
+Settings/Parameters:
+
+Name				Type			Value
+SnapshotDate		DateTime		@formatDateTime(pipeline().parameters.snapshotDate, 'yyyy-MM-dd')
+Status				String			@variables('v_status')
+RunId				String			@pipeline().parameters.runID
+SourceToTargetID	Int32			2
+pipelineTriggerTime	String			@pipeline().TriggerTime
+PipelineID			String			@pipeline().RunId
+PipelineName		String			@pipeline().Pipeline
+systemCode			String			@pipeline().parameters.systemCode
+datasetName			String			@pipeline().parameters.datasetName
+
+
+30. Change the Logging of Pipelines to send Fail message only
+Select utility/PL_util_log_pipeline_metadata, 
+drag "Iteration & conditinoals"/"If Condition" name it as "Test Status"; Description: Test the Status "Success" or "Failed"
+Activities/Expression: @equals(pipeline().parameters.status, 'Success')
+
+Copy stored procedure to true case.
+Copy everything to false case.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Question:
+Connections => Linked services => tx2_staging_gl => Connect via integration runtime: IR-tx2-shared-uat
+
+generate_mono_default_acceptance => database_name: @pipeline().parameters.tenant_database_name
+
+Connections => Linked services => txc_staging_tenant_gl => Database name => @{linkedService().database_name}
+Datasets => TX2 => tx2_brand => Connection => server_name: @dataset().server_name  Where is the value stored?
+Datasets => TX2 => tx2_brand => What is the dataset type? Where is table, dbo.BrandTest; dbo.TXCBrandSync? How to create the dataset?
+Pipelines => migration => generate_sku => Source => @pipeline().parameters.tx2_server_name		Who does call generate_sku?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+37. Fixing the Duplicating Batch Ingestions
+38. Understanding the Pipeline Log and Related Tables
+39. Understanding the GetBatch Stored Procedure
+40. Understanding the Set Batch Status and GetRunID
+41. Setting Up an Azure DevOps Git Repository
+http://dev.azure.com
+"Start feee" => Project name： “asdfasdf” (with private selected) => Repos => Click "Initialize main branch with a README or gitignore"/Initialize
+"Buyalot Data Engineering ..." => New => Folder:
+New folder name: sqlscripts
+New file name: readme.txt	=> Create
+Write something in readme.txt "This folder contains metadata sql scripts" and click "Commit"
+"Buyalot Data Engineering"/"sqlscripts ..." => Upload files => Browse => Commit
+
+
+42. Publishing the Data Factory to Azure DevOps
+In Azure Data Factory Studio, at the top left hand corner, there is a dropdown list "Data Factory". => select "Set update code repository"
+=> Repository type: "Azure DevOps Git" => Continue => Do any needful settings => Save
+Now let us publish code to DevOps. "Validate all" => "Publish" (It will publish all of your changes to Azure DevOps)
+
+
+
+
+
+
+
+
+43. Closing Remarks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

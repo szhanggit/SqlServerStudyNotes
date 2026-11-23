@@ -1,0 +1,1347 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "value": "esg-txcloud-new-asse-adf-s"
+        },
+        "SqlServer1_connectionString": {
+            "value": ""
+        },
+        "adora_tx2_connectionString": {
+            "value": "Integrated Security=False;Data Source=@{linkedService().server_name};Initial Catalog=@{linkedService().database_name};User ID=@{linkedService().user_name}"
+        },
+        "tx2_connectionString": {
+            "value": "Integrated Security=False;Data Source=@{linkedService().server_name};Initial Catalog=@{linkedService().database_name};User ID=@{linkedService().user_name}"
+        },
+        "tx2_gr_connectionString": {
+            "value": "Integrated Security=False;Data Source=@{linkedService().server_name};Initial Catalog=@{linkedService().database_name};User ID=@{linkedService().user_name}"
+        },
+        "tx2_staging_gl_connectionString": {
+            "value": ""
+        },
+        "tx2devtestlinkedservice_connectionString": {
+            "value": ""
+        },
+        "txc_dev_tenant_gl_connectionString": {
+            "value": ""
+        },
+        "txcloud_d_connectionString": {
+            "value": ""
+        },
+        "txcloud_d_mi_connectionString": {
+            "value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=esg-txcloud-new-asse-sqlsrv-d.database.windows.net;Initial Catalog=@{linkedService().database_name}"
+        },
+        "txcloud_d_test_connectionString": {
+            "value": ""
+        },
+        "txc_key_vault_properties_typeProperties_baseUrl": {
+            "value": "https://esg-aks-kv-d.vault.azure.net/"
+        },
+        "staging_gl_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_create_contract_properties_pipeline_parameters_sync_name": {
+            "value": "CreateContract"
+        },
+        "staging_gl_create_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_create_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_create_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_create_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_create_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-Stating-Move-PWD"
+        },
+        "staging_gl_create_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 9
+        },
+        "staging_gl_create_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "CreateVoucherNumberRule"
+        },
+        "staging_gl_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-Stating-Move-PWD"
+        },
+        "staging_gl_product_properties_pipeline_parameters_sync_name": {
+            "value": "Product"
+        },
+        "staging_gl_product_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_product_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_product_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_product_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_product_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "GL-EV-STAGING-MOVE"
+        },
+        "staging_gl_product_properties_pipeline_parameters_time_offset_minute": {
+            "value": 420
+        },
+        "staging_gl_product_banner_image_setting_properties_pipeline_parameters_sync_name": {
+            "value": "ProductBannerImageSetting"
+        },
+        "staging_gl_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "GL-EV-STAGING-MOVE"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateAcceptanceLoop"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-Stating-Move-PWD"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name": {
+            "value": "GL_EV_STAGING_ADORA"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name": {
+            "value": "GL_EV_STAGING_ADORA"
+        },
+        "staging_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name": {
+            "value": "TX2-GL-Stating-Adora-PWD"
+        },
+        "staging_gl_update_contract_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateContract"
+        },
+        "staging_gl_update_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_update_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_update_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-Stating-Move-PWD"
+        },
+        "staging_gl_update_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 9
+        },
+        "staging_gl_update_product_combo_properties_pipeline_parameters_sync_name": {
+            "value": "ProductCombo"
+        },
+        "staging_gl_update_product_combo_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_update_product_combo_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_update_product_combo_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_product_combo_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_product_combo_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "GL-EV-STAGING-MOVE"
+        },
+        "staging_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateSkuFaceValueAndMultipler"
+        },
+        "staging_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-Stating-Move-PWD"
+        },
+        "staging_gl_update_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateVoucherNumberRule"
+        },
+        "staging_gl_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gl"
+        },
+        "staging_gl_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gl_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_STAGING_MOVE"
+        },
+        "staging_gl_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-Stating-Move-PWD"
+        },
+        "staging_gr_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_create_contract_properties_pipeline_parameters_sync_name": {
+            "value": "CreateContract"
+        },
+        "staging_gr_create_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_create_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_create_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_create_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_create_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GR-Stating-Move-PWD"
+        },
+        "staging_gr_create_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 5
+        },
+        "staging_gr_create_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "CreateVoucherNumberRule"
+        },
+        "staging_gr_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GR-Stating-Move-PWD"
+        },
+        "staging_gr_product_properties_pipeline_parameters_sync_name": {
+            "value": "Product"
+        },
+        "staging_gr_product_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_product_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_product_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_product_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_product_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "GR-EV-STAGING-MOVE"
+        },
+        "staging_gr_product_properties_pipeline_parameters_time_offset_minute": {
+            "value": 480
+        },
+        "staging_gr_product_banner_image_setting_properties_pipeline_parameters_sync_name": {
+            "value": "ProductBannerImageSetting"
+        },
+        "staging_gr_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "GR-EV-STAGING-MOVE"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateAcceptanceLoop"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GR-Stating-Move-PWD"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name": {
+            "value": "GR_EV_STAGING_ADORA"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name": {
+            "value": "GR_EV_STAGING_ADORA"
+        },
+        "staging_gr_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name": {
+            "value": "TX2-GR-Stating-Adora-PWD"
+        },
+        "staging_gr_update_contract_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateContract"
+        },
+        "staging_gr_update_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_update_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_update_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GR-Stating-Move-PWD"
+        },
+        "staging_gr_update_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 5
+        },
+        "staging_gr_update_product_combo_properties_pipeline_parameters_sync_name": {
+            "value": "ProductCombo"
+        },
+        "staging_gr_update_product_combo_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_update_product_combo_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_update_product_combo_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_product_combo_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_product_combo_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "GR-EV-STAGING-MOVE"
+        },
+        "staging_gr_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateSkuFaceValueAndMultipler"
+        },
+        "staging_gr_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GR-Stating-Move-PWD"
+        },
+        "staging_gr_update_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateVoucherNumberRule"
+        },
+        "staging_gr_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_gr"
+        },
+        "staging_gr_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_gr_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GR_EV_STAGING_MOVE"
+        },
+        "staging_gr_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GR-Stating-Move-PWD"
+        },
+        "staging_in_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_in"
+        },
+        "staging_in_create_contract_properties_pipeline_parameters_sync_name": {
+            "value": "CreateContract"
+        },
+        "staging_in_create_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_in"
+        },
+        "staging_in_create_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_create_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_create_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_create_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-IN-Stating-Move-PWD"
+        },
+        "staging_in_create_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 2
+        },
+        "staging_in_create_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "CreateVoucherNumberRule"
+        },
+        "staging_in_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_in"
+        },
+        "staging_in_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-IN-Stating-Move-PWD"
+        },
+        "staging_in_product_properties_pipeline_parameters_sync_name": {
+            "value": "Product"
+        },
+        "staging_in_product_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_in"
+        },
+        "staging_in_product_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_product_properties_pipeline_parameters_tx2_database_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_product_properties_pipeline_parameters_tx2_user_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_product_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "IN-EV-STAGING-MOVE"
+        },
+        "staging_in_product_properties_pipeline_parameters_time_offset_minute": {
+            "value": 330
+        },
+        "staging_in_product_banner_image_setting_properties_pipeline_parameters_sync_name": {
+            "value": "ProductBannerImageSetting"
+        },
+        "staging_in_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_IN"
+        },
+        "staging_in_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "IN-EV-STAGING-MOVE"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateAcceptanceLoop"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_in"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-IN-Stating-Move-PWD"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name": {
+            "value": "IN_EV_STAGING_ADORA"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name": {
+            "value": "IN_EV_STAGING_ADORA"
+        },
+        "staging_in_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name": {
+            "value": "TX2-IN-Stating-Adora-PWD"
+        },
+        "staging_in_update_contract_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateContract"
+        },
+        "staging_in_update_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_in"
+        },
+        "staging_in_update_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_update_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-IN-Stating-Move-PWD"
+        },
+        "staging_in_update_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 2
+        },
+        "staging_in_update_product_combo_properties_pipeline_parameters_sync_name": {
+            "value": "ProductCombo"
+        },
+        "staging_in_update_product_combo_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_in"
+        },
+        "staging_in_update_product_combo_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_update_product_combo_properties_pipeline_parameters_tx2_database_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_product_combo_properties_pipeline_parameters_tx2_user_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_product_combo_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "IN-EV-STAGING-MOVE"
+        },
+        "staging_in_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateSkuFaceValueAndMultipler"
+        },
+        "staging_in_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_in"
+        },
+        "staging_in_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-IN-Stating-Move-PWD"
+        },
+        "staging_in_update_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateVoucherNumberRule"
+        },
+        "staging_in_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_in"
+        },
+        "staging_in_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_in_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "IN_EV_STAGING_MOVE"
+        },
+        "staging_in_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-IN-Stating-Move-PWD"
+        },
+        "staging_sg_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_sync_name": {
+            "value": "CreateContract"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_create_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 6
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "CreateVoucherNumberRule"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_product_properties_pipeline_parameters_sync_name": {
+            "value": "Product"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tx2_database_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tx2_user_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_product_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "SG-EV-STAGING-MOVE"
+        },
+        "staging_sg_product_properties_pipeline_parameters_time_offset_minute": {
+            "value": 480
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_sync_name": {
+            "value": "ProductBannerImageSetting"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "SG-EV-STAGING-MOVE"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateAcceptanceLoop"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name": {
+            "value": "SG_EV_STAGING_ADORA"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name": {
+            "value": "SG_EV_STAGING_ADORA"
+        },
+        "staging_sg_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name": {
+            "value": "TX2-SG-Stating-Adora-PWD"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateContract"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_update_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 6
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_sync_name": {
+            "value": "ProductCombo"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tx2_database_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tx2_user_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_product_combo_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "SG-EV-STAGING-MOVE"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateSkuFaceValueAndMultipler"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateVoucherNumberRule"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_sg"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "SG_EV_STAGING_MOVE"
+        },
+        "staging_sg_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-SG-Stating-Move-PWD"
+        },
+        "staging_tw_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_sync_name": {
+            "value": "CreateContract"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_create_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 7
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "CreateVoucherNumberRule"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_product_properties_pipeline_parameters_sync_name": {
+            "value": "Product"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_product_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TW-EV-STAGING-MOVE"
+        },
+        "staging_tw_product_properties_pipeline_parameters_time_offset_minute": {
+            "value": 480
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_sync_name": {
+            "value": "ProductBannerImageSetting"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TW-EV-STAGING-MOVE"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateAcceptanceLoop"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name": {
+            "value": "TW_EV_STAGING_ADORA"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name": {
+            "value": "TW_EV_STAGING_ADORA"
+        },
+        "staging_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name": {
+            "value": "TX2-TW-Stating-Adora-PWD"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateContract"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_update_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 7
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_sync_name": {
+            "value": "ProductCombo"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_product_combo_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TW-EV-STAGING-MOVE"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateSkuFaceValueAndMultipler"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-Stating-Move-PWD"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateVoucherNumberRule"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_staging_tenant_tw"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_STAGING_MOVE"
+        },
+        "staging_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-Stating-Move-PWD"
+        },
+        "uat_gl_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_create_contract_properties_pipeline_parameters_sync_name": {
+            "value": "CreateContract"
+        },
+        "uat_gl_create_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_create_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_create_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_TXCUAT_MOVE"
+        },
+        "uat_gl_create_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_UAT_MOVE"
+        },
+        "uat_gl_create_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-UAT-Move-PWD"
+        },
+        "uat_gl_create_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 9
+        },
+        "uat_gl_create_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "CreateVoucherNumberRule"
+        },
+        "uat_gl_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_TXCUAT_MOVE"
+        },
+        "uat_gl_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_UAT_MOVE"
+        },
+        "uat_gl_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-UAT-Move-PWD"
+        },
+        "uat_gl_product_properties_pipeline_parameters_sync_name": {
+            "value": "Product"
+        },
+        "uat_gl_product_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_product_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_product_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_TXCUAT_MOVE"
+        },
+        "uat_gl_product_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_UAT_MOVE"
+        },
+        "uat_gl_product_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-UAT-Move-PWD"
+        },
+        "uat_gl_product_properties_pipeline_parameters_time_offset_minute": {
+            "value": 420
+        },
+        "uat_gl_product_banner_image_setting_properties_pipeline_parameters_sync_name": {
+            "value": "ProductBannerImageSetting"
+        },
+        "uat_gl_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_TXCUAT_MOVE"
+        },
+        "uat_gl_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_UAT_MOVE"
+        },
+        "uat_gl_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-UAT-Move-PWD"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateAcceptanceLoop"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_TXCUAT_MOVE"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_UAT_MOVE"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-UAT-Move-PWD"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name": {
+            "value": "GL_EV_TXCUAT_ADORA"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name": {
+            "value": "GL_EV_UAT_ADORA"
+        },
+        "uat_gl_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name": {
+            "value": "TX2-GL-UAT-Adora-PWD"
+        },
+        "uat_gl_update_contract_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateContract"
+        },
+        "uat_gl_update_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_update_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_update_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_TXCUAT_MOVE"
+        },
+        "uat_gl_update_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_UAT_MOVE"
+        },
+        "uat_gl_update_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-UAT-Move-PWD"
+        },
+        "uat_gl_update_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 9
+        },
+        "uat_gl_update_product_combo_properties_pipeline_parameters_sync_name": {
+            "value": "ProductCombo"
+        },
+        "uat_gl_update_product_combo_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_update_product_combo_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_update_product_combo_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_TXCUAT_MOVE"
+        },
+        "uat_gl_update_product_combo_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_UAT_MOVE"
+        },
+        "uat_gl_update_product_combo_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-UAT-Move-PWD"
+        },
+        "uat_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateSkuFaceValueAndMultipler"
+        },
+        "uat_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_TXCUAT_MOVE"
+        },
+        "uat_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_UAT_MOVE"
+        },
+        "uat_gl_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-UAT-Move-PWD"
+        },
+        "uat_gl_update_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateVoucherNumberRule"
+        },
+        "uat_gl_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_gl"
+        },
+        "uat_gl_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "zaesgtxapdbsa01.gold.net"
+        },
+        "uat_gl_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "GL_EV_TXCUAT_MOVE"
+        },
+        "uat_gl_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "GL_EV_UAT_MOVE"
+        },
+        "uat_gl_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-GL-UAT-Move-PWD"
+        },
+        "uat_tw_batch_update_product_tag_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_create_contract_properties_pipeline_parameters_sync_name": {
+            "value": "CreateContract"
+        },
+        "uat_tw_create_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_create_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_create_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_TXCUAT_MOVE"
+        },
+        "uat_tw_create_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_UAT_MOVE"
+        },
+        "uat_tw_create_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-UAT-Move-PWD"
+        },
+        "uat_tw_create_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 7
+        },
+        "uat_tw_create_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "CreateVoucherNumberRule"
+        },
+        "uat_tw_create_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_TXCUAT_MOVE"
+        },
+        "uat_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_UAT_MOVE"
+        },
+        "uat_tw_create_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-UAT-Move-PWD"
+        },
+        "uat_tw_product_properties_pipeline_parameters_sync_name": {
+            "value": "Product"
+        },
+        "uat_tw_product_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_product_properties_pipeline_parameters_tx2_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_product_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_TXCUAT_MOVE"
+        },
+        "uat_tw_product_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_UAT_MOVE"
+        },
+        "uat_tw_product_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-UAT-Move-PWD"
+        },
+        "uat_tw_product_properties_pipeline_parameters_time_offset_minute": {
+            "value": 480
+        },
+        "uat_tw_product_banner_image_setting_properties_pipeline_parameters_sync_name": {
+            "value": "ProductBannerImageSetting"
+        },
+        "uat_tw_product_banner_image_setting_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_TXCUAT_MOVE"
+        },
+        "uat_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_UAT_MOVE"
+        },
+        "uat_tw_product_banner_image_setting_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-UAT-Move-PWD"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateAcceptanceLoop"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_TXCUAT_MOVE"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_UAT_MOVE"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-UAT-Move-PWD"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_database_name": {
+            "value": "TW_EV_TXCUAT_ADORA"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_user_name": {
+            "value": "TW_EV_UAT_ADORA"
+        },
+        "uat_tw_update_acceptance_loop_properties_pipeline_parameters_tx2_adora_secret_name": {
+            "value": "TX2-TW-UAT-Adora-PWD"
+        },
+        "uat_tw_update_contract_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateContract"
+        },
+        "uat_tw_update_contract_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_update_contract_properties_pipeline_parameters_tx2_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_update_contract_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_TXCUAT_MOVE"
+        },
+        "uat_tw_update_contract_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_UAT_MOVE"
+        },
+        "uat_tw_update_contract_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-UAT-Move-PWD"
+        },
+        "uat_tw_update_contract_properties_pipeline_parameters_tenant_id": {
+            "value": 7
+        },
+        "uat_tw_update_product_combo_properties_pipeline_parameters_sync_name": {
+            "value": "ProductCombo"
+        },
+        "uat_tw_update_product_combo_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_update_product_combo_properties_pipeline_parameters_tx2_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_update_product_combo_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_TXCUAT_MOVE"
+        },
+        "uat_tw_update_product_combo_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_UAT_MOVE"
+        },
+        "uat_tw_update_product_combo_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-UAT-Move-PWD"
+        },
+        "uat_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateSkuFaceValueAndMultipler"
+        },
+        "uat_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_TXCUAT_MOVE"
+        },
+        "uat_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_UAT_MOVE"
+        },
+        "uat_tw_update_sku_faceValue_multiplier_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-UAT-Move-PWD"
+        },
+        "uat_tw_update_voucher_number_rule_properties_pipeline_parameters_sync_name": {
+            "value": "UpdateVoucherNumberRule"
+        },
+        "uat_tw_update_voucher_number_rule_properties_pipeline_parameters_tenant_database_name": {
+            "value": "txc_txcuat_tenant_tw"
+        },
+        "uat_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_server_name": {
+            "value": "172.22.14.6,1433"
+        },
+        "uat_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_database_name": {
+            "value": "TW_EV_TXCUAT_MOVE"
+        },
+        "uat_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_user_name": {
+            "value": "TW_EV_UAT_MOVE"
+        },
+        "uat_tw_update_voucher_number_rule_properties_pipeline_parameters_tx2_secret_name": {
+            "value": "TX2-TW-UAT-Move-PWD"
+        },
+        "IR-tx2-shared-uat_properties_typeProperties_linkedInfo_resourceId": {
+            "value": "/subscriptions/147f51af-f7eb-480d-ad44-85c141b07318/resourcegroups/dataplatform-dev-rg/providers/Microsoft.DataFactory/factories/esg-dataplatform-adf-d/integrationruntimes/TX-SGGL-IntegrationRuntime-D"
+        }
+    }
+}

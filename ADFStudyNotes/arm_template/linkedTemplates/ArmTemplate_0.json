@@ -1,0 +1,980 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "esg-txcloud-new-asse-adf-s"
+        },
+        "txc_dev_tenant_gl_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'txc_dev_tenant_gl'"
+        },
+        "txcloud_d_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'txcloud_d'"
+        },
+        "txcloud_d_mi_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'txcloud_d_mi'",
+            "defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=esg-txcloud-new-asse-sqlsrv-d.database.windows.net;Initial Catalog=@{linkedService().database_name}"
+        },
+        "txcloud_d_test_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'txcloud_d_test'"
+        },
+        "txc_key_vault_properties_typeProperties_baseUrl": {
+            "type": "string",
+            "defaultValue": "https://esg-aks-kv-d.vault.azure.net/"
+        },
+        "IR-tx2-shared-uat_properties_typeProperties_linkedInfo_resourceId": {
+            "type": "string",
+            "defaultValue": "/subscriptions/147f51af-f7eb-480d-ad44-85c141b07318/resourcegroups/dataplatform-dev-rg/providers/Microsoft.DataFactory/factories/esg-dataplatform-adf-d/integrationruntimes/TX-SGGL-IntegrationRuntime-D"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/POC')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "GetKeyVaultSecret",
+                        "type": "WebActivity",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "url": {
+                                "value": "https://esg-seckeys-asse-kv-d.vault.azure.net/secrets/TXC-Client-1-0000003-Development/?api-version=7.3",
+                                "type": "Expression"
+                            },
+                            "method": "GET",
+                            "headers": {},
+                            "authentication": {
+                                "type": "MSI",
+                                "resource": "https://vault.azure.net"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Set variable1",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "GetKeyVaultSecret",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "client_key",
+                            "value": {
+                                "value": "@activity('GetKeyVaultSecret').output.value",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Set variable2",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "GetKeyVaultSecret",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "client_key",
+                            "value": {
+                                "value": "@activity('GetKeyVaultSecret').output.errors[0].Message",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "variables": {
+                    "client_key": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "synchronization/Client"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-03-27T14:50:04Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/env_setting')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "SetMasterDatabaseName",
+                        "type": "SetVariable",
+                        "dependsOn": [],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "master_database_name",
+                            "value": {
+                                "value": "@concat('txc_', pipeline().parameters.environment, '_tenant')",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    {
+                        "name": "SetTenantDatabaseName",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "SetMasterDatabaseName",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "tenant_database_name",
+                            "value": {
+                                "value": "@concat('txc_', pipeline().parameters.environment, '_tenant_', pipeline().parameters.tenant)",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "parameters": {
+                    "environment": {
+                        "type": "string"
+                    },
+                    "tenant": {
+                        "type": "string"
+                    }
+                },
+                "variables": {
+                    "tenant_database_name": {
+                        "type": "String"
+                    },
+                    "master_database_name": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "common"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-01-08T07:57:02Z"
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_dev_tenant_gl')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "connectionString": "[parameters('txc_dev_tenant_gl_connectionString')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_key_vault')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureKeyVault",
+                "typeProperties": {
+                    "baseUrl": "[parameters('txc_key_vault_properties_typeProperties_baseUrl')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txcloud_d')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "annotations": [],
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "connectionString": "[parameters('txcloud_d_connectionString')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txcloud_d_mi')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "parameters": {
+                    "database_name": {
+                        "type": "string",
+                        "defaultValue": "testencryptiontxc"
+                    }
+                },
+                "annotations": [],
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "connectionString": "[parameters('txcloud_d_mi_connectionString')]",
+                    "alwaysEncryptedSettings": {
+                        "alwaysEncryptedAkvAuthType": "ManagedIdentity"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txcloud_d_test')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "parameters": {
+                    "database_name": {
+                        "type": "string",
+                        "defaultValue": "txc_dev_tenant_tcc"
+                    }
+                },
+                "annotations": [],
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "connectionString": "[parameters('txcloud_d_test_connectionString')]",
+                    "alwaysEncryptedSettings": {
+                        "alwaysEncryptedAkvAuthType": "ManagedIdentity"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/GR-DB-integration')]",
+            "type": "Microsoft.DataFactory/factories/integrationRuntimes",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "SelfHosted",
+                "typeProperties": {}
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/IR-tx2-dev')]",
+            "type": "Microsoft.DataFactory/factories/integrationRuntimes",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "SelfHosted",
+                "typeProperties": {}
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/IR-tx2-shared-uat')]",
+            "type": "Microsoft.DataFactory/factories/integrationRuntimes",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "SelfHosted",
+                "typeProperties": {
+                    "linkedInfo": {
+                        "resourceId": "[parameters('IR-tx2-shared-uat_properties_typeProperties_linkedInfo_resourceId')]",
+                        "authorizationType": "Rbac"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/connection_test_txc_uat')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Script1",
+                        "type": "Script",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "linkedServiceName": {
+                            "referenceName": "txcloud_d",
+                            "type": "LinkedServiceReference",
+                            "parameters": {
+                                "database_name": {
+                                    "value": "@pipeline().parameters.database_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "typeProperties": {
+                            "scripts": [
+                                {
+                                    "type": "Query",
+                                    "text": "SELECT TOP 1 * FROM general.tb_d_dictionary"
+                                }
+                            ],
+                            "scriptBlockExecutionTimeout": "02:00:00"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "common"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-03T13:25:29Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txcloud_d')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/manual_sync_sub_ut')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "MockActivity",
+                        "type": "Script",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "linkedServiceName": {
+                            "referenceName": "txcloud_d",
+                            "type": "LinkedServiceReference",
+                            "parameters": {
+                                "database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "typeProperties": {
+                            "scripts": [
+                                {
+                                    "type": "NonQuery",
+                                    "text": "--Do something\r\n\r\n--THROW 99999, 'Test error', 1"
+                                }
+                            ],
+                            "scriptBlockExecutionTimeout": "02:00:00"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "parameters": {
+                    "tenant_database_name": {
+                        "type": "string"
+                    },
+                    "tx2_server_name": {
+                        "type": "string"
+                    },
+                    "tx2_database_name": {
+                        "type": "string"
+                    },
+                    "tx2_user_name": {
+                        "type": "string"
+                    },
+                    "tx2_secret_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_server_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_database_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_user_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_secret_name": {
+                        "type": "string"
+                    },
+                    "time_offset_minute": {
+                        "type": "int"
+                    },
+                    "tenant_id": {
+                        "type": "int"
+                    }
+                },
+                "folder": {
+                    "name": "synchronization_manual"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-17T08:39:33Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txcloud_d')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/poc_set_variable')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Script1",
+                        "type": "Script",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "linkedServiceName": {
+                            "referenceName": "txcloud_d",
+                            "type": "LinkedServiceReference",
+                            "parameters": {
+                                "database_name": "txc_staging_tenant_sg_Copy"
+                            }
+                        },
+                        "typeProperties": {
+                            "scripts": [
+                                {
+                                    "parameters": [
+                                        {
+                                            "name": "Variable1",
+                                            "type": "String",
+                                            "value": {
+                                                "value": "@variables('Variable1')",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Output",
+                                            "size": "50"
+                                        },
+                                        {
+                                            "name": "Variable2",
+                                            "type": "String",
+                                            "value": {
+                                                "value": "@variables('Variable2')",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Output",
+                                            "size": "50"
+                                        }
+                                    ],
+                                    "type": "Query",
+                                    "text": "SET @Variable1 = 'Value1'\nSET @Variable2 = 'Value2'"
+                                }
+                            ],
+                            "scriptBlockExecutionTimeout": "02:00:00"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "variables": {
+                    "Variable1": {
+                        "type": "String"
+                    },
+                    "Variable2": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "synchronization"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-02-07T08:03:11Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txcloud_d')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/poc_trans_control')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Script1",
+                        "type": "Script",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "linkedServiceName": {
+                            "referenceName": "txcloud_d",
+                            "type": "LinkedServiceReference",
+                            "parameters": {
+                                "database_name": "txc_staging_tenant_sg_Copy"
+                            }
+                        },
+                        "typeProperties": {
+                            "scripts": [
+                                {
+                                    "parameters": [
+                                        {
+                                            "name": "ErrorMessage",
+                                            "type": "String",
+                                            "value": {
+                                                "value": "@variables('ErrorMessage')",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Output",
+                                            "size": "500"
+                                        }
+                                    ],
+                                    "type": "NonQuery",
+                                    "text": "BEGIN TRAN\r\nBEGIN TRY\r\n    update sync.tb_s_synchronization_history set remarks = 'aaa' where sync_history_id = 18\r\n    update sync.tb_s_synchronization_history set remarks = 'bbb' where sync_history_id = 19\r\n    update sync.tb_s_synchronization_history set remarks = 1/0 where sync_history_id = 20\r\n       \r\n    COMMIT TRAN;\r\nEND TRY\r\nBEGIN CATCH\r\n    ROLLBACK TRAN;\r\n\r\n    SET @ErrorMessage = ERROR_MESSAGE();\r\n    THROW;\r\nEND CATCH"
+                                }
+                            ],
+                            "scriptBlockExecutionTimeout": "02:00:00"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "variables": {
+                    "ErrorMessage": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "synchronization"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-02-07T09:54:52Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txcloud_d')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/setting_tenant_configuration')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "setting_tenant_configuration",
+                        "type": "Script",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "linkedServiceName": {
+                            "referenceName": "txcloud_d",
+                            "type": "LinkedServiceReference",
+                            "parameters": {
+                                "database_name": {
+                                    "value": "@pipeline().parameters.master_database_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "typeProperties": {
+                            "scripts": [
+                                {
+                                    "type": "NonQuery",
+                                    "text": {
+                                        "value": "  IF EXISTS(SELECT 1 FROM dbo.tb_tc_tenant_config tttc with(nolock) WHERE tttc.tenant_id = @{pipeline().parameters.tenant_id} AND tttc.configtype = N'@{pipeline().parameters.configtype}' AND tttc.configname = N'@{pipeline().parameters.configname}' AND tttc.version = N'@{pipeline().parameters.version}')\r\n  BEGIN\r\n\t\tUPDATE tttc SET tttc.[value] = N'@{pipeline().parameters.value}',tttc.[comment] = N'@{pipeline().parameters.comment}' from dbo.tb_tc_tenant_config tttc \r\n    WHERE tttc.tenant_id = @{pipeline().parameters.tenant_id} AND tttc.configtype = N'@{pipeline().parameters.configtype}' AND tttc.configname = N'@{pipeline().parameters.configname}' AND tttc.version = N'@{pipeline().parameters.version}';\r\n  END\r\n  ELSE\r\n  BEGIN\r\n\tINSERT INTO dbo.tb_tc_tenant_config\r\n  (tenant_id,configtype,configname,version,[value],comment,creation_time)\r\n  VALUES(@{pipeline().parameters.tenant_id},\r\n  N'@{pipeline().parameters.configtype}',\r\n  N'@{pipeline().parameters.configname}',\r\n  N'@{pipeline().parameters.version}',\r\n  N'@{pipeline().parameters.value}', \r\n  N'@{pipeline().parameters.comment}',\r\n  getutcdate());\r\n  END",
+                                        "type": "Expression"
+                                    }
+                                }
+                            ],
+                            "scriptBlockExecutionTimeout": "02:00:00"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "parameters": {
+                    "master_database_name": {
+                        "type": "string"
+                    },
+                    "tenant_id": {
+                        "type": "int"
+                    },
+                    "configtype": {
+                        "type": "string"
+                    },
+                    "configname": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "comment": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "Tenant Administrator"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-18T03:35:25Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txcloud_d')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/test_voucher_encryption')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d_test",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": "txc_dev_tenant_tcc"
+                    }
+                },
+                "folder": {
+                    "name": "TXC/Client"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "VoucherCode",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "OrderNO",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "BeneficiaryNo",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "VoucherStatus",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CreatedOn",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "IssuedOn",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "ActivatedOn",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "ExpiresOn",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "SkuID",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "BaseCost",
+                        "type": "decimal",
+                        "precision": 18,
+                        "scale": 2
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "TestVoucherEncryption"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txcloud_d_test')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/test_voucher_inventory')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d_test",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": "testencryptiontxc"
+                    }
+                },
+                "folder": {
+                    "name": "TXC/Client"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "VoucherCode",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "PartitionNumber",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "OrderNO",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "BeneficiaryNo",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "VoucherStatus",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "CreatedOn",
+                        "type": "datetimeoffset",
+                        "scale": 7
+                    },
+                    {
+                        "name": "IssuedOn",
+                        "type": "datetimeoffset",
+                        "scale": 7
+                    },
+                    {
+                        "name": "ActivatedOn",
+                        "type": "datetimeoffset",
+                        "scale": 7
+                    },
+                    {
+                        "name": "ExpiresOn",
+                        "type": "datetimeoffset",
+                        "scale": 7
+                    },
+                    {
+                        "name": "SkuID",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "BaseCost",
+                        "type": "decimal",
+                        "precision": 18,
+                        "scale": 2
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "VoucherInventory10KPartitions"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txcloud_d_test')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_dev_brand_gl')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txc_dev_tenant_gl",
+                    "type": "LinkedServiceReference"
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "brand_name",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "media_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "status",
+                        "type": "tinyint",
+                        "precision": 3
+                    },
+                    {
+                        "name": "created_on",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "created_by",
+                        "type": "nvarchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "sync",
+                    "table": "tx2_brand"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txc_dev_tenant_gl')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/tx2_dev_product_version_gl')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txc_dev_tenant_gl",
+                    "type": "LinkedServiceReference"
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "product_version_id",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "product_id",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "sync",
+                    "table": "tx2_product_version"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txc_dev_tenant_gl')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/txc_acceptance_loop')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "txcloud_d",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "database_name": {
+                            "value": "@dataset().database_name",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "database_name": {
+                        "type": "string"
+                    }
+                },
+                "folder": {
+                    "name": "TXC"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "merchant_info",
+                    "table": "tb_al_acceptance_loop"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/txcloud_d')]"
+            ]
+        }
+    ]
+}

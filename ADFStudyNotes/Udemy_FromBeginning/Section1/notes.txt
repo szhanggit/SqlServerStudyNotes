@@ -1,0 +1,84 @@
+OLTP - Online Transaction Processing
+OLAP - Online Analytical Processing
+azure.microsoft.com/en-us/
+https://docs.microsoft.com/en-us/azure/data-factory/
+ETL - Extract Transform and Load
+ELT - Extract Load and Transform
+
+---------------------------------------------------------------------------
+一，Create a Data Factory Resource
+	In portal.azure.com/#home, DataFactory, Create a resource
+	
+"rg-de-dataingestion-dev-001"
+rg = resource group
+de = data engineering
+dev = development stage
+001 = instance name
+
+https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming
+Make instance name: "adf-sz-dataingestion-dev-001"
+
+Division		Data Engineering
+Product Owner	Steven Zhang
+Data Owner		Steven Zhang
+
+
+Go to resource
+Pin to dashboard:
+Create a new to be “Data Engineering - Dev”
+Make it shared.
+
+---------------------------------------------------------------------------
+
+二，Create A Storage Account and Upload Data
+	In portal.azure.com/#home, Storage Account, Create storage account, Create a new resource group: "rg-webdevelopment-dev-001", Storage account name: "szwebstoredata01"
+
+
+		Division		Web Development
+		Product Owner	Steven Zhang
+		Data Owner		Steven Zhang
+
+		Pin to dashboard:
+		Make it shared
+		select "Data Engineering - Dev"
+
+	Add a new container
+	Click "Containers", "+ Container", name it "sales" and click create.
+
+
+---------------------------------------------------------------------------
+三，Create Data Lake Gen 2 Storage Account
+	In portal.azure.com/#home, Storage Account, use this resrouce group: rg-de-dataingestion-dev-001, Storage account name: "szdatalakedev01"
+Attention: in order to make subdirectary, check "Enable hierarchival namespace"!
+
+		Pin to dashboard:
+		Make it shared
+		select "Data Engineering - Dev"
+
+	In Home > szdatalakedev01_1674719725856, choose Containers, Click "+ Container" and name it as "webdevelopment"
+	Add Directory "webstore", add directory "raw", add directory "onlinesales" 
+
+
+---------------------------------------------------------------------------
+Download Storage Explorer
+	Go to "My Dashboard", go "Data Engineering - Dev", pick one of the storage accounts (szwebstoredata01), Open in Explorer.
+
+---------------------------------------------------------------------------
+四，Create Your First Azure Pipeline
+Go menu, Dashboard, Data Engineering -Dev, Azure Data Factory, Launch studio
+After opening studio, go to select a blue pencil.
+Pipelines => New Pipeline => name it as "PL_ingest_ws_sales_to_datalake"
+=> Go to Datasets, select new folder, under webstore create new dataset. 
+=> Choose "Azure Blob Storage" => Continue => JSON => Name "DS_Online_Sales_Json" => New linked service => Name "LS_abs_webstore"; Description: "Connection to the Web Store blob storage", Storage account name: szwebstoredata01, then Create
+=> select file path => ok.
+Go back to pipeline:
+Open "Move & transform" and pick and drag "Copy data", set General: Name as "Copy Web Store Online Sales Data"; Description as "Copy Online Sales Data from the Web Store and ingest to Data Lake.",
+set Source: pick an item in Source dataset.
+Sink: "+ New", Azure Data Lake Storage Gen2, Name as "DS_dl_online_sales_json", Create New Linked service, Name as "LS_adls_data_engineering_dl"; Description: "Connection to the Data Engineering Data Lake", Storage account name: szdatalakedev01
+Click on the blank space, click "Validate", click "Publish All"
+
+Run Pipline:
+Click "Add trigger" => "Trigger now"
+
+Check the running result:
+Click bluc clock icon below blue pen => Click "PL_ingest_ws_sales_to_datalake" line to view details.

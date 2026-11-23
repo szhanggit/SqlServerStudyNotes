@@ -1,0 +1,465 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "esg-txcloud-new-asse-adf-s"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/manual_sync_main')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "LookupSync",
+                        "type": "Lookup",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "AzureSqlSource",
+                                "sqlReaderQuery": {
+                                    "value": "SELECT * FROM sync.tb_s_synchronization WHERE sync_name ='@{pipeline().parameters.sync_name}'",
+                                    "type": "Expression"
+                                },
+                                "queryTimeout": "02:00:00",
+                                "partitionOption": "None"
+                            },
+                            "dataset": {
+                                "referenceName": "txc_sync",
+                                "type": "DatasetReference",
+                                "parameters": {
+                                    "database_name": {
+                                        "value": "@pipeline().parameters.tenant_database_name",
+                                        "type": "Expression"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "SetSyncPeriodTo",
+                        "type": "SetVariable",
+                        "dependsOn": [
+                            {
+                                "activity": "UpdateSyncInProgress",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "variableName": "sync_period_to",
+                            "value": {
+                                "value": "@utcnow('yyyy-MM-dd HH:mm:ss')",
+                                "type": "Expression"
+                            }
+                        }
+                    },
+                    {
+                        "name": "SyncSuccess",
+                        "type": "Script",
+                        "dependsOn": [
+                            {
+                                "activity": "ExecuteSubPipeline",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "linkedServiceName": {
+                            "referenceName": "txcloud_d",
+                            "type": "LinkedServiceReference",
+                            "parameters": {
+                                "database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "typeProperties": {
+                            "scripts": [
+                                {
+                                    "parameters": [
+                                        {
+                                            "name": "sync_id",
+                                            "type": "Int32",
+                                            "value": {
+                                                "value": "@activity('LookupSync').output.firstRow.sync_id",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Input"
+                                        },
+                                        {
+                                            "name": "run_id",
+                                            "type": "String",
+                                            "value": {
+                                                "value": "@pipeline().RunId",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Input"
+                                        },
+                                        {
+                                            "name": "sync_period_to",
+                                            "type": "Datetime",
+                                            "value": {
+                                                "value": "@variables('sync_period_to')",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Input"
+                                        }
+                                    ],
+                                    "type": "NonQuery",
+                                    "text": "BEGIN TRAN\r\nBEGIN TRY\r\n\tINSERT INTO sync.tb_s_synchronization_history (sync_id, pipeline_run_id, trigger_time, status)\r\n\tVALUES (@sync_id, @run_id, @sync_period_to, 'Success')\r\n\r\n\tUPDATE sync.tb_s_synchronization\r\n\tSET status = 'Success', \r\n\tlast_success_sync_on = @sync_period_to,\r\n\tremarks = NULL\r\n\tWHERE sync_id = @sync_id\r\n\r\n\tCOMMIT TRAN;\r\nEND TRY\r\nBEGIN CATCH\r\n\tROLLBACK TRAN;\r\n\tTHROW;\r\nEND CATCH"
+                                }
+                            ],
+                            "scriptBlockExecutionTimeout": "02:00:00"
+                        }
+                    },
+                    {
+                        "name": "SyncFail",
+                        "type": "Script",
+                        "dependsOn": [
+                            {
+                                "activity": "ExecuteSubPipeline",
+                                "dependencyConditions": [
+                                    "Failed"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "linkedServiceName": {
+                            "referenceName": "txcloud_d",
+                            "type": "LinkedServiceReference",
+                            "parameters": {
+                                "database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "typeProperties": {
+                            "scripts": [
+                                {
+                                    "parameters": [
+                                        {
+                                            "name": "sync_id",
+                                            "type": "Int32",
+                                            "value": {
+                                                "value": "@activity('LookupSync').output.firstRow.sync_id",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Input"
+                                        },
+                                        {
+                                            "name": "run_id",
+                                            "type": "String",
+                                            "value": {
+                                                "value": "@pipeline().RunId",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Input"
+                                        },
+                                        {
+                                            "name": "sync_period_to",
+                                            "type": "Datetime",
+                                            "value": {
+                                                "value": "@variables('sync_period_to')",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Input"
+                                        },
+                                        {
+                                            "name": "remarks",
+                                            "type": "String",
+                                            "value": {
+                                                "value": "@activity('ExecuteSubPipeline').Error.message",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Input"
+                                        }
+                                    ],
+                                    "type": "NonQuery",
+                                    "text": "BEGIN TRAN\nBEGIN TRY\n\tINSERT INTO sync.tb_s_synchronization_history (sync_id, pipeline_run_id, trigger_time, status, remarks)\n\tVALUES (@sync_id, @run_id, @sync_period_to, 'Fail', @remarks)\n\n\tUPDATE sync.tb_s_synchronization\n\tSET status = 'Fail',\n\tremarks = @remarks\n\tWHERE sync_id = @sync_id\n\n\tCOMMIT TRAN;\nEND TRY\nBEGIN CATCH\n\tROLLBACK TRAN;\n\tTHROW;\nEND CATCH"
+                                }
+                            ],
+                            "scriptBlockExecutionTimeout": "02:00:00"
+                        }
+                    },
+                    {
+                        "name": "UpdateSyncInProgress",
+                        "type": "Script",
+                        "dependsOn": [
+                            {
+                                "activity": "CheckSyncStatus",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "linkedServiceName": {
+                            "referenceName": "txcloud_d",
+                            "type": "LinkedServiceReference",
+                            "parameters": {
+                                "database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "typeProperties": {
+                            "scripts": [
+                                {
+                                    "parameters": [
+                                        {
+                                            "name": "sync_id",
+                                            "type": "Int32",
+                                            "value": {
+                                                "value": "@activity('LookupSync').output.firstRow.sync_id",
+                                                "type": "Expression"
+                                            },
+                                            "direction": "Input"
+                                        }
+                                    ],
+                                    "type": "NonQuery",
+                                    "text": "UPDATE sync.tb_s_synchronization\r\nSET status = 'In Progress',\r\nremarks = NULL\r\nWHERE sync_id = @sync_id"
+                                }
+                            ],
+                            "scriptBlockExecutionTimeout": "02:00:00"
+                        }
+                    },
+                    {
+                        "name": "ExecuteSubPipeline",
+                        "type": "ExecutePipeline",
+                        "dependsOn": [
+                            {
+                                "activity": "SetSyncPeriodTo",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "pipeline": {
+                                "referenceName": "manual_sync_sub",
+                                "type": "PipelineReference"
+                            },
+                            "waitOnCompletion": true,
+                            "parameters": {
+                                "tenant_database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_server_name": {
+                                    "value": "@pipeline().parameters.tx2_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_database_name": {
+                                    "value": "@pipeline().parameters.tx2_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_user_name": {
+                                    "value": "@pipeline().parameters.tx2_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_secret_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_adora_server_name": {
+                                    "value": "@pipeline().parameters.tx2_adora_server_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_adora_database_name": {
+                                    "value": "@pipeline().parameters.tx2_adora_database_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_adora_user_name": {
+                                    "value": "@pipeline().parameters.tx2_adora_user_name",
+                                    "type": "Expression"
+                                },
+                                "tx2_adora_secret_name": {
+                                    "value": "@pipeline().parameters.tx2_adora_secret_name",
+                                    "type": "Expression"
+                                },
+                                "time_offset_minute": {
+                                    "value": "@pipeline().parameters.time_offset_minute",
+                                    "type": "Expression"
+                                },
+                                "tenant_id": {
+                                    "value": "@pipeline().parameters.tenant_id",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "CheckSyncStatus",
+                        "type": "Script",
+                        "dependsOn": [
+                            {
+                                "activity": "LookupSync",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "linkedServiceName": {
+                            "referenceName": "txcloud_d",
+                            "type": "LinkedServiceReference",
+                            "parameters": {
+                                "database_name": {
+                                    "value": "@pipeline().parameters.tenant_database_name",
+                                    "type": "Expression"
+                                }
+                            }
+                        },
+                        "typeProperties": {
+                            "scripts": [
+                                {
+                                    "type": "NonQuery",
+                                    "text": {
+                                        "value": "IF '@{activity('LookupSync').output.firstRow.status}' = 'In Progress'\n    THROW 99999, 'Pipeline In Progress', 1",
+                                        "type": "Expression"
+                                    }
+                                }
+                            ],
+                            "scriptBlockExecutionTimeout": "02:00:00"
+                        }
+                    },
+                    {
+                        "name": "SyncFailEmail",
+                        "type": "WebActivity",
+                        "dependsOn": [
+                            {
+                                "activity": "SyncFail",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "url": "https://prod-13.southeastasia.logic.azure.com:443/workflows/d2af9a1944b0486090fb8c55fa47c085/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rnlkNu1Q82JxwZNcfTSf-dTVrFEyWsFAgck3BLEqCg0",
+                            "method": "POST",
+                            "headers": {},
+                            "body": {
+                                "value": "{\n  \"emailTo\": \"chuinkit.lam@consulting-for.edenred.com\",\n  \"title\": \"FAILED: @{pipeline().parameters.sync_name} (@{pipeline().parameters.tenant_database_name})\",\n  \"message\": \"@{activity('ExecuteSubPipeline').Error.message}\",\n  \"color\": \"Red\",\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n  \"mainPipelineName\": \"@{pipeline().Pipeline}\",\n  \"mainPipelineRunId\": \"@{pipeline().RunId}\",\n  \"time\": \"@{convertFromUtc(utcNow(), 'Singapore Standard Time')}\"\n}",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "parameters": {
+                    "sync_name": {
+                        "type": "string",
+                        "defaultValue": "ManualSync"
+                    },
+                    "tenant_database_name": {
+                        "type": "string"
+                    },
+                    "tx2_server_name": {
+                        "type": "string"
+                    },
+                    "tx2_database_name": {
+                        "type": "string"
+                    },
+                    "tx2_user_name": {
+                        "type": "string"
+                    },
+                    "tx2_secret_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_server_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_database_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_user_name": {
+                        "type": "string"
+                    },
+                    "tx2_adora_secret_name": {
+                        "type": "string"
+                    },
+                    "time_offset_minute": {
+                        "type": "int"
+                    },
+                    "tenant_id": {
+                        "type": "int"
+                    }
+                },
+                "variables": {
+                    "sync_period_to": {
+                        "type": "String"
+                    }
+                },
+                "folder": {
+                    "name": "synchronization_manual"
+                },
+                "annotations": [],
+                "lastPublishTime": "2023-04-06T09:32:18Z"
+            },
+            "dependsOn": []
+        }
+    ]
+}
