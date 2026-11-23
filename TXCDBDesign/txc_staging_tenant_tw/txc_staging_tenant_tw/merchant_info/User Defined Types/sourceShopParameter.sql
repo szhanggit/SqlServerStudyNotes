@@ -1,0 +1,20 @@
+﻿CREATE TYPE [merchant_info].[sourceShopParameter] AS TABLE (
+    [id]               INT            NULL,
+    [identity_code]    NVARCHAR (50)  NULL,
+    [name]             NVARCHAR (100) NULL,
+    [merchant_id]      INT            NULL,
+    [address_id]       INT            NULL,
+    [external_code]    NVARCHAR (50)  NULL,
+    [contact_name]     NVARCHAR (50)  NULL,
+    [contact_phone]    NVARCHAR (50)  NULL,
+    [security_key]     NVARCHAR (48)  NULL,
+    [status]           TINYINT        NULL,
+    [subsidiary_uen]   NVARCHAR (30)  NULL,
+    [subsidiary_name]  NVARCHAR (100) NULL,
+    [created_on]       DATETIME       NULL,
+    [last_modified_on] DATETIME       NULL,
+    [last_modifier]    NVARCHAR (50)  NULL,
+    [work_key_id]      INT            NULL,
+    [Contact_Name2]    NVARCHAR (50)  NULL,
+    [Contact_Phone2]   VARCHAR (50)   NULL);
+
