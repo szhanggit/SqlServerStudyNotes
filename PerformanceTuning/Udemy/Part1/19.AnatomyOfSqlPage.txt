@@ -1,0 +1,36 @@
+What is a sql page?
+A SQL page is the fundamental unit of data storage in SQL Server. It is 8KB in size.
+
+A SQL page consists of 8KB (8192 bytes)
+The SQL page consists of 3 sections.
+Page header: 96 bytes.
+Row(s) of data: 8060 bytes per page.
+Row offset: 36 bytes
+
+Why is it important to understand the page size and its purpose?
+As we saw on the previous slide, of the 8192 bytes on a page, approximately 8060 are available for
+inserting rows of data. If you design data rows that can fit into a single page then they will take up a lot
+less storage ( a lot less storage and less scanning of pages make for better performance)
+
+If for example, you have a row of 4200 bytes long then only a single row will be stored on a page
+(and the rest of the page - 3860 bytes - is wasted space). Thus, the important point is you want to try
+to avoid large areas of space that cannot hold any useful information on a page.
+
+If you redesigned the row size to 4000 bytes, then suddenly you can store two rows on a page, and 
+thus significantly reduce the overhead of wasted space.
+
+This management of page size also play and important role in managing page splitting which can
+cause performance issues (to be discussed later)
+
+
+-----------------------------------------------------
+
+
+Types of SQL pages:
+1. Data Page: Details about how the data is actually stored inside the database data files. Clustered index leaf level information.
+2. Index Page: Use for Indexing purpose. Non clustered index leaf information.
+10. IAM Page: Contains page information, memory information. (Meta data about other pages)
+
+
+
+

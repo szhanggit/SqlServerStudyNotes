@@ -1,0 +1,17 @@
+Non Clustered Index Guide
+
+A nonclustered index contains the index key values and row locators that point to the storage location of the taable data.
+As discussed, we can have multipule nonclustered indexes on a table or indexed view.
+Nonclustered indexes should be designed for frequently used queries
+Nonclustered indexes are optimal choice for EXACT match queires because the index contains entries describing the exact location in the table.
+Those tables with low update requirements databases that contain heavily updated tables should avoid over-indexing.
+Read-only data can benefit from many nonclustered indexes.
+OLTP applications and large numbers of indexes on a table affect that performance of INSERT, UPDATE, DELETE, and MERGE statements because all indexes must be adjusted appropriately as data in the table  
+
+select t.name as TableName, col.name as ColumnName, ind.name as IndexName, ind.index_id as IndexId, ind.type_desc
+from sys.indexes as ind inner join
+sys.index_columns as ic on ind.object_id = ic.object_id and ind.index_id = ic.index_id inner join
+sys.columns as col on ic.object_id = col.object_id AND ic.column_id = col.column_id inner join
+sys.tables as t on ind.object_id = t.object_id
+where (ind.is_primary_key = 0) AND (ind.is_unique = 0) AND (ind.is_unique_constraint = 0) AND (t.is_ms_shipped = 0)
+order by TableName, IndexName, IndexId, ic.index_column_id

@@ -1,0 +1,27 @@
+use Heap_Record
+go
+create table [dbo].[HeapPage_Forward](
+	[id] [int] Identity(1,1) not null,
+	[names] [varchar](8000) null
+) on [Primary]
+go
+
+insert into [HeapPage_Forward](names) values(Replicate('x',4000));
+go
+insert into [HeapPage_Forward](names) values(Replicate('x',4000));
+go
+
+DBCC IND(Heap_Record, HeapPage_Forward, -1)
+DBCC Traceon(3604)
+DBCC PAGE(Heap_Record, 1, 352, 1)
+
+---------------------------------------------------
+
+
+Update [HeapPage_Forward]
+set [names] = [names] + REPLICATE('A',70) where ID = 1
+go
+
+DBCC IND(Heap_Record, HeapPage_Forward, -1)
+DBCC PAGE(Heap_Record, 1, 352, 1)
+DBCC PAGE(Heap_Record, 1, 353, 1)

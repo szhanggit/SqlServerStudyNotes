@@ -1,0 +1,29 @@
+P181
+
+----Test_HeapNonCluster
+create table Test_HeapNonCluster (ID int, Names char(900), Ad char(700))
+go
+create NonClustered index IX_Names on Test_HeapNonCluster (Names)
+go
+
+Declare @str int
+set @str = 97
+while @str <= 108
+begin
+	insert into Test_HeapNonCluster values (@str, REPLICATE(char(@str), 900), REPLICATE(char(@str + 1), 700))
+	set @str = @str + 1
+end
+
+go
+
+
+select * from Test_HeapNonCluster where Names like 'ddd%'
+select * from Test_HeapNonCluster with(index(IX_Names)) where Names like 'ddd%'
+
+
+
+
+create nonclustered index IX_Names_Include_ID on Test_HeapNonCluster (Names) include (ID)
+go
+
+select ID, Names from Test_HeapNonCluster where Names like 'ddd%'

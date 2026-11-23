@@ -1,0 +1,30 @@
+Table structure:
+ID	FN	LN	AGE
+1	BOB	SMITH	25
+
+A non clustered index is a separate structure for the base table. As you can see we have a clustered index on ID column;
+We also know what we cannot create another clustered index on another column, as it will violate clustered index logic -
+we cannot have both an organized column on ID and FN. So how do we create an index on a column FN or LN or Age to get better 
+performance if the select statement is querying the data with the where clause asking TO filter Mary?
+
+	select fn, ln from students where fn = 'mary'
+
+This is where non clustered index play an important part; because you can have many non clustered indexes.
+This is because a non clustered index is SEPERATE STRUCTURE from the base table. As a result, disk space become an issue!
+
+As you can see, when creating a non clustered index on a column, we can create more than one index; that is
+because the non clustered index is a SEPARATE STRUCTURE from the base table (just like the back of books have a 
+separate index). We have pointers (row locators) that map the data on the base table. This improves the
+performance of frequently used queries which are not covered by the clustered index - as we shall see in a demo.
+Note  that when creating non clustered indexes on columns, disk space become an issue! If you have a million 
+rows from FN and you create a non clustered index on FN, then you will also have a separate structure of a million
+rows with the data, thereby needing more disk space!!
+
+
+Notes:
+Looking for name without nonclustered index, need to find a value from a unsorted heap.
+Looking for name with clustered index, need to find a value from a sorted heap. 
+
+
+
+

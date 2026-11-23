@@ -1,0 +1,57 @@
+What is Auto-growth?
+An auto-growth event is the process by which the SQL Server engine expands the size of a database file
+when it runs out of space. Each database has its own auto-growth setting - that is set by the default
+setting of the model database. Rarely do we use the model setting.
+
+Why set up the auto-growth for each database?
+If you do not set up the auto-growth setting for each database and be proactive in your duties,
+then each time an auto-growth event is performed, SQL Server holds up database processing while an 
+auto-growth event occures. And this can cause poor performance.
+
+What is the purpose of auto-frowth and it's consequences of not setting up the auto-growth properly?
+Each time the auto-growth event occures, the server need to expand this space and place the space in the disk.
+However, since the space allocated for the database may not be next to each other on the disk,
+then will cause your database file to become fragmented, thus poor performance.
+The initial settings for auto-growth are set to the default values 
+when defining a new database. 
+These defaults are established by using the auto-growth settings on the model database files.
+
+How can I avoid auto-growth events from occurring too many times?
+Pre-Size your databases and size the auto-growth to an appropriate.
+
+select
+S.[name] AS [Logical Name]
+, S.[file_id] as [File ID]
+, S.[physical_name] as [File Name]
+,CAST(CAST(G.name as varbinary(256)) AS sysname) as [FileGroup_Name]
+,convert(varchar(10),(S.[size]*8)) + ' KB' as [Size]
+,Case when S.[max_size] = -1 THEN 'Unlimited' ELSE convert(varchar(10), convert(bigint, S.[max_size])*8) + ' kB' END AS [Max Size]
+,Case s.is_percent_growth when 1 then convert(varchar(10),S.growth) +'%' ELSE Convert(varchar(10),S.growth*8) + ' KB' END AS [Growth]
+,Case WHEN S.[type] = 0 THEN 'Data Only'
+WHEN S.[type]=1 THEN 'Log Only'
+WHEN S.[type]=2 THEN 'FILESTREAM Only'
+WHEN S.[type]=3 THEN 'Informational purposes Only'
+WHEN S.[type]=4 THEN 'Full-text'
+END AS [usage]
+, DB_name(S.database_id) AS [Database Name]
+From sys.master_files AS S
+left join sys.filegroups AS G ON ((S.type = 2 OR S.type = 0)
+AND (S.drop_lsn IS NULL)) AND (S.data_space_id=G.data_space_id) 
+
+
+
+Example to check auto growth:
+Go to right click model database and select properties. 
+Choose file. 
+
+We need to adjust the initial size of a database.
+We need to adjust the auto growth setting too.
+
+Better to set auto growth to be exactly megabytes instead of percentage.
+
+Let us create a new database.
+Right click database root and select "Create new database"
+Under the Database files section, adjust "Initial Size (MB)", and adjust "Autogrowth/Maxsize"
+
+
+

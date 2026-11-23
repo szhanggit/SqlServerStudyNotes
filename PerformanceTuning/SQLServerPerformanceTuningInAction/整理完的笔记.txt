@@ -1,0 +1,930 @@
+Common Performance Issues:
+Slow running queries issues,
+Fragmentation issue,
+Tempdb improper set up,
+Poor execution plan choice,
+SQL Server wrong configurations
+Improper index design
+Blocking
+
+Why is the data returned too slow？
+Is it the application misconfigured?	Improper set up, application not updated
+Do you have sufficient physical hardware resources?	Memory, disk, CPU, network
+Is the query optimizer not choosing the best plan?	Maybe need hints to force the optimizer
+Are the queries improperly written?	Is the query using cursors, can it be written more efficiently?
+Do you have proper indexing?	Improper indexing on tables, unused indexing, too many indexes.
+
+The four main devices we should be aware of are as follows:
+Disks - the repository of the data
+CPU (central processing unit) - the 'brains of the server'
+Memory - the main holder of 'temporary data'
+Network - the communication between the network and the servers
+
+Why set up the auto-growth for each database?
+If you do not set up the auto-growth setting for each database and be proactive in your duties,
+then each time an auto-growth event is performed, SQL Server holds up database processing while an 
+auto-growth event occures. And this can cause poor performance.
+
+SET STATISTICS IO ON
+SET STATISTICS TIME ON
+Ctrl + L 显示估计的执行计划
+Ctrl + M 显示实际的执行计划
+包括实时查询统计信息
+logical reads 76, means need to read 76 pages from database cache to get data.
+One data page is 8kb in size.
+
+Blocking occurs when one SPID(SPID 1) holds a lock on a specific resource and a second SPID(SPID 2) attempts to acquire a conflicting lock type on the same resource.
+There are two ways to find blocking:
+1. go to “Activity Monitor”/”Processes”
+2. select sp.spid, [TEXT] as SQLCode from sys.sysprocesses sp cross apply sys.dm_exec_sql_text(sp.[SQL_HANDLE]) as dest where open_tran >= 1
+
+第2章影响SQL Server性能的因素
+RAM下降 -> 可能I/O会增加，并且CPU增加。
+解决方案是：1.设置问题（Max Server Memory）2.表设计3.代码写得不好。
+2.1服务器硬件
+2.1.1内存： 1.Plan Cache(执行计划)	2.Data Cache。
+2.1.3磁盘I/O当缓存中的数据被写磁盘时，缓存上会加锁。
+
+最主要的内存配置有：Max Server Memory。Min Server Memory。
+2.3.3I/O及数据文件配置
+多分出一些物理磁盘。数据文件也要被分成几个，与CPU数量相符。
+2.4.1好的性能出自好的设计。
+为提高搜索性能，可以把一张大表拆成多张表。搜的时候只要搜其中一张小的。
+
+2.4.2约束对性能的影响
+默认约束值：对性能没什么影响。
+Check约束：让约束逻辑尽量简单，否则影响效率。一般只检查Enum。
+唯一约束：对效率有好处。每张表至少一个。
+外键约束：一定要在外键关联上加索引。否则就要全表扫描。加外键约束是为保证数据的完整性，与性能无关。
+
+2.5.1编写T-SQL语句的注意事项及小窍门
+1.过滤字段上加索引。
+2.不要在有索引的直段上做计算。
+3.用小表驱动大表。
+4.Select时，不用*
+5.不要写很长的SQL。
+6.不要把一大堆表关联在一起。
+7.不要写一大堆过滤条件。
+
+第3章T-SQL与性能调优
+3.1编写健壮的T-SQL语句
+select count(1) from Person.EmailAddress as ea where ea.EmailAddress like 'lin%';只能在右边加%
+
+当返回大量数据时，一定要分页。否则会耗数据库内存。
+
+3.3使用排序子句
+数据引擎会先执行where，再执行group by
+1.必须先有where，减少数据量。group by操作需要内存和CPU。
+如果group by操作量大，就会借助tempDB增加I/O。
+2.添加索引可以避免group by操作。
+
+tempDB是公有资源。如果TempDB压力大，会影响其它操作。
+
+Nested Loop
+小表驱动大表，性能最佳。小表被Scan，大表被Seek。
+Foreach(SmallRow in SmallInput)
+{
+	Foreach(BigRow in BigInput)
+	{
+		if(SmallRow=BigRow)
+			Output;
+	}
+}
+
+Merge Join
+双方的Key都已被排序。两边数据量相仿。
+R1=first row from Input1;
+R2=first row from Input2;
+While(end of Input1) and (end of Input2)
+{
+	if(R1=R2)
+	{
+		Output;
+		R2 = next row of Input2;
+	}
+	else if(R1<R2)
+	{
+		R1 = next row of Input1;
+	}
+	else
+	{
+		R2 = next row of Input2;
+	}
+}
+Hash Join
+在两个大的数据集合之间
+1.选出较小的那张表。
+2.Hash较小表的Key存入Bucket
+3.查看较大表中的每条记录，Hash Key
+4.与每个Bucket中的每个Hash Value比较。
+Foreach(R1 in Input1)
+{
+	H1=HashValue(R1.Key);
+	Insert H1 into HashBucket;
+}
+Foreach(R2 in Input2)
+{
+	H2=HashValue(R2.Key);
+	Foreach(H1 in HashBucket)
+	{
+		if(H1=H2)
+			Output(R1,R2);
+	}
+}
+
+3.9.2 IN，EXISTS与LEFT JOIN的性能对比
+IN及EXISTS在许多情况下都会被使用到，他们的功能通常可以转化为Inner join。
+
+3.9.3For XML子句
+一般被用来做字段合并。
+
+第4章，SQL Server的内存管理
+有内存，可以减少磁盘I/O。
+没内存，就增加磁盘I/O。
+内存可用于排序和哈希计算。否则要暂存TempDB，增加磁盘I/O。
+
+4.1Windows的内存管理
+操作系统用的内存叫Kernal-mode。其它叫User-mode。
+
+数据缓存是Buffer Pool。8k/page
+
+4.2.2内存中的数据
+数据库服务刚启动，会自动将一些数据放入内存Buffer Pool。
+Buffer Pool一次由一个线程访问。只有将数据放入缓存才能被数据库操作。
+
+1.脏数据(Dirty Data)
+只在Buffer Pool中被更新，但还没有在磁盘上被更新。
+处理Dirty Data的进程叫Check Point。
+Check Point每隔固定时间就会被触发。
+
+在数据还脏的时候更新数据库服务会丢失数据吗？
+不会。因为有log。里面有Log Sequence Number。
+
+Lazy Write想办法扩大缓存大小。
+当快没缓存的时候被触发，不是固定时间内被触发。
+Lazy Write = Check Point + 释放内存 （只有内存不够时被触发。check point是为了释放内存）
+当然也会在Plan cache里检查太长时间没被用的执行计划，然后清空。
+
+4.3诊断内存瓶颈
+当I/O增加，也许说明内存不够。
+当总体内存不够时，OS会问SQL OS要内存。SQL Server就会变慢。
+本身内存不足：1.外部内存不足。2.修改max server memory。
+
+当I/O和CPU非常高，可能是内存不足。
+
+第5章，SQL Server的任务调度
+Running正在被处理。
+Suspended被挂起，会被放入Waiter List。
+Runnable从被挂起到被处理的中间状态，会被放入Runnable Queue。如果出现大量Runnable，说明CPU资源紧张。
+Wait_started_ms_ticks	Suspended elapsed time.
+Wait_resumed_ms_ticks	Runnable elapsed time.
+
+SQL Server的高并发用到的是Thread Pool。
+
+一个链接 -> 产生一个会话。 -> 一个会话中有许多Statement。 -> 每个Statement对应一个请求。 -> 一个请求对应多个Task。 -> 多个Worker来处理这一堆Task。
+一个Task对应一个执行计划。
+
+第6章，执行计划分析
+对性能影响非常大：1.选错执行计划。2.频繁重编译执行计划。（需要监控数据库每秒重编译次数）
+
+执行计划过程：
+1. COmmand Parser: -> Parse Tree判断基本语法。
+2. Binding: -> 检查字段是否合法，同时生成Algebrizer Tree。
+3. Query Optimizer: -> 执行计划分析
+4. Query Executor: -> 磁盘I/O，内存操作，事务，调度任务。
+
+6.1查看执行计划
+1. 预估执行计划（根据统计信息算出来的执行计划）2.实际执行计划。
+Number of Executions被用来评估join操作。比如说：scan count 1
+Logical read >= physical reads + read_ahead.
+因为多线程，CPU Time可能>elapsed time。
+6.2查询优化器与执行计划的选择
+执行计划会被存入缓存。
+Trivial Plan就是只会有一个执行计划，重编译没有意义。
+如果生成多个执行计划，就选最优的一个。
+
+6.2.1统计信息
+当数据增长时，数据引擎就会重新计算。
+当加索引时，
+
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20160203-192425] 
+ON [dbo].[People2]
+([Fname] ASC,[Lname] ASC)
+
+DBCC SHOW_STATISTICS ('people2','NonClusteredIndex-20160203-192425')
+WITH HISTOGRAM
+
+
+Go的意义
+1.同一批处理中不会更新数据库统计。只有批处理结束后才会更新统计。
+2.同一批中，数据引擎看不到更变更过的表结构。
+3.所以同一个Session中要分批用Go
+
+6.3.1数据访问操作符
+Table Scan无序地把整本书翻一遍
+Cluster Index Scan按照目录把整本书翻一遍。
+Nonclustered Index Scan把这本书的笔记翻了一遍。
+
+不要一次拿太多数据，一定要分页。否则会耗数据库内存。
+
+2.Seek及示例分析
+Seek clustered index按照字典页数翻字典
+Seek nonclustered index按笔记本翻笔记。如果笔记内容不全，还要按照笔记中所记bookmark去翻字典。
+
+关于索引的常见问题：不是缺索引就是没有完全覆盖。
+
+6.3.2关联操作符
+1. Nested Loop
+内部操作集是个小表，做Index Scan。外部操作集，一个大表，做Index Seek。
+2. Merge Join
+关联字段都必须排序过。
+3. Hash Join
+大量消耗内存。关联字段都必须先被计算成Hash。
+
+6.3.3聚合操作符
+Aggregate Stream => 有索引，count,group by
+Aggregate Hash => 每索引，要计算Hash Value
+
+6.4执行计划缓存及重编译
+导致重编译的因素：1.表结构变更。2.执行sp_recopile。3.数据库设置的修改。4.链接选项的设置。
+
+Parameter Sniffing
+1. 不同的输入参数有各自的数据密度。
+2. 不通密度的输入参数会导致不同的执行计划。
+3. 问题是，由低密度参数产生并缓存的执行计划也会被用于高密度参数。
+4. 结果就变得时快时慢。
+解决方案：取最高密度与最低密度间的中间值。
+增加CPU压力，每次都重新计算执行计划。
+
+怎么看执行计划？
+1. Check the most expensive operator with the highest cost. 
+2. 粗箭头以后是细箭头。说明这里因为缺索引，导致大量数据被扫描，最后只读出一点数据。
+3. 有没有大量scan。
+4. 加索引提示。
+5. 多余的运算符。比如回标。
+-----------------------------------------------------------------------------------
+7.1.2索引的类型
+一张表  ->  一个聚集索引（按物理顺序存储） ->	聚集索引的叶子上有数据页和索引键。
+一张表  ->  多个非聚集索引（就像独立与表的笔记）	->	笔记中没记的部分会用BookMark代替。(Key Lookup, RID Lookup)
+如果是Clustered Table，为了做Key Lookup，一定会存放PK信息。
+如果是堆表，为了做RID Lookup，一定会存放RID信息。
+
+7.1.3特殊的索引
+Unique Clustered Index; Unique Nonclustered Index;
+Composite Index：由多个字段组成。在索引里的排列顺序必须与Where Clause里的顺序一样。主要看Where Clause, Group by, Order by。
+Include Index:主要看select语句。防止出现Bookmark Lookup。同时可以避免Index大小的限制。
+Coverage Index:防止出现Bookmark Lookup。
+Filter Index:避免空值。跳过需要经常更新的Record，做到高速读写。
+
+7.2.1索引物理结构的基本概念
+一个MDF文件（由数据页组成）。多个NDF文件（由数据页组成）。多个LDF文件。
+每个页面里可以有：数据，索引，约束。
+
+表由分区组成。一个区有8个页面。每个页面8K。
+统一区指，一个区里存相同的对象。
+混合区指，一个区里存不通的对象。
+同一区中有data和对应的index，叫索引对齐。
+
+页包含：页头，行记录，空闲空间，行偏移量。
+页头包含：m_pageId, m_type, m_freeCnt, m_ghostRecCnt, m_prevPage, m_nextPage。
+
+行记录：行头数据 + 数据。
+
+如果BookMark里的key不唯一，那就加Uniquifier(4个字节)。
+-----------------------------------------------------------------------------------
+nchar(10)占的空间是char(10)的两倍。Unicode占用空间是非Unicode两倍。
+
+4. 堆表Forwarding与Forwrded结构
+在堆表中，把过长的数据换成Forwarding Address。过长的数据本身会被写在新页上，变成Forwarded Data。这样就不用变RID，也不用重建索引。
+在聚集表中，用page split。
+
+4. 复合索引物理结构：
+复合索引在一些复合查询的语句中可以快速查找数据，而不是通过两个单列索引筛选出数据之后再合并。
+复合索引中的索引键值是有序的，只有当查询字段的顺序与之相同，或者是有序顺序的子集时，索引才能发挥作用。
+
+5. 包含性索引物理结构
+复合索引（最多16列）与包含性索引（没有限制）的物理存储。
+where a AND b。这里要用复合索引。
+select b where a。这里要用包含索引，包含b。
+
+7.2.8非聚集索引的物理结构
+聚集表与堆表的最大区别是排序。
+
+7.3索引的选择
+索引可以帮助提高查询效率，但会降低数据更新效率。
+
+处理高频读写的需求：
+1. 读写分离。写库的时候不会遇到太多share lock。
+2. 分开同一张表的热字段与冷字段。
+
+Update，尽量缩小更新范围。不要更新相同的值，因为会扩大锁。
+
+7.3.2索引的分析
+在非聚集索引的页节点中 => 包含PK数据。
+在堆表中 => 包含RID数据。
+
+案例分析三
+数据量小时会用bookmark lookup。
+数据量大时会用table scan。
+当数据量大时，bookmark lookup的成本往往超过table scan。
+
+7.4.1执行计划中查看缺失索引
+点击Missing Index Detail按钮。
+
+这种情况下一定要手动更新统计信息：Backup restored； 数据库升级。
+
+8.1锁，事务要解决的问题。
+数据库的四个基本特征：
+Atomicity:一个事务内的操作，要么全部成功，要么全部失败。
+Consistency：事务成功前与失败后，business logic要一致。
+Isolation：事务与事务之间互不干扰。
+Durability：如果数据库此时紧急重启，数据不能丢失。
+
+锁主要要解决的问题：
+脏读：T1只是在内存更改数据，但还没Commit，没有更新磁盘。T2读取内存数据。T1回滚。
+不可重复读：因为数据更新，在同一事务中，得不到相同结果。
+幻读（让财务头疼）:因为插入新数据，导致同一事务中，得不到相同结果。|T1要删除所有数据。T2突然插入新数据。T1发现尽还有条数据没被删。
+重复读：在同一事务中，把一条数据读成两条。T1正从前扫到后来读取数据。T2更新了一条记录，使这条记录排到了后面。T1再读一次这条数据。
+
+8.3锁粒度
+行锁；页锁；表锁。
+
+8.4锁模式
+共享锁：保证多个事务共读一块资源。只读不改，防止被加排它锁。select * from YourTable with(TabLock, HoldLock)
+排他锁：
+更新锁：先加S锁找寻要更新的数据。找到对象后换成X锁。更新时换成U锁。
+意向锁：就像一个信号，表示一个事务想要获取某种锁。当另一个事务想要获取锁时，先要查看资源上是否有意向锁。如果有冲突，就不能获取。
+具体的锁作用在细粒度上。意向锁作用在大粗粒度上。
+一个事务只要更新一行，另一个事务需要更新一片。为了不产生冲突，就要加意向锁。
+
+查询时，数据引擎会自动加上Schema Stability锁。
+修改表结构时，会自动加上Schema Modification锁。
+
+8.9.2死锁报警：一般都是因为query写得不好，效率低，或是因为事务太长。
+
+高并发可能导致的问题：阻塞，资源竞争。
+解决方案：Transaction; Lock.
+
+阻塞：锁与锁的互斥会导致某个或某些事务无法获得相应的锁。
+
+
+---------------------------------------------------------------------------------
+9.1Tempdb的工作
+1.内部存储：Tempdb可以提供SP需要的临时数据。用Spool来存储上一步的结论。
+
+9.2表变量、临时表
+#局部临时表=>只能在一个Session中使用。
+##全局临时表=>在Session之间共享。
+当创建它们的Session结束后，都会被数据引擎自动删除。
+表变量不是内存表。其实它与临时表一样都存储在Tempdb中。
+
+表变量：
+只能在建立时加个主键。
+创建后，表结构不能更改。/创建后表结构和index都可以被随意更改。
+不会统计数据。/会产生统计数据。
+Go以后会被自动回收。/Session结束后会被自动回收。
+临时表：
+
+用表变量的最大目的是为了避免执行计划的重新编译。
+
+9.2.1统计信息
+Query Optimizer会默认表变量都是小表。所以表变量里不应该放太多数据。
+
+9.3Tempdb的并发阻塞
+Best Practice	=>	TempDB文件个数==CPU个数==并分别放在不同的磁盘上。
+在同一个TempDB文件频繁创建删除临时表，会堵塞数据引擎。
+Set the proper file growth increment properly.
+
+
+在高并发状态下，TempDB很容易出问题，被堵塞。
+---------------------------------------------------------------------------------
+SQL Server性能监控手段：
+DMV(Database management views)动态管理视图。
+SQL Profiler/Trace（影响性能）
+Data Collection
+性能监控的性能计数器
+扩展事件(Extended Events对性能影响不大)
+Activity Monitor(25.ActivityMonitor)
+Performance monitor
+DBCCs (Database console commands)
+Stored procedures (sp_who, sp_monitor)
+SQL Standard Report
+Database tuning advisor
+Execution plans
+Query store
+---------------------------------------------------------------------------------
+11.1数据库表的配置
+数据压缩：1.行级压缩（页压缩）2.表级压缩。
+如果CPU资源紧张，就当避免压缩。
+11.2.1企业数据库发展阶段
+1.单数据库（刚刚起步的小企业）
+2.读/写分离（只读库可以是NoSQL）High Availability/Always On
+3.业务模块划分
+	纵向分割：按业务逻辑分库。
+	非常高的并发往往使TempDB不堪重负。此时分库可以解决问题。
+
+
+
+--------------------------------------------------------------------------------
+
+分库分表。
+分库：按业务逻辑分库。
+分表：水平分表。垂直分表。
+水平分表：比如Transaction表数据太多，要分几段，Partition一下。数据太多时，即使有索引，查询都会很慢。
+垂直分表：分开冷热字段。
+业务初期优化一般会是增加索引，优化索引。
+业务中期优化一般会加主从服务器，读写分离。
+业务后期优化就要分库分表。
+单表瓶颈：单表数据量大，导致读写性能差。如果库容量足够，那只分表就可以。
+单库瓶颈：单库并发高，CPU压力大，内存不足，磁盘空间不够，网络带宽不足。如果没有很大的表，只分库就可以。
+SOP
+1.评估哪些表要分，分几个表。是否要分库，分几个库。
+2.分表切分策略。Sharding Key。
+      a.按Id或时间做范围切分。注意会引起读写偏移。就是新数据比较热，其它表里的老数据非常冷。
+      b.中间表映射。要加张routing table。这样做比较复杂，存在效率问题。
+      c.hash切分。读写均匀，但存在跨节点查询和分页问题。
+3.选择分表字段，尽量减少跨库跨表查询。
+4.资源准备和代码改造（数据迁移。新老数据会同时存在一段时间）单读写老库->双库同读写->单读写新库。
+      把新库当Cache，将高频老库数据先放入新库。至于低频数据用个job慢慢读。
+5.增量数据同步（双写）      
+      同步双写：是为了把老系统作为急救方案，提供系统稳定性。
+      异步双写：写老库，监听binlog异步同步到新库。
+      中间件同步工具：通过一定的规则将数据同步到目标数据库。
+6.全量数据迁移：迁移老库数据，保证新库有全量数据。
+      做个job，查询老库，写入新库。
+      中间件同步工具。通过一定的规则将数据同步到目标库表。
+7.数据一致性校验，优化，补偿：确保数据库数据正确。（这步最关键）
+      用个job去做自动比较。
+8.灰度切读：开始将流量切到新库
+      先慢后快。
+      发现问题，马上回到老库。
+      每次加快速度都要观察一段时间。
+            
+binLog文件监听。
+
+--------------------------------
+优化实战：
+反范式设计。在表上加一定的冗余。如果先查A表。然后根据结果再查B表。如果结果集大，就会影响效能。如果把A表where里用到的字段冗余在B表，那会提高效率。
+不要设置外键。外键只帮助数据的完整性，对性能反而有负面影响。
+遇到动态表单，那就把动态部分做成JSON，存在一个字段里。可以为JSON加索引。
+在表层面做冷热分离。主表放频繁会增删改查的字段。从表里放冷字段。
+分库的时候，除了按业务场景分，还要考虑尽量避免跨库查询问题。最好不要产生分布式事务。
+单表操作，减少join。
+--------------------------------          
+      
+2.为什么用自增列作为主键？
+表数据存在主键，就是一颗B+树叶子节点上。每节点上有一页，每页有8k。每页的数据都会按顺序排放。
+如果用非自增主键，
+那数据库首先要为新数据找到一个合适的位置。
+如果这个位置不在内存里，那要把数据从磁盘里读出来。
+插入新数据。
+插入后如果页数据超过8k，还要分页，造成碎片。
+如果用自增主键，直接append就可以。
+不要找一个合适的位置。
+不用造成磁盘I/O。
+如果一页放不下，直接开个新页就可以。不会产生分页。
+
+3.触发器的作用是什么？
+强化约束，维护数据的完整性。
+
+4.什么是存贮过程？
+存贮过程是预编译的SQL语句。而且存在数据库，没有网络传输。比单纯执行SQL快很多。
+可以用exec调用。
+可以用C#直接调用。
+可以防止SQL injection attack。
+
+6.存贮过程与函数的区别？
+函数可以放入select，SP不行。
+函数用于读和计算。SP可以增删改查。
+
+视图：虚拟表。与老数据库对接的interface。但性能上会大打折扣。
+游标：逐条处理结果集。
+
+
+
+
+11.关系型数据库与非关系型数据库
+NoSQL基于键值对。1.性能非常高。2.数据之间没有耦合，可扩展性强。
+SQL   1.多表之间的复杂查询。2.事务支持。
+
+12.Database Normalization
+1NF:一个字段必须不能被拆。比如不要把FirstName,LastName放在一个字段内。
+2NF:一个表里只能放一种数据。在订单表里有订单信息和产品信息。最好把它拆成两张表。
+3NF:表中每个字段都要与主键直接相关。Product表中最多有订单Id，不能再有订单日期。
+BCNF:EmployeeInfo(EmployeeID, EmployeeName, ProjectID, ProjectName)
+    EmployeeID, ProjectID -> EmployeeName
+    ProjectID -> ProjectName
+这种情况下，要把它拆成两张表。   
+4NF:删除表内多对多关系
+StudentCourseInfo(StudentID, CourseID, Instructor, Textbook)
+Many students have many courses.
+Many courses have many instructors.
+Many courses have many textbook.
+StudentCourse(StudentID, CourseID)
+CourseDetails(CourseID, Instructor, Textbook)
+
+
+
+17. count(*),count(1),count(column)
+count(1)只算PK。计算行数，包括null。
+count(column)。计算行数不包括null。
+count(1)与count(PK)只扫描主键。count()与count(非主键)扫描整个表。
+
+
+
+19.什么是索引？
+一个排序的数据结构。一般用B树或B+树。可以加快搜索。
+
+21.索引的有缺点？
+优点：
+增加查询速度。
+加速join。
+加速order,group by
+唯一索引保证数据的唯一性。
+缺点：
+占存储空间。
+降低了增删改的效率。
+
+什么样的列需要创建索引？
+经常被查询。经常被排序。在主键。在外键。
+什么样的列不应该常见索引？
+很少被用来查询，排序的列。数据很少，只有男女。里面还有很多空值。
+text,image,bit
+经常需要被修改的列。
+
+22.什么样的字段适合建索引？
+唯一，非空，经常被查询。
+在查询条件中，类型一定要匹配，否则用不到索引！
+
+23.聚集索引与非聚集索引的区别？
+一张表只能有一个聚集索引。所有数据页存在聚集索引的叶子上。表记录排列顺序与索引排列顺序相同，所以有最快的查找速度。
+一张表可以有多个非聚集索引。非聚集索引有索引字段，PK字段，和Bookmark。与表数据分开存储，像是一本关于这张表的笔记。表记录排列顺序与索引排列顺序不相同。
+
+
+2.如何确保数据库的完整性和一致性？
+尽可能用约束。比如check，主键，外键，非空字段，默认值。
+其次是使用trigger。
+最后是自己写业务逻辑。
+
+3.什么是事务？ACID
+Atomicity:一起成功或一起失败。
+Consistency：事务成功前与失败后，business logic要一致。
+Isolation：事务与事务之间互不干扰。
+Durability：如果数据库此时紧急重启，数据不能丢失。
+
+什么是锁？
+处理高并发的关键。阻止多个线程同时更新Resource。
+
+6.什么是SQL注入式攻击？
+把SQL命令片段从页面TextBox输入，然后被系统执行，最后导致数据库的破坏。
+7.如何防范SQL注入式攻击？
+不要由系统动态地拼出query，再交给数据库处理。
+最好把query都写成SP。再把页面传来的数据，通过SqlParameter传给SP。
+cmd.Parameters.AddRange(new SqlParameter[] { errorMessage, errorLine });
+
+
+系统优化：
+尽量避免join查询，提高效率。
+添加索引。
+主从复制，读写分离。
+分大表。
+添加缓存。
+将静态页面存入缓存。
+写高效SQL。不要写select * from
+
+
+
+
+如何优化SQL查询性能？
+索引优化：加合适的索引。定期Reorganize, rebuild index.
+查询优化：避免不必要的join。避免复杂的查询条件。合理的表设计，允许合理的冗余。使用合适的类型和字符长度。
+分区表
+尽量使用批量操作；合理控制事务粒度。
+监控Profiler，磁盘，内存，CPU。根据实际情况调整数据库配置参数或更换硬件。
+
+
+
+12、SqlServer数据库读写分离配置过吗？有⼏种模式？各有什么特点？
+快照发布：每隔一段较长时间，发布服务器会将全量数据推给订阅服务器。（只适用与小数据库）
+事务发布：发布服务器会高密度地将增删改log推送给订阅服务器。（网络链接一定不能出问题）
+对等发布：每个数据库可以做发布者，也可以做订阅者，双向数据同步。挑战是分辨冲突。
+合并发布：发布服务器和订阅服务器可以独⽴更新已发布数据。更改会定期合并。
+
+
+
+
+
+
+
+
+优化例题
+create table 'customer'(
+'c_custkey' int not null,
+'c_name' varchar(25) not null,
+'c_address' varchar(40) not null,
+'c_nationkey' int not null,
+'c_phone' char(15) not null,
+'c_acctbal' decimal(15,2) not null,
+'c_mktsegment' char(10) not null,
+'c_comment' varchar(117) not null,
+primary key('c_custkey')
+) ENGINE=InnoDB;
+
+create table 'orders'(
+'o_orderkey' int not null,
+'o_custkey' int not null,
+'o_orderstatus' char(1) not null,
+'o_totalprice' decimal(15,2) not null,
+'o_orderdate' date not null,
+'o_orderpriority' char(15) not null,
+'o_clerk' char(15) not null,
+'o_shipperiority' int not null,
+'o_comment' varchar(79) not null,
+primary key('c_orderkey')
+) ENGINE=InnoDB;
+
+
+案例1：
+未被优化：
+select *
+from customer
+where c_custkey = (
+	select max(o_custkey) from orders where subdate(o_orderdate, Interval '1' Day) < '2022-12-20'
+);
+
+
+用不到o_orderdate上的索引，因为有计算。需要把计算移到比较符右端。
+create index idx_orders_date on orders(o_orderdate);
+create index idx_orders_date_cust on orders(o_orderdate, o_custkey);	//避免回表
+
+优化后
+select *
+from customer
+where c_custkey = (
+	select max(o_custkey) from orders where o_orderdate < subdate('2022-12-20', Interval '1' Day)
+);
+
+
+案例2
+未被优化：
+select o_custkey, c_name, sum(o.o_totalprice)
+from customer c, order o
+where o_custkey = c_custkey
+group by o_custkey, c_name
+order by c_name;
+
+
+优化后：
+select o_custkey, c_name, totalprice
+from 
+(select o_custkey, sum(o_totalprice) totalprice 
+from orders group by o_custkey) o, customer c
+where o_custkey = c_custkey
+order by c_name;
+
+create index idx_orders on orders(o_custkey, o_totalprice);
+create index idx_customer on customer(c_name, c_custkey);   c_custkey可加可不加，因为它是PK。
+
+案例3
+create table orders(
+	o_orderkey int,
+	o_custkey int,
+	o_orderstatus char(1),
+	o_totalprice decimal(15,2),
+	o_orderdate date,
+	o_orderpriority char(15),
+	o_clerk char(15),
+	o_shippriority int,
+	o_comment varchar(79),
+	primary key (o_orderkey)
+) engine=innodb;
+
+未被优化：
+select * 
+from orders
+where o_orderdate > '2022-01-01'
+and (o_orderpriority = 1 or o_shippriority = 1)
+order by o_orderdate desc
+limit 20, 10;    --skip 20 and only get 10.
+
+
+create index idx1 on orders(o_orderpriority, o_orderdate desc)
+create index idx2 on orders(o_shippriority,o_orderdate desc)
+
+优化后：
+select * from (
+	(select * from orders o1
+	where o_orderdate>'2022-01-01'
+	and o_orderpriority = '1'    --类型一定要一样，否则用不到索引！
+	order by o_orderdate desc
+	limit 30)
+	union
+	(select *
+	from orders o2
+	where o_orderdate>'2022-01-01'
+	and o_shippriority = 1
+	order by o_orderdate desc
+	limit 30)
+) t
+order by o_orderdate desc
+limit 20, 10;
+
+
+
+案例4
+create table tb1(
+	id				integer not null,
+	date_column		date,
+	a				integer,
+	b 				integer,
+	txt 			varchar(255),
+	state			char(1),
+	dummy			char(200) default 'testdata' not null,
+	primary key (id)
+);
+
+create index idx_tbl on tbl(date_column);
+
+未被优化：
+select count(*)
+from tbl
+where Year(date_column)=2016;
+
+优化后：
+select count(*)
+from tbl
+where date_column between date '2016-01-01' AND date '2016-12-31';
+
+
+案例5
+create table tb1(
+	id				integer not null,
+	date_column		date,
+	a				integer,
+	b 				integer,
+	txt 			varchar(255),
+	state			char(1),
+	dummy			char(200) default 'testdata' not null,
+	primary key (id)
+);
+
+
+未被优化：
+select * from tbl where a = 100 order by date_column desc limit 1;
+create index idx_tbl_a on tbl (a, date_column);
+
+优化后：
+无需优化
+
+
+
+
+
+案例6
+未被优化：
+select * from tbl where a = 10 and b = 86;
+select * from tbl where b = 86;
+
+
+
+
+优化后：
+create index idx_tbl_ab on tbl(a,b);
+create index idx_tbl_ba on tbl(b,a);
+
+
+
+
+
+
+案例7
+未被优化：
+select * from tbl where txt like 'UDC%';
+create index idx_tbl_txt on tbl(txt);
+
+
+优化后：
+select * from tbl where txt like '%UDC%';
+Add fulltext index.
+
+案例8
+未被优化：
+select date_column, count(*)
+from tbl
+where a = 40
+group by date_column;
+
+create index idx_tbl_a on tbl(a, date_column);
+
+
+select date_column, count(*)
+from tbl
+where a = 40 AND b = 9
+group by date_column;
+
+这种情况下，idx_tbl_a不会被用到。
+
+
+
+14). How do you optimize queries?
+Use database engine tuning advisor to analysis SQL Profiler. Optimize the longest running queries.
+keep your DBs normalized
+Move queries to stored procedures:SPs are compiled and run on the server
+Do not use select *
+Don't use joins if you don't have to, they are expensive. Try to join on indexed fields if you can.
+Add indexes to fields you often filter by, order by, or group by.
+You can limit the number of rows returned, or possibly do a pagination, so you don't have to get a giant amount of rows.
+
+
+
+!!!!!!!!!!!
+11). Suppose that you have 100 lines of query ,this query is executed successfully with in 5 min ,
+next day again you have to run the same query that time query is take a long time around 1 hour ,
+So how can you analyze the query..(what happen query performance is decreased)
+1.Parameter sniffing.
+2.RAM is not big enough.
+3.TempDB is triggered to be expanded.
+4.Deadlock 
+5.There was a super heavy long running query blocking other queries.
+
+
+
+7). How can you optimize stored procedures?
+1. Use the SET NOCOUNT ON statement (When SET NOCOUNT ON is specified, SQL Server does not send the count of the number of rows affected by a T-SQL statement as part of the result set. Reduce the amount of network traffic)
+2. Use the schema name with the object name
+-- Using schema name with table name
+SELECT * FROM dbo.TableName;
+
+-- Using schema name with stored procedure
+EXEC dbo.StoredProcedureName;
+
+Avoid Implicit Schema Resolution
+If you do not specify the schema, SQL Server will attempt to resolve the object using the default schema associated with the user. 
+Relying on implicit schema resolution can lead to confusion and potential issues, especially if the default schema changes.
+
+3. Do not use the prefix "sp_" in the name
+4. Use IF EXISTS (SELECT 1) instead of SELECT *
+5. Avoid using cursors
+Cursors can be less efficient than set-based operations. 一行一行处理, I/O高network traffic高,总体速度变慢, 特别是行数多的时候.
+Set-based operations take advantage of SQL Server's optimized query processing and can be more efficient for handling data in batches.
+6. Keep the transactions short as possible.
+- Use sp_executesql instead of the EXEC statement for dynamic SQL
+sp_executesql supports parameterized queries, 
+allowing you to define and pass parameters to the dynamic SQL statement. 
+This can help improve performance and security by using parameterization to avoid SQL injection.
+
+
+6). How you will make CURSOR fast?
+Ans: There are many way, one of them is by using "LOCAL" AND "FAST_FORWARD" keywords at the declaration time.
+like : Declare cr Cursor LOCAL FAST_FORWARD
+FOR <your select statement>
+Note: Fast_Forward: if your cursor is read-only then use it.
+
+DECLARE MyCursor CURSOR FAST_FORWARD FOR
+    SELECT Column1, Column2
+    FROM YourTable
+    WHERE SomeCondition;
+	
+	
+	
+	
+Question 2: Explain how the hardware running SQL Server can help or hinder performance.
+
+    Taxed CPUs will queue requests and hinder query performance.
+    Insufficient memory could cause paging resulting in slow query performance.
+    Incorrectly configured disk drives could exacerbate IO problems.	
+	
+	
+	
+	
+Q:-2. What are some tips to improve the performance of SQL queries?
+1. Prefer to use views and stored procedures in spite of writing long queries. It’ll also help in minimizing network load.
+
+2. It’s better to introduce constraints instead of triggers. They are more efficient than triggers and can increase performance.
+
+3. Make use of table-level variables instead of temporary tables.
+
+4. The UNION ALL clause responds faster than UNION. It doesn’t look for duplicate rows whereas the UNION statement does that regardless of whether they exist or not.
+
+5. Prevent the usage of DISTINCT and HAVING clauses.
+
+6. Avoid excessive use of SQL cursors.
+
+7. Make use of the SET NOCOUNT ON clause while building stored procedures. It represents the rows affected by a T-SQL statement. It would lead to reduced network traffic.
+
+8. It’s a good practice to return the required column instead of all the columns of a table.
+
+9. Prefer not to use complex joins and avoid disproportionate use of triggers.
+
+10. Create indexes for tables and adhere to the standards.	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

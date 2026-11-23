@@ -1,0 +1,43 @@
+use master
+go
+if exists(select name from sys.databases where name = 'ClusterIndex')
+drop database ClusterIndex
+go
+create database ClusterIndex
+go
+
+use ClusterIndex
+go
+
+create table dbo.Page_Cluster(
+	[a] [int] Identity(1,1) not null,
+	[b] [char](5) default 'xxxxx',
+	[c] [varchar](50) default 'ccccc',
+	constraint [PK_Page_Cluster] primary key clustered([a])
+)
+go
+
+
+Declare @count int = 2000
+while(@count > 0)
+begin
+insert into Page_Cluster default values
+set @count = @count - 1;
+end
+go
+
+create index idx_a on Page_Cluster(a)
+create index idx_b on Page_Cluster(b)
+create index idx_c on Page_Cluster(c)
+create index idx_ab on Page_Cluster(a,b)
+create index idx_bc on Page_Cluster(b,c)
+create index idx_a_include_b on Page_Cluster(a) include(b)
+create index idx_a_include_c on Page_Cluster(a) include(c)
+
+alter table Page_Cluster add constraint idx_unique_ab unique nonclustered (a,b)
+
+DBCC IND(ClusterIndex, Page_Cluster, -1)
+
+
+select name, index_id from sys.indexes where object_id = OBJECT_ID('Page_Cluster')
+go

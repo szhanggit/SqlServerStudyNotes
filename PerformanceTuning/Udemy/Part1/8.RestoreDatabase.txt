@@ -1,0 +1,2 @@
+Go to SSMS, right click "Database", Restore Database, Click "Device", Add the database
+Click Files -> Check "Relocate all files to folder" -> Reset "Data file folder" and "Log file folder".

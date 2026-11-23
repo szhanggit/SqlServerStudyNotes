@@ -1,0 +1,2 @@
+SQL Server Performance Tuning Part 2
+Raphael Asghar

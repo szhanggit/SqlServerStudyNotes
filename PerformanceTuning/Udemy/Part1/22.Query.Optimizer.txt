@@ -1,0 +1,55 @@
+What is an execution plan?
+
+When you submit a query to SQL server no matter how simple or complex, SQL
+Server generates an execution plan for that query.
+
+The execution plan shows you how SQL Server breaks down each query submitted
+by showing you a graphical representation using operators.
+
+There are 3 ways that an execution plan can be viewed:
+1. If you select the Actual Execution Plan option, then the plan is created after execution of the query.
+2. If you select the Estimated Execution Plan then the plan is created without executing the query.
+3. If you select the Live Query Statistics (SQL 2016 only) then you can view a live the
+execution plan of an active query without waiting for it to complete.
+
+You can view the Execution plans can be presented in three ways:
+Graphical Plans
+Text Plans
+XML Plans
+
+How does the execution plan select the most efficient plan to execute? It use the query optimizer!
+
+----------------------------------------------------------
+What is the query optimizer?
+
+A query optimizer is part of the SQL Server engine that (SQL) queries and determines the most efficient execution plan.
+It does this by optimizing each SQL statement based on statistics collected about the accessed data.
+The query optimizer then chooses the most efficient means of executing a SQL statement.
+The following diagram shows the steps the query optimizer uses create the execution plan:
+
+SQL Statement
+select A,B,C
+From   x,y
+Where  A < 500
+AND    C = 'EFG'
+
+Parse statement
+
+Validate statement
+Optimize statement
+
+Generate access plan
+
+Execute access plan
+
+
+------------------------------------------
+
+In execution plan, highlight an icon and press F4 (to show property)
+
+
+
+
+
+
+

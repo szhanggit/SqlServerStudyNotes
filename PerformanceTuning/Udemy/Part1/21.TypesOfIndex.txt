@@ -1,0 +1,15 @@
+SQL Server types of indexes
+
+Clustered --<< Most common with OLTP (online transactoinal processing)
+Nonclustered --<< Most common with OLTP
+Index with included columns --<<Resolution
+Filtered --<< Resolution
+Unique --<< Resolution
+Covered indexes --<< Resolution
+Hash
+Index on computed columns
+Columnstore --<< Primarily used in OLAP (online analytical processing)
+Spatial
+Full-text
+XML
+memory-optimized nonclustered indexes --<< Used in memory

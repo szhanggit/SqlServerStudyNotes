@@ -1,0 +1,48 @@
+
+
+Tool tip and its meaning
+The tool tip when you hover over it gives you additional information about each
+operator. Each operator ha sits own tooltip and meaning. To view the tooltip
+without hovering over it right click the opeator and go to properties.
+
+Estimated operator cost - the cost of the operation (% of total cost)
+
+Estimated CPU cost - the cost of how much CPU was needed to complete the operation.
+
+Estimated I/O cost - the cost of how much I/O was needed to complete the operation.
+
+Estimated row size - the size each of rows executed by the operation
+
+Actual and Estimated number of rows - the number of rows executed by the operation.
+
+Actual and Estimated execution mode - row or batch, shows whether the rows are processed one at a time, or in batches.
+
+-------------------------------------------------------------------
+Before creating a clustered index, consider some of these following guidelines:
+
+Clustered indexes sort and store the data on their key values - as such only one clustered index
+
+Generally, every table should have a clustered index defined on the column
+
+Create clustered index on frequently used queries and high degree of uniqueness.
+
+Create clustered index with the UNIQUE property
+
+Create clustered index on operators using BETWEEN, >, >=, <, and <=
+
+That return large result sets
+
+Use JOIN clauses, order by, or group by clauses
+
+Are unique or contian many distinct values
+
+Are accessed sequentially
+
+Used frequently to sort the dat aretrieved from a table
+
+other.
+
+
+---------------------------------------------------------------------------------------
+SET STATISTICS TIME ON
+select * from Person.PersonA

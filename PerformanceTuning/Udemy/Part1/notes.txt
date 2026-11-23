@@ -1,0 +1,4 @@
+https://trialedenred.udemy.com/course/sql-server-performance-tuning-part-1/learn/lecture/8612300#overview
+SQL Server Performance Tuning Part 1
+
+Detail building blocks of SQL performance tuning

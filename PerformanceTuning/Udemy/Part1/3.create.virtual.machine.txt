@@ -1,0 +1,25 @@
+VM name: sqltune
+Microsoft Windows
+Windows 2016 64 bits
+
+Assign 2GB memory
+Create a virtal hard disk now
+Hard disk file type (VDI (VirtualBox Disk Image))
+Fix size
+File location and size	(50.00GB)
+
+
+Pow on VM:
+sqltune => Start => Normal Start
+
+------------------------------------------------------
+
+When install OS, choose:
+Windows Server 2016 Datacenter Evaluation (Desktop Experience)
+
+In Windows Setup, make sure to select custom install.
+
+After finish installing, input -> Keyboard -> Insert Ctrl-Alt-Del (to login)
+
+Server Manager -> Local Server -> IE Enhanced Security Configuration -> all turns off
+Server Manager -> Local Server -> Manage -> Server Manager Properties -> Do not start Server Manager automatically at logon

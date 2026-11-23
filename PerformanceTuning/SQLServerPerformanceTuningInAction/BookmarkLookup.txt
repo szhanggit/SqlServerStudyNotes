@@ -1,0 +1,54 @@
+use LinqDemoBridge
+
+--Nonclustered Index Unique------------------------------------------------------------
+create table IndexUniquifier1 (ID int, Names char(2))
+go
+create unique clustered index IX_ID on IndexUniquifier1 (ID)
+create nonclustered index IX_Names on IndexUniquifier1 (Names)
+go
+Insert into IndexUniquifier1 values (1, 'aa');
+Insert into IndexUniquifier1 values (2, 'bb');
+Insert into IndexUniquifier1 values (3, 'cc');
+go
+
+DBCC IND (LinqDemoBridge, IndexUniquifier1, -1)
+
+select index_id, * from sys.indexes where object_id = OBJECT_ID('IndexUniquifier1') AND name = 'IX_Names'
+
+DBCC Page(LinqDemoBridge, 1, 432, 3)
+
+
+--Nonclustered Index Unique/Not Unique------------------------------------------------------------
+create table IndexUniquifier2 (ID int, Names char(2));
+go
+create clustered index IX_ID on IndexUniquifier2(ID)
+create nonclustered index IX_Names on IndexUniquifier2 (Names)
+go
+Insert into IndexUniquifier2 values (1, 'aa');
+Insert into IndexUniquifier2 values (2, 'bb');
+Insert into IndexUniquifier2 values (3, 'cc');
+go
+
+DBCC IND (LinqDemoBridge, IndexUniquifier2, -1)
+DBCC Page(LinqDemoBridge, 1, 472, 3)
+
+
+Insert into IndexUniquifier2 values (1, 'aa');
+Insert into IndexUniquifier2 values (1, 'aa');
+go
+
+DBCC IND (LinqDemoBridge, IndexUniquifier2, -1)
+DBCC Page(LinqDemoBridge, 1, 472, 3)
+
+--Heap table------------------------------------------------------------
+create Table IndexUniquifier3 (ID int, Names char(10))
+go
+create nonclustered index IX_Names on IndexUniquifier3 (Names)
+go
+Insert into IndexUniquifier3 values (1, 'aa');
+Insert into IndexUniquifier3 values (1, 'bb');
+Insert into IndexUniquifier3 values (1, 'cc');
+go
+
+DBCC IND (LinqDemoBridge, IndexUniquifier3, -1)
+DBCC Page(LinqDemoBridge, 1, 456, 3)

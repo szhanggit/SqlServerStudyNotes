@@ -1,0 +1,27 @@
+use master
+go
+if exists(select name from sys.databases where name = 'LOB')
+drop database [LOB]
+go
+create database [LOB]
+go
+
+use [LOB]
+go
+create Table HeapPage_LOB(a int Identity, b Text)
+insert into HeapPage_LOB(b) values(REPLICATE(convert(varchar(max), 'a'), 64));
+
+select object_name(object_id) as name,
+partition_id, partition_number as pnum, rows,
+allocation_unit_id as au_id, type_desc as page_type_desc,
+total_pages as pages
+from sys.partitions p join sys.allocation_units a
+on p.partition_id = a.container_id
+where object_id = OBJECT_ID('HeapPage_LOB')
+
+
+
+
+insert into HeapPage_LOB(b) values (REPLICATE(Convert(varchar(max), 'b'), 38000))
+
+

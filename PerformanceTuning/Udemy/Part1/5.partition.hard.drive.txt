@@ -1,0 +1,12 @@
+Installing data and log file on separate drives.
+
+When installing SQL Server 2016 on a Windows platform, install the data and log and if necessary tempdb and index files on separate drives for optimum performance.
+Drive D (Data)
+Drive L (Log)
+Drive T (Tempdb)
+
+Windows + r
+diskmgmt.msc
+action - create VHD (Virtual Hard Disk)
+initialize disk(Right click to the new little disk icon) - ok
+New simple volumn(Right click to the new long disk icon) - follow wizard

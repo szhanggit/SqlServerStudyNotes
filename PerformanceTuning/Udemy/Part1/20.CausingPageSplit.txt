@@ -1,0 +1,81 @@
+What is a page split?
+We talked about in the previous video that a page has 8060 bytes of free space for
+you to insert data rows and/or update existing rows. At times, when you insert
+more rows there may not enough room for the newly inserted row in the 
+appllicable data page.
+
+If this happens, then SQL Server will have to more some of the data from the
+current data page and move it to a new data page.
+
+This involves the normal I/O of inserting of a row, but at the same time involves
+updating any applicable indexes. This result in a lot of excessive I/O.
+
+While a certain amount of page splits is normal and expected, too many page splits
+can cause performance issues.
+
+In this video we shall set up a page split and in coming videos see ways to resolve
+excessive page splits.
+
+--------------------------------------------------------------
+--viewing the actual data in a page that belong to either data page or an index page using DBCC IND command
+--this flag must be turned on
+
+DBCC traceon(3604)	--Have to run it whenever intends to run DBCC.
+GO
+
+--the following DBCC command will give all the index info as we have selected -1 option
+--when we execute  the command below, we see that two pages have been allocated; one for the IAM and one for data page
+--pagetype 1- = IAM pagetype 1 = data page  2 = index page
+
+DBCC IND ('pages', cars, -1)
+GO
+
+--'pages' it is database name.
+--'cars' it is page name.
+-- -1 means show all of the info
+
+--To get a more detailed content of the actual data in the data page we use the following DBCC command:
+--This flag must be turned on
+
+DBCC traceon(3604)
+GO
+
+--We can actually see the 3 sections of the data page: header, row content, and row offset
+
+DBCC page('pages',1,304,1)	--<< option 1   304 is data page id.
+DBCC page('pages',1,312,3)	--<< option 3	Shows more details
+
+So at this point, a record consists of 1007 bytes per single insert row (7 for the null_bitmap)
+
+--1 record size = 1007 therefore I can insert 8 * 1007 = 8056 thus only 4 bytes left as free space.
+--If I add another record of 1007 bytes, the page will split - and a new page will be created.
+--as wee add more inserts of 1000 bytes of row size, soon the 8060 page size will become full and will split!!
+
+-----------------------------------
+--add the second record
+insert into cars values ('Benz')
+select * from cars
+
+DBCC traceon(3604)
+GO
+DBCC IND ('pages', cars, -1)
+GO
+
+DBCC page('pages', 1, 296, 1)	--<< option 1
+--at this point I have inserted 2 records, now I will insert 6 more records to almost max out the page.
+--Then I will add one last record to cause a page split!!
+
+insert into cars values ('ford'),('yogo'),('toyota'),('lincoln'),('honda'),('prius')
+
+--after 8 total rows inserted lets see if the page split == it did not!
+
+DBCC traceon(3604)
+GO
+
+DBCC IND('pages', cars, -1)
+GO
+
+-- now insert the last row. at this point, the page does not have room for one more row on the same page!
+insert into cars values ('cadilac') --<< 9th will cause a page split
+
+-- a third page has been added 

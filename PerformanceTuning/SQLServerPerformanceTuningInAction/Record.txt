@@ -1,0 +1,62 @@
+use master
+go
+
+if exists(select name from sys.databases where name = 'Heap_Record')
+drop database Heap_Record
+go
+create database Heap_Record
+go
+
+use Heap_Record
+go
+create table [dbo].[HeapPage_char](
+	[id] [int] Identity(1,1) not null,
+	[names] [char](10) null
+) on [Primary]
+go
+
+create Table [dbo].[HeapPage_nchar](
+	[id] [int] Identity(1,1) not null,
+	[names] [nchar](10) null
+)on [Primary]
+go
+
+create table [dbo].[HeapPage_nvarchar](
+	[id] [int] Identity(1,1) not null,
+	[names] [nvarchar](10) null
+)on [Primary]
+go
+
+Insert into [HeapPage_char](names) values('xx');
+go
+Insert into [HeapPage_char](names) values('xxxx');
+go
+
+Insert into [HeapPage_nchar](names) values('xx');
+go
+Insert into [HeapPage_nchar](names) values('xxxx');
+go
+
+Insert into [HeapPage_nvarchar](names) values('xx');
+go
+Insert into [HeapPage_nvarchar](names) values('xxxx');
+go
+
+
+DBCC IND(Heap_Record, HeapPage_char, -1)
+DBCC TRACEON(3604)
+DBCC PAGE(Heap_Record,1,328,1)
+
+-------------------------------------------------------------
+
+
+DBCC IND(Heap_Record, HeapPage_nchar, -1)
+DBCC TRACEON(3604)
+DBCC PAGE(Heap_Record,1,336,1)
+
+
+-------------------------------------------------------------
+
+DBCC IND(Heap_Record, HeapPage_nvarchar, -1)
+DBCC TRACEON(3604)
+DBCC PAGE(Heap_Record,1,344,1)

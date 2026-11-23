@@ -1,0 +1,22 @@
+Execution Plan Videos what we will cover
+
+https://technet.microsoft.com/en-us/library/ms175913(v=sql.105).aspx
+Types of Operators:
+Table Scan
+Clustered Index Scan
+Clustered Index Seek
+Non-clustered Index Seek
+Compute Scalar
+Adding a Where clause
+Filter
+Sort
+Table Joins
+	Nested Loops Join
+	Hash Match (Join)
+	Merge Join
+Key Lookup
+RID Lookup
+DML Statements:
+	Insert
+	Delete
+	Update

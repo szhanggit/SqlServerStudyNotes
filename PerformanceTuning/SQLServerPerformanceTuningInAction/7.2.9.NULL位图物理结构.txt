@@ -1,0 +1,25 @@
+use master
+go
+if exists(select name from sys.databases where name = 'NULLBitmap')
+drop database [NULLBitmap]
+go
+create database [NULLBitmap]
+go
+
+use [NULLBitmap]
+go
+create table [HeapPage_NULLBitmap](
+	Id int,
+	VarCol1 varchar(100),
+	VarCol2 varchar(100),
+	VarCol3 varchar(100)
+)
+go
+insert into [HeapPage_NULLBitmap] values (1, null, null, null)
+go
+
+
+update [HeapPage_NULLBitmap] set VarCol2 = 'c2c2'
+go
+DBCC Page(NULLBitmap, 1, 77, 1)
+go

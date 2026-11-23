@@ -1,0 +1,60 @@
+With the increase in workload and stress to the server, do we replace the hardware (CPU, MEMORY, DISKS or Diagnose the issue)?
+Let us do performance tuning first.
+Common Performance Issues:
+Slow running queries issues,
+Fragmentation issue,
+Tempdb improper set up,
+Poor execution plan choice,
+SQL Server wrong configurations
+Improper index design
+Blocking
+
+Building blocks needed for performance tuning:
+indexes,
+Sql profiler,
+Fill factor,
+Wait stats,
+memory,
+fragmentation,
+hardware,
+Execution plan,
+CPU,
+Page splits,
+Slow queries,
+More information,
+tempdb,
+dmv,
+events
+
+
+
+Better to go to learn:
+SQL Administration Part 1
+SQL Administration Part 2
+SQL Administration Part 3
+In Search Type: RAF ASGHAR
+
+
+
+
+
+
+
+
+
+
+Common performance issues:
+Issues with tempdb
+Issues with indexes
+Issues with slow running queries
+Issues with blocking
+Issues with deadlocks
+Issues with locking
+Issues with fill factor
+Issues with page splits
+Issues with data and log files
+Issues with fragmentation
+Issues with recompilations
+Issues with wait stats
+Issues with SQL Server Backups at peak usage time
+Issues with Statistics update 

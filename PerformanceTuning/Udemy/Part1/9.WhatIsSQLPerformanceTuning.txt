@@ -1,0 +1,34 @@
+What is SQL Performance Tuning?
+Performance tuning is the improvement of system performance. Typically in computer systems,
+the motivation of such activity is called a performance problem, which can be either real or 
+anticipated. Most systems will respond to increased load with some degree of decreasing performance.
+
+What is tuning in database?
+Database Tuning is the activity of making a database application run more quickly. 
+"More quickly" usually means higher throughput, though it may mean lower response time for time-critical applications.
+
+What is meant by SQL tuning?
+SQL tuning is the process of ensuring that the SQL statements that an application will issue will 
+run in the fastest possible time.
+
+Why is the data returned too slow？
+Is it the application misconfigured?	Improper set up, application not updated
+Do you have sufficient physical hardware resources?	Memory, disk, CPU, network
+Is the query optimizer not choosing the best plan?	Maybe need hints to force the optimizer
+Are the queries improperly written?	Is the query using cursors, can it be written more efficiently?
+Do you have proper indexing?	Improper indexing on tables, unused indexing, too many indexes.
+
+What the tools and application for the SQL DBA to use for performance tuning and monitoring?
+Performance monitor
+Activity monitor
+SQL Profiler
+Extended Events
+DMV (Database management views)
+DBCCs (Database console commands)
+Stored procedures (sp_who, sp_monitor)
+SQL Standard Report
+Database tuning advisor
+Execution plans
+Data collection
+Query store
+Other monitoring tools

@@ -1,0 +1,12 @@
+不要用两张大表直接join，最好当中有张小表。
+先选出大表A的数据，插入小表。
+再用小表与大表B做join。
+外键上要加索引。
+
+
+
+
+注意Type。如果一个是int，另一个是bigint，之间会有隐士转换，消耗不必要的资源。
+where Id in (select Id from product) 最好写成inner join。因为这等于where Id in (1,2,3,4,5,6)
+
+Use Database Engine Tuning Advisor to analysis SQL Server Profiler.

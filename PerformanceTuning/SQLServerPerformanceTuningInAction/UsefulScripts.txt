@@ -1,0 +1,408 @@
+select name, index_id from sys.indexes where object_id = OBJECT_ID('Page_Cluster')	--'Page_Cluster' is table name.
+go
+---------------------------------------------------------------------------------------------------------------------------
+select * from Test_HeapNonCluster with(index(IX_Names)) where Names like 'ddd%'
+---------------------------------------------------------------------------------------------------------------------------
+Check missing index columns------------------------------------------------------------------------------------------------
+select
+ddmid.statement,
+ddmid.equality_columns,
+ddmid.inequality_columns,
+ddmid.included_columns,
+ddmigs.user_scans,
+ddmigs.avg_total_user_cost,
+ddmigs.avg_user_impact
+from sys.dm_db_missing_index_details as ddmid
+join sys.dm_db_missing_index_groups as ddmig
+on ddmid.index_handle = ddmig.index_handle
+join sys.dm_db_missing_index_group_stats as ddmigs
+on ddmig.index_group_handle=ddmigs.group_handle
+---------------------------------------------------------------------------------------------------------------------------
+P240
+select i.name, ddius.user_seeks, ddius.user_scans, ddius.user_lookups, ddius.user_updates 
+from sys.dm_db_index_usage_stats as ddius
+join sys.indexes as i on ddius.index_id = i.index_id and ddius.object_id = i.object_id
+order by ddius.user_seeks
+
+--如果当user_lookups偏高，要看看索引漏了什么字段
+--当 user_udpates比user_seeks还高时，要查看索引是否建得不合理。
+---------------------------------------------------------------------------------------------------------------------------
+DBCC SHOW_STATISTICS(Basket,IX_Basket_customerNumber);
+Update Statistics dbo.Basket IX_Basket_customerNumber with fullscan;
+---------------------------------------------------------------------------------------------------------------------------
+sp_helpindex tablename
+---------------------------------------------------------------------------------------------------------------------------
+-- Check the fragmentation of a table
+select [avg_fragmentation_in_percent] from sys.dm_db_index_physical_stats(
+	DB_ID(N'GR_EV_UAT_MOVE'), object_id (N'ProductEmailContentTagValueSet'), 1, null, 'LIMITED'
+);
+If avg_fragmentation_in_percent value
+> 5% and <= 30% Reorganize (When database is online)
+> 30%			Rebuild (better to make database offline)
+---------------------------------------------------------------------------------------------------------------------------
+--Rebuild index (clustered index)
+Alter index [VisitIndex] ON [dbo].[Visit] rebuild
+Go
+---------------------------------------------------------------------------------------------------------------------------
+--Reorganize index
+Alter index [VisitIndex] ON [dbo].[Visit] reorganize
+go
+---------------------------------------------------------------------------------------------------------------------------
+Dump all of tracing data into a database table and query the top 5 time consuming queries.
+
+select Duration/1000000 as DurationsInSeconds, *
+from Duration where Textdata like '%select%'
+---------------------------------------------------------------------------------------------------------------------------
+--TempDB monitoring query
+select 
+DB_NAME(database_id) as [Database Name],
+file_id,
+io_stall_read_ms / num_of_reads as [Avg Read Transfer/ms],
+io_stall_write_ms / num_of_writes as [Avg Write Transfer/ms]
+from sys.dm_io_virtual_file_stats(2,null) as divfs
+
+--Find trobule maker queries in tempDB
+select 
+ddssu.*, dest.text
+from sys.dm_db_session_space_usage as ddssu
+join sys.dm_exec_requests as der on ddssu.session_id = der.session_id
+cross apply sys.dm_exec_sql_text(der.sql_handle) as dest
+where ddssu.session_id > 50
+order by ddssu.user_objects_alloc_page_count + ddssu.internal_objects_alloc_page_count desc;
+---------------------------------------------------------------------------------------------------------------------------
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20160203-192425] 
+ON [dbo].[People2]
+([Fname] ASC,[Lname] ASC)
+
+DBCC SHOW_STATISTICS ('people2','NonClusteredIndex-20160203-192425')
+WITH HISTOGRAM
+---------------------------------------------------------------------------------------------------------------------------
+
+查看RID的方式：
+select Id, %%physloc%% as RID_16, sys.fn_PhysLocFormatter(%%physloc%%) AS RID_10 from dbo.MyTableName
+go
+----------------------------------------------------------------------------------------------------------
+Check the definition of a function:
+select OBJECT_DEFINITION(object_id('sys.fn_PhysLocFormatter'))
+----------------------------------------------------------------------------------------------------------
+select * from Test_HeapNonCluster with(index(IX_Names)) where names like 'ddd%'
+----------------------------------------------------------------------------------------------------------
+select name, index_id from sys.indexes where object_id = OBJECT_ID('Page_NonCluster')
+go
+----------------------------------------------------------------------------------------------------------
+P238,P240
+----------------------------------------------------------------------------------------------------------
+查看统计信息
+select * from sys.stats as s where s.object_id=OBJECT_ID('Person.Address')
+DBCC SHOW_STATISTICS('Person.Address',_WA_Sys_0000004_34o34)
+----------------------------------------------------------------------------------------------------------
+Set showplan_xml on
+go
+Exec usp_ParameterSniffing 'AES' with recompile;
+go
+Set showplan_xml off
+go
+----------------------------------------------------------------------------------------------------------
+对于比较复杂的运算，要预先计算好结果，然后再分批更新物理表。
+P24
+1.把需要更新的数据放入临时表。#SalesOrderNeedUpdate
+2.在#SalesOrderNeedUpdate中做计算。
+3.把分完页的#SalesOrderNeedUpdate放入#SalesOrderNeedUpdate。
+4.最后更新SalesOrderDetail。
+----------------------------------------------------------------------------------------------------------
+查看请求等待类型(P50)
+select der.session_id, der.request_id, der.start_time,
+		der.status, der.command, OBJECT_NAME(dest.objectid, dest.dbid) as ObjectName,
+		substring(dest.text,der.statement_start_offset/2,
+				case when der.statement_end_offset=-1
+				THEN LEN(dest.text)
+				ELSE der.statement_end_offset/2-der.statement_start_offset/2
+				END
+				) statement_text,
+		der.plan_handle, der.database_id, der.blocking_session_id,
+		der.wait_type, der.wait_time, der.last_wait_type, der.wait_resource
+from sys.dm_exec_requests as der
+cross apply sys.dm_exec_sql_text(der.sql_handle) as dest
+where der.session_id>50
+----------------------------------------------------------------------------------------------------------
+P55查看任务调度者信息
+select dos.scheduler_id, dos.cpu_id, dos.status from sys.dm_os_schedulers as dos
+
+查看Worker的相关信息
+select dow.worker_address, dow.state, dow.wait_started_ms_ticks, dow.wait_resumed_ms_ticks from sys.dm_os_workers as dow;
+
+P56获得当前工作者线程进入可运行队列等待的毫秒数。
+select der.session_id,
+	case when dow.wait_started_ms_ticks=0 then 0 else dosi.ms_ticks-dow.wait_started_ms_ticks END as wait_suspended_ms,
+	case when dow.wait_resumed_ms_ticks=0 then 0 else dosi.ms_ticks-dow.wait_resumed_ms_ticks END as wait_runnable_ms
+from sys.dm_exec_requests as der
+join sys.dm_os_workers as dow on der.task_address = dow.task_address
+cross join sys.dm_os_sys_info as dosi
+where der.session_id is not null;
+
+P57正在运行任务的详细信息：
+select dot.task_address, dot.task_state,
+		dot.context_switches_count, dot.pending_io_count,
+		dot.pending_io_byte_count, dot.scheduler_id,
+		dot.session_id, dot.requet_id
+from sys.dm_os_tasks as dot with(nolock)
+where dot.session_id is not null
+order by dot.session_id, dot.request_id;
+
+P58会话登录信息：
+select des.session_id, dec.client_net_address,
+	dec.client_tcp_port, des.program_name,
+	des.host_proces——id， 的是。client_interface_name,
+	des.status
+from sys.dm_exec_sessions as des
+join sys.dm_exec_connections as dec
+on des.session_id = dec.session_id
+where des.session_id>50;
+
+P59关于执行计划的细节
+select der.session_id, der.status,
+		der.command, der.wait_type,
+		der.wait_resource, dot.task_state
+from sys.dm_exec_requests as der
+join sys.dm_os_tasks as dot
+on der.session_id = dot.session_id;
+
+P62查看当前请求情况的示例语句：
+select der.session_id, der.blocking_session_id,
+		der.wait_type, der.wait_time, der.wait_resource,
+		der.last_wait_type
+from sys.dm_exec_requests as der
+where der.session_id>50
+
+信号等待时间比例
+select convert(Decimal(18,2),
+sum(dows.signal_wait_time_ms)*100.0/sum(dows.wait_time_ms)) as 'Signal Wiats(%)',
+convert(Decimal(18,2),
+sum(dows.wait_time_ms-dows.signal_wait_time_ms)*100.0/SUM(dows.wait_time_ms)) as 'Resource Waits(%)'
+from sys.dm_os_wait_stats as dows
+
+
+
+
+----------------------------------------------------------------------------------------------------------
+--Create database 4MB in size
+
+create database [SQLSize]
+containment = none
+on primary
+( Name = N'SQLSize',
+Filename = N'D:\Windows\MSSQL\DATA\SQLSize.mdf',
+SIZE = 4096KB,
+FILEGROWTH = 1024KB)
+LOG ON
+(NAME = N'SQLSize_log',
+FILENAME = N'D:\Windows\MSSQL\LOG\SQLSize_log.ldf',
+size = 1024KB,
+FILEGROWTH = 10%
+)
+Go
+----------------------------------------------------------------------------------------------------------
+use [master]
+go
+
+alter database [SQLSize]
+modify file (NAME = N'SQLSize',SIZE = 20480KB )
+go
+
+alter database [SQLSize]
+modify file (NAME = N'SQLSize_log', SIZE = 5120KB)
+go
+----------------------------------------------------------------------------------------------------------
+select t.name as TableName, col.name as ColumnName, ind.name as IndexName, ind.index_id as IndexId, ind.type_desc
+from sys.indexes as ind inner join
+sys.index_columns as ic on ind.object_id = ic.object_id and ind.index_id = ic.index_id inner join
+sys.columns as col on ic.object_id = col.object_id AND ic.column_id = col.column_id inner join
+sys.tables as t on ind.object_id = t.object_id
+where (ind.is_primary_key = 0) AND (ind.is_unique = 0) AND (ind.is_unique_constraint = 0) AND (t.is_ms_shipped = 0)
+order by TableName, IndexName, IndexId, ic.index_column_id
+----------------------------------------------------------------------------------------------------------
+
+
+
+select s.name as SchemaName, t.name as TableName, p.rows As RowCounts, 
+sum(a.total_pages) * 8 as TotalSpaceKB,
+sum(a.used_pages) * 8 as usedSpaceKB,
+(sum(a.total_pages) - sum(a.used_pages)) * 8 as UnusedSpaceKB, i.type_desc as IndexType
+From sys.tables as t inner join
+Sys.schemas as s on s.schema_id = t.schema_id inner join
+Sys.indexes as I on t.object_id = i.object_id inner join
+Sys.partitions as p on i.object_id = p.object_id and i.index_id = p.index_id inner join
+Sys.allocation_units as a on p.partition_id = a.container_id
+Where (t.name not like 'dt%') AND (t.is_ms_shipped = 0) AND (i.object_id > 255)
+AND t.name = 'ADDRESS'    --<< ADD Table name to filter
+Group by t.name, s.name, p.rows, i.type_desc
+Order by SchemaName, TableName
+
+
+
+----------------------------------------------------------------------------------------------------------
+It an old way to look up index.
+Exec sp_helpindex 'Sales.SalesOrderDetail'
+
+DBCC SHOW_STATISTICS ('[Person].[Person]', [IX_Person_LastName_FirstName_MiddleName])
+Go
+
+
+
+----------------------------------------------------------------------------------------------------------
+When execution plans are created for they are stored in the cache for faster retrieval
+To view what it in the cache, run this:
+
+Select cp.plan_handle, st.text, cp.cacheobjtype
+From sys.dm_exec_cached_plans cp
+Cross apply sys.dm_exec_sql_text(plan_handle) as st
+
+
+Select cp.plan_handle, st.text, cp.cacheobjtype
+From sys.dm_exec_cached_plans cp
+Cross apply sys.dm_exec_sql_text(plan_handle) as st
+where st.text like N'%HumanResources.Employee%'
+
+
+
+----------------------------------------------------------------------------------------------------------
+Using DBCC FREEPROCCACHE to clear all cache
+DBCC FREEPROCCACHE
+Using DBCC FREEPROCCACHE to clear specific execution plans from the cache.
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------
+Script to find lock info
+select resource_type, request_mode, resource_description from sys.dm_tran_locks where resource_type <> 'DATABASE'
+
+--resource_type = Displays a resource where the locks are being acquired.
+--ALLOCATION_UNIT,
+--APPLICATION,
+--DATABASE,
+--EXTENT,
+--FILE,
+--HOBT,
+--METADATA,
+--OBJECT,
+--PAGE,
+--KEY,
+--RID
+
+----------------------------------------------------------------------------------------------------------
+Script to find open transactions
+select sp.spid, [TEXT] as SQLCode from sys.sysprocesses sp cross apply sys.dm_exec_sql_text(sp.[SQL_HANDLE]) as dest where open_tran >= 1
+
+----------------------------------------------------------------------------------------------------------
+--FIND blocking SPIDs
+
+select blocking.session_id as blocking_session_id,
+blocked.session_id as blocked_session_id,
+waitstats.wait_type as blocking_resource,
+waitstats.wait_duration_ms,
+waitstats.resource_description,
+blocked_cache.text as blocked_text,
+blocking_cache.text as blocking_text
+from sys.dm_exec_connections as blocking
+inner join sys.dm_exec_requests blocked
+on blocking.session_id = blocked.blocking_session_id
+cross apply sys.dm_exec_sql_text(blocked.sql_handle)
+blocked_cache
+cross apply sys.dm_exec_sql_text(blocking.most_recent_sql_handle)
+blocking_cache
+inner join sys.dm_os_waiting_tasks waitstats
+on waitstats.session_id = blocked.session_id
+----------------------------------------------------------------------------------------------------------
+--2 common DMVs to view the internals of wait stats
+
+select
+waiting_task_address,
+session_id,
+exec_context_id,
+wait_duration_ms,
+wait_type,
+resource_address,
+blocking_task_address,
+blocking_session_id,
+blocking_exec_context_id,
+resource_description
+from sys.dm_os_waiting_tasks	--<< This DMV provides info on current suspended threads
+order by 5
+----------------------------------------------------------------------------------------------------------
+--Count CPU
+select cpu_count, * from sys.dm_os_sys_info
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

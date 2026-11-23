@@ -1,0 +1,21 @@
+Index role in performance
+What is indexing
+types of indexes
+clustered indexes
+non clustered indexes
+covered indexes
+column store indexes
+filtered indexes
+missing indexes
+unused indexes
+included indexes
+heap
+finding framentation
+fill factor
+rebuild and reorganize
+disk space consumption
+dmvs
+jobs for indexes
+performance at a cost - maintenance and disk space
+b tree
+demo of indexes

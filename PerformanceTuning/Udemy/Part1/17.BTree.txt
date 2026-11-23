@@ -1,0 +1,22 @@
+When we create an index, whether clustered or non-clustered, the index is spread across a set of pages,
+referred to as the index nodes. We call this structure the B-tree structure. The pages are spread across three
+levels: The root node, the intermediate node, and the leaf nodes. A B-tree index orders rows according to their
+key values (remember the key is the column or columns you are interested in), and divides this ordered list into
+ranges. These ranges are organized in a tree structure, with the root node defining a broad set of ranges, and
+each level below defining a progressively narrower range.
+
+So how does this B tree structure help performance?
+
+
+Suppose you have a query that is:
+select orderid, orders from Orders where orderid = 76
+
+When we execute this query, the root node represents the main entry point for queires trying to locate data via the index. From that root node, the
+data engine negotiates the hierarchy down to the appropriate leaf node, where the actual data resides.
+
+The query engine starts at the root node, and determines if the orderid is between 1-100 or between 101-200. Since going to the right pointer is
+false, it will nagigate down the left path. Then it ask again, if the ordered is between 1-50 or between 51-100. Since going to the left is false, it will
+navigate to the right. It then ask if the ordered is between 51-75 or between 76-100. Since going to the left is false, it will navigate to the right.
+From here it will go to the 76-100 leaf node and return the data. As this is a clustered index, the leaf node will contain the entire row of data
+associated with the key value 76. If this is a non-clustered index, the leaf node will point to the clustered table or heap where the row exists. To be
+discussed next video. As you can see, we can navigate to the data much faster and read less pages than a full table scan.

@@ -1,0 +1,76 @@
+use master
+go
+if exists(select name from sys.databases where name = 'Heap_NonCluster')
+drop database Heap_NonCluster
+go
+create database Heap_NonCluster
+go
+
+use Heap_NonCluster
+go
+
+create table Page_NonCluster
+(
+	a int identity,
+	b char(5) default 'xxxxx',
+	c varchar(50) default 'ccccc'
+)
+go
+
+
+Declare @count int = 2000
+
+while(@count > 0)
+begin
+insert into Page_NonCluster default values
+set @count = @count - 1;
+end
+go
+
+select * from Page_NonCluster
+
+
+create Nonclustered index idx_a on Page_NonCluster(a)
+create Nonclustered index idx_b on Page_NonCluster(b)
+create Nonclustered index idx_c on Page_NonCluster(c)
+create Nonclustered index idx_ab on Page_NonCluster(a,b)
+create Nonclustered index idx_ac on Page_NonCluster(a,c)
+create Nonclustered index idx_a_include_b on Page_NonCluster(a) include(b)
+create Nonclustered index idx_a_include_c on Page_NonCluster(a) include(c)
+alter table Page_NonCluster add constraint idx_unique_ab unique nonclustered (a,b)
+
+DBCC IND (Heap_NonCluster, Page_NonCluster, -1)
+go
+
+select name, index_id from sys.indexes where object_id = OBJECT_ID('Page_NonCluster')
+go
+
+----Heap Table---------------------------------------------------------------------------------------
+
+DBCC IND (Heap_NonCluster, Page_NonCluster, 0)
+go
+DBCC TRACEON(3604)
+DBCC PAGE(Heap_NonCluster, 1, 351, 1);
+
+----Single Column Index---------------------------------------------------------------------------------------
+DBCC IND (Heap_NonCluster, Page_NonCluster, 2)
+go
+
+
+----4.复合索引物理结构-----------------------------------------------------------------------------------------
+DBCC IND (Heap_NonCluster, Page_NonCluster, 5)
+Go
+
+DBCC Traceon(3604)
+go
+DBCC PAGE(Heap_NonCluster, 1, 536, 3)
+go
+DBCC PAGE(Heap_NonCluster, 1, 536, 1)
+go
+
+
+
+
+
+
+

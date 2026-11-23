@@ -1,0 +1,8 @@
+P240
+select i.name, ddius.user_seeks, ddius.user_scans, ddius.user_lookups, ddius.user_updates 
+from sys.dm_db_index_usage_stats as ddius
+join sys.indexes as i on ddius.index_id = i.index_id and ddius.object_id = i.object_id
+order by ddius.user_seeks
+
+--如果当user_lookups偏高，要看看索引漏了什么字段
+--当 user_udpates比user_seeks还高时，要查看索引是否建得不合理。

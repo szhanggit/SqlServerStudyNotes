@@ -1,0 +1,5 @@
+Make virtual machine accessing a local folder.
+
+Go to Virtual Manager -> Network -> Adapter 1 -> Attached to: "Bridge Adapter" -> OK
+Orale VM Virtual Box -> Devices -> Insert Guest Additions CD image... -> Wait for couple of minutes and click on a popup -> Run VBoxWindowsAdditions.exe -> continue with default settings 
+After finishing installing, go Oracle VM VirtualBox Manager -> Shared folders -> add -> Make auto mount and permenant

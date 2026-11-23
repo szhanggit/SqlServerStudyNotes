@@ -1,0 +1,95 @@
+Source:
+https://www.bilibili.com/video/BV1vD4y1A7p3/?spm_id_from=333.1007.tianma.6-3-21.click&vd_source=3c46c834257dfeb6158df2cd8a7b140e
+MySQL调优----子查询优化
+
+select * from Orders where id in (select OrderId from OrderDetails where ProductCode = 'pcode_5')	--It will cost 00:00:24
+--It is all table scan.
+Suggestion:
+Create nonclustered index [<Name of Missing Index, sysname,>] ON [dbo].[OrderDetails] ([ProductCode]) INCLUDE([OrderId])
+
+
+BAGA3
+-------------------------------------------------------------------------------------------
+select o.* from Orders o with(nolock)
+inner join OrderDetails od with(nolock) on o.Id = od.OrderId
+where od.ProductCode = 'pcode_5'			--It will cost 00:00:23
+
+
+
+-------------------------------------------------------------------------------------------
+CREATE NONCLUSTERED INDEX [idx_ordId] ON [dbo].[OrderDetails]
+(
+	[OrderId] ASC
+)
+INCLUDE ([Id]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+drop index idx_ordId on OrderDetails
+
+Run the query below again:
+
+select o.* from Orders o with(nolock)
+inner join OrderDetails od with(nolock) on o.Id = od.OrderId
+where od.ProductCode = 'pcode_5'			--It will cost 00:00:24
+
+where od.ProductCode = 'pcode_5' This is the full table scan, which is still the main blocker.
+So the new added index will not help performance.
+
+
+idx_ordId						OrderDetails
+OrderId		Id				Id		OrderId		ProductCode		Quantity
+...			...				...		...			...				...
+200			10000			10000	200			PC50			...
+200			10001			10001	200			PC100			...
+201			10002			10002	201			PC533			...
+201			10003			10003	201			PC233			...
+...			...				...		...			...				...
+
+
+It is easy to map Id according to OrderId. However there is no ProductCode info.
+Therefore have to do full table scan in OrderDetails. (回表操作的消耗比全表扫描更大)
+
+
+
+
+
+-------------------------------------------------------------------------------------------
+CREATE NONCLUSTERED INDEX [idx_ProdCde] ON [dbo].[OrderDetails]
+(
+	[ProductCode] ASC
+)
+INCLUDE ([Id]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+drop index idx_ProdCde on OrderDetails
+
+Run the query below again:
+
+select o.* from Orders o with(nolock)
+inner join OrderDetails od with(nolock) on o.Id = od.OrderId
+where od.ProductCode = 'pcode_5'			--It will cost 00:00:23
+
+
+
+-------------------------------------------------------------------------------------------
+Create nonclustered index idx_ProdCde_OrdId ON [dbo].[OrderDetails] ([ProductCode]) INCLUDE([OrderId])
+drop index idx_ProdCde_OrdId on OrderDetails
+
+select o.* from Orders o with(nolock)
+inner join OrderDetails od with(nolock) on o.Id = od.OrderId
+where od.ProductCode = 'pcode_5'			--It will cost 00:00:22
+
+
+
+-------------------------------------------------------------------------------------------
+Create nonclustered index idx_ProdCde_OrdId ON [dbo].[OrderDetails] ([ProductCode]) INCLUDE([OrderId])
+create nonclustered index idx_cn_od on dbo.Orders(Id) include ([CustomerName],[OrderDate]);
+drop index idx_ProdCde_OrdId on OrderDetails
+drop index idx_cn_od on Orders
+
+
+
+
+
+
+
+
+
+
+

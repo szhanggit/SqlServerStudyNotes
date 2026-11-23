@@ -1,0 +1,4 @@
+The many cogs of SQL performance tuning
+The many parts of SQL Server we need to understand before attempting SQL Performance tuning:
+Locking, DTA, Fillfactor, Blocking, Indexes, Execution operators, Profiler, Statistics, Page splitting, Workload, Sp recompiles
+

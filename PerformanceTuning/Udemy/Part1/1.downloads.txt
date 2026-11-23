@@ -1,0 +1,17 @@
+Virtual Box:
+https://www.virtualbox.org/wiki/Downloads	
+=> Windows hosts	
+=> VirtualBox 7.0.6 Oracle VM VirtualBox Extension Pack (All supported platforms)
+
+WINDOWS 2016 OS:
+https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2016
+=> Download the ISO
+
+SQL 2016:
+https://www.microsoft.com/en-us/evalcenter/evaluate-sql-server-2016
+
+SQL SSMS:
+https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms
+
+SQL SSDT:
+https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt

@@ -1,0 +1,26 @@
+use master
+go
+if exists(select name from sys.databases where name = 'Overflow')
+drop database [Overflow]
+go
+create database [Overflow]
+go
+
+use [Overflow]
+go
+create table [HeapPage_Overflow](
+	Id int,
+	VarCol1 varchar(6000),
+	VarCol2 varchar(3000)
+)
+go
+Insert into [HeapPage_Overflow] values (1, REPLICATE('a',6000),REPLICATE('b',3000))
+go
+
+select object_name(object_id) as name,
+partition_id, partition_number as pnum, rows,
+allocation_unit_id as au_id, type_desc as page_type_desc,
+total_pages as pages
+from sys.partitions p join sys.allocation_units a
+on p.partition_id = a.container_id
+where object_id = OBJECT_ID('HeapPage_Overflow')

@@ -1,0 +1,2 @@
+SQL Server Installation Center:
+Install SQL Server Management Tools
